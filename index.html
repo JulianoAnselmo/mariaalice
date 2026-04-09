@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maria Alice & Mirian | Bolos e Doces em Itápolis-SP | Encomendas para Festas</title>
+  <meta name="description" content="Há 25 anos preparando bolos, doces finos, bombons e trufas em Itápolis-SP. Encomendas para casamentos, aniversários e eventos. Faça seu pedido pelo WhatsApp!">
+  <meta name="keywords" content="bolos em Itápolis, doces para festa em Itápolis, bolo de aniversário Itápolis, doces finos Itápolis, encomenda de bolo Itápolis, bolos e doces para casamento Itápolis">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Maria Alice & Mirian - Bolos e Doces">
+  <link rel="canonical" href="https://marialiceemirian.com.br">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Maria Alice & Mirian | Bolos e Doces em Itápolis-SP">
+  <meta property="og:description" content="Há 25 anos preparando bolos, doces finos e encomendas com carinho artesanal para casamentos, aniversários e eventos em Itápolis.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="https://marialiceemirian.com.br">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Bakery",
+    "name": "Maria Alice & Mirian - Bolos e Doces",
+    "description": "Confeitaria artesanal com 25 anos de tradição em Itápolis-SP. Bolos, doces finos, bombons e trufas para casamentos, aniversários e eventos.",
+    "url": "https://marialiceemirian.com.br",
+    "telephone": "+55-16-99712-6577",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "R. Dr. Fouad Mucari, 1252",
+      "addressLocality": "Itápolis",
+      "addressRegion": "SP",
+      "postalCode": "14900-000",
+      "addressCountry": "BR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": -21.5951,
+      "longitude": -48.8128
+    },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "18:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "16:00" }
+    ],
+    "priceRange": "$$",
+    "servesCuisine": "Confeitaria",
+    "areaServed": { "@type": "City", "name": "Itápolis" }
+  }
+  </script>
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    button, input, select, textarea { font-family: inherit; font-size: inherit; border: none; outline: none; }
+
+    /* ===== DESIGN TOKENS ===== */
+    :root {
+      --rosa: #d4607a;
+      --rosa-hover: #c24e68;
+      --rosa-claro: #e8849a;
+      --rosa-bg: #fdf2f4;
+      --rosa-bg2: #fce8ec;
+      --nude: #fdf8f5;
+      --dourado: #c9a96e;
+      --dourado-claro: #e0c992;
+      --marrom: #4a3728;
+      --grafite: #7a6b63;
+      --grafite-claro: #9a8b83;
+      --borda: #f0e6e0;
+      --whatsapp: #25D366;
+      --whatsapp-hover: #1fba59;
+      --branco: #ffffff;
+      --sombra: 0 2px 12px rgba(74,55,40,0.08);
+      --sombra-hover: 0 8px 30px rgba(74,55,40,0.12);
+      --radius: 12px;
+      --radius-lg: 20px;
+      --radius-pill: 50px;
+      --transition: 0.3s ease;
+      --max-width: 1200px;
+    }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--marrom); line-height: 1.3; }
+    h1 { font-size: 2rem; font-weight: 700; }
+    h2 { font-size: 1.75rem; font-weight: 700; }
+    h3 { font-size: 1.25rem; font-weight: 600; }
+    p { color: var(--grafite); }
+
+    /* ===== UTILITIES ===== */
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 20px; }
+    .section-label { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--rosa); margin-bottom: 8px; }
+    .section-title { margin-bottom: 16px; }
+    .section-title em { font-style: italic; }
+    .section-subtitle { font-size: 1rem; color: var(--grafite); max-width: 600px; margin: 0 auto 32px; }
+    .section-padding { padding: 80px 0; }
+    .text-center { text-align: center; }
+    .decorative-line { width: 60px; height: 2px; background: var(--dourado); margin: 24px auto; }
+
+    /* ===== BUTTONS ===== */
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: var(--radius-pill); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all var(--transition); border: 2px solid transparent; }
+    .btn-whatsapp { background: var(--whatsapp); color: #fff; border-color: var(--whatsapp); }
+    .btn-whatsapp:hover { background: var(--whatsapp-hover); border-color: var(--whatsapp-hover); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(37,211,102,0.3); }
+    .btn-outline { background: transparent; color: var(--rosa); border-color: var(--rosa); }
+    .btn-outline:hover { background: var(--rosa); color: #fff; transform: translateY(-2px); }
+    .btn-rosa { background: var(--rosa); color: #fff; border-color: var(--rosa); }
+    .btn-rosa:hover { background: var(--rosa-hover); border-color: var(--rosa-hover); transform: translateY(-2px); }
+    .btn-sm { padding: 10px 20px; font-size: 0.85rem; }
+
+    /* ===== CARDS ===== */
+    .card { background: var(--branco); border-radius: var(--radius-lg); box-shadow: var(--sombra); overflow: hidden; transition: all var(--transition); }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--sombra-hover); }
+
+    /* ===== HEADER ===== */
+    .header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(255,255,255,0.97); backdrop-filter: blur(10px); transition: box-shadow var(--transition); }
+    .header.scrolled { box-shadow: 0 2px 20px rgba(74,55,40,0.1); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; max-width: var(--max-width); margin: 0 auto; }
+    .header-logo { height: 50px; width: auto; }
+    .header-nav { display: flex; align-items: center; gap: 28px; }
+    .header-nav a { font-size: 0.9rem; font-weight: 500; color: var(--grafite); transition: color var(--transition); }
+    .header-nav a:hover { color: var(--rosa); }
+    .header-whatsapp { display: inline-flex; align-items: center; gap: 6px; background: var(--whatsapp); color: #fff; padding: 8px 18px; border-radius: var(--radius-pill); font-size: 0.85rem; font-weight: 600; transition: all var(--transition); }
+    .header-whatsapp:hover { background: var(--whatsapp-hover); transform: translateY(-1px); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--marrom); transition: all var(--transition); border-radius: 2px; }
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* ===== MOBILE NAV ===== */
+    .mobile-nav { display: none; position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: var(--branco); z-index: 999; padding: 80px 30px 30px; transition: right var(--transition); box-shadow: -4px 0 20px rgba(0,0,0,0.1); }
+    .mobile-nav.open { right: 0; }
+    .mobile-nav a { display: block; padding: 16px 0; font-size: 1.1rem; font-weight: 500; color: var(--marrom); border-bottom: 1px solid var(--borda); }
+    .mobile-nav a:hover { color: var(--rosa); }
+    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 998; opacity: 0; transition: opacity var(--transition); }
+    .mobile-overlay.open { opacity: 1; }
+
+    /* ===== HERO ===== */
+    .hero { padding: 120px 0 80px; background: linear-gradient(135deg, var(--rosa-bg) 0%, var(--rosa-bg2) 100%); }
+    .hero-content { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .hero-badge { display: inline-block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--rosa); margin-bottom: 16px; }
+    .hero h1 { font-size: 2.5rem; margin-bottom: 16px; }
+    .hero h1 em { font-style: italic; color: var(--rosa); }
+    .hero-text { font-size: 1.05rem; color: var(--grafite); margin-bottom: 28px; line-height: 1.7; }
+    .hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+    .hero-badges { display: flex; gap: 20px; flex-wrap: wrap; }
+    .hero-badges span { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--grafite-claro); }
+    .hero-badges span::before { content: ''; width: 6px; height: 6px; background: var(--dourado); border-radius: 50%; }
+    .hero-image { position: relative; aspect-ratio: 4/3; background: linear-gradient(135deg, var(--rosa-claro), var(--rosa)); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-image-placeholder { text-align: center; color: rgba(255,255,255,0.8); }
+    .hero-image-placeholder svg { width: 80px; height: 80px; opacity: 0.6; }
+    .hero-image-placeholder p { font-size: 0.85rem; margin-top: 8px; font-weight: 500; }
+
+    /* ===== SOBRE ===== */
+    .sobre { background: var(--branco); }
+    .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .sobre-image { aspect-ratio: 4/3; background: linear-gradient(135deg, var(--nude), var(--rosa-bg)); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; }
+    .sobre-text p { margin-bottom: 16px; font-size: 1rem; line-height: 1.8; }
+    .sobre-text .destaque { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-style: italic; color: var(--rosa); border-left: 3px solid var(--dourado); padding-left: 16px; margin: 24px 0; }
+
+    /* ===== CATEGORIAS ===== */
+    .categorias { background: var(--nude); }
+    .categorias-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .categoria-card { background: var(--branco); border-radius: var(--radius-lg); padding: 32px 20px; text-align: center; cursor: pointer; transition: all var(--transition); box-shadow: var(--sombra); border: 2px solid transparent; }
+    .categoria-card:hover { transform: translateY(-6px); box-shadow: var(--sombra-hover); border-color: var(--rosa-claro); }
+    .categoria-card .icon { width: 60px; height: 60px; margin: 0 auto 16px; background: var(--rosa-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .categoria-card h3 { font-size: 1rem; margin-bottom: 6px; }
+    .categoria-card p { font-size: 0.85rem; color: var(--grafite-claro); }
+
+    /* ===== CATALOGO ===== */
+    .catalogo { background: var(--branco); }
+    .tabs-nav { display: flex; gap: 0; border-bottom: 2px solid var(--borda); margin-bottom: 32px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .tabs-nav::-webkit-scrollbar { display: none; }
+    .tab-btn { padding: 14px 24px; font-size: 0.9rem; font-weight: 600; color: var(--grafite-claro); background: none; cursor: pointer; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: all var(--transition); }
+    .tab-btn.active { color: var(--rosa); border-bottom-color: var(--rosa); }
+    .tab-btn:hover:not(.active) { color: var(--marrom); }
+    .tab-panel { display: none; animation: fadeIn 0.3s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Bolos tab */
+    .bolo-card { background: var(--nude); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+    .bolo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+    .bolo-header h3 { font-size: 1.15rem; }
+    .bolo-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .bolo-badge { font-size: 0.75rem; background: var(--rosa-bg); color: var(--rosa); padding: 4px 12px; border-radius: var(--radius-pill); font-weight: 500; }
+    .bolo-lista { margin-bottom: 16px; }
+    .bolo-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--borda); font-size: 0.9rem; }
+    .bolo-item:last-child { border-bottom: none; }
+    .bolo-item span:first-child { color: var(--grafite); }
+    .bolo-item span:last-child { color: var(--rosa); font-weight: 600; white-space: nowrap; }
+    .bolo-especial { background: linear-gradient(135deg, var(--rosa-bg), var(--nude)); border-radius: var(--radius); padding: 20px; margin-top: 24px; border-left: 4px solid var(--dourado); }
+    .bolo-especial h3 { font-size: 1rem; margin-bottom: 12px; color: var(--marrom); }
+    .bolo-nota { font-size: 0.85rem; color: var(--grafite-claro); font-style: italic; margin-top: 16px; padding: 12px; background: rgba(201,169,110,0.08); border-radius: 8px; }
+
+    /* Doces tab */
+    .doces-filter { position: relative; margin-bottom: 24px; }
+    .doces-filter input { width: 100%; padding: 12px 20px 12px 44px; border: 2px solid var(--borda); border-radius: var(--radius-pill); font-size: 0.9rem; transition: border-color var(--transition); background: var(--nude); }
+    .doces-filter input:focus { border-color: var(--rosa-claro); }
+    .doces-filter svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--grafite-claro); }
+    .doces-grupo-titulo { font-size: 1.1rem; margin: 28px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--borda); }
+    .doces-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .doce-card { background: var(--nude); border-radius: var(--radius); padding: 16px; transition: all var(--transition); }
+    .doce-card:hover { box-shadow: var(--sombra); }
+    .doce-card h4 { font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--marrom); margin-bottom: 8px; }
+    .doce-precos { display: flex; gap: 16px; font-size: 0.8rem; margin-bottom: 10px; }
+    .doce-precos span { color: var(--grafite); }
+    .doce-precos strong { color: var(--rosa); font-weight: 600; }
+    .doce-card .btn-sm { width: 100%; justify-content: center; font-size: 0.8rem; padding: 8px 14px; }
+
+    /* Kits tab */
+    .kits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .kit-card { background: var(--nude); border-radius: var(--radius-lg); padding: 28px; text-align: center; border: 2px solid var(--borda); transition: all var(--transition); }
+    .kit-card:hover { border-color: var(--rosa-claro); box-shadow: var(--sombra-hover); }
+    .kit-card .kit-preco { font-family: 'Playfair Display', serif; font-size: 1.75rem; color: var(--rosa); font-weight: 700; margin: 12px 0; }
+    .kit-card .kit-desc { font-size: 0.85rem; color: var(--grafite); margin-bottom: 16px; }
+    .kit-sabores { text-align: left; margin-bottom: 20px; }
+    .kit-sabores h4 { font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600; color: var(--marrom); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .kit-sabores-lista { display: flex; flex-wrap: wrap; gap: 6px; }
+    .kit-sabores-lista span { font-size: 0.75rem; background: var(--rosa-bg); color: var(--rosa); padding: 4px 10px; border-radius: var(--radius-pill); }
+
+    /* Recheios tab */
+    .recheios-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .recheio-pill { display: inline-flex; align-items: center; padding: 10px 16px; background: var(--nude); border-radius: var(--radius-pill); font-size: 0.85rem; color: var(--marrom); transition: all var(--transition); border: 1px solid var(--borda); }
+    .recheio-pill:hover { background: var(--rosa-bg); border-color: var(--rosa-claro); }
+
+    /* Personalizados tab */
+    .personalizados-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .personalizado-card { background: var(--nude); border-radius: var(--radius); padding: 24px; text-align: center; }
+    .personalizado-card .icon { width: 50px; height: 50px; margin: 0 auto 12px; background: var(--rosa-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+    .personalizado-card h4 { font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--marrom); }
+
+    /* ===== COMO PEDIR ===== */
+    .como-pedir { background: var(--rosa-bg); }
+    .passos { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; position: relative; }
+    .passo { text-align: center; flex: 1; min-width: 140px; max-width: 180px; position: relative; }
+    .passo-num { width: 56px; height: 56px; margin: 0 auto 12px; background: var(--branco); border: 2px solid var(--rosa); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--rosa); position: relative; z-index: 1; }
+    .passo h4 { font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--marrom); margin-bottom: 4px; }
+    .passo p { font-size: 0.78rem; color: var(--grafite-claro); }
+
+    /* ===== CONFIGURADOR ===== */
+    .configurador { background: linear-gradient(135deg, var(--rosa-bg), var(--rosa-bg2)); }
+    .config-form { background: var(--branco); border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--sombra-hover); max-width: 700px; margin: 0 auto; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: span 2; }
+    .form-group label { font-size: 0.85rem; font-weight: 500; color: var(--marrom); }
+    .form-group input, .form-group select, .form-group textarea { padding: 12px 16px; border: 2px solid var(--borda); border-radius: var(--radius); background: var(--nude); transition: border-color var(--transition); color: var(--marrom); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--rosa-claro); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a6b63' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+    .conditional-fields { display: none; }
+    .conditional-fields.visible { display: contents; }
+
+    /* ===== DIFERENCIAIS ===== */
+    .diferenciais { background: var(--branco); }
+    .diferenciais-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .diferencial-card { text-align: center; padding: 32px 20px; border-radius: var(--radius-lg); border: 1px solid var(--borda); transition: all var(--transition); }
+    .diferencial-card:hover { border-color: var(--rosa-claro); box-shadow: var(--sombra); }
+    .diferencial-card .icon { width: 56px; height: 56px; margin: 0 auto 16px; background: linear-gradient(135deg, var(--dourado-claro), var(--dourado)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.3rem; }
+    .diferencial-card h3 { font-size: 1rem; margin-bottom: 8px; }
+    .diferencial-card p { font-size: 0.85rem; color: var(--grafite-claro); }
+
+    /* ===== AVALIACOES ===== */
+    .avaliacoes { background: var(--nude); }
+    .avaliacoes-grid { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 8px; scrollbar-width: none; }
+    .avaliacoes-grid::-webkit-scrollbar { display: none; }
+    .avaliacao-card { min-width: 300px; flex-shrink: 0; scroll-snap-align: start; background: var(--branco); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--sombra); }
+    .avaliacao-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .avaliacao-avatar { width: 44px; height: 44px; background: var(--rosa-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--rosa); font-size: 1rem; }
+    .avaliacao-nome { font-weight: 600; color: var(--marrom); font-size: 0.9rem; }
+    .avaliacao-estrelas { color: var(--dourado); font-size: 0.85rem; letter-spacing: 2px; }
+    .avaliacao-texto { font-size: 0.9rem; color: var(--grafite); line-height: 1.7; font-style: italic; }
+
+    /* ===== GALERIA ===== */
+    .galeria { background: var(--branco); }
+    .galeria-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .galeria-item { aspect-ratio: 1; background: linear-gradient(135deg, var(--rosa-bg), var(--rosa-claro)); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all var(--transition); position: relative; overflow: hidden; }
+    .galeria-item:hover { transform: scale(1.03); }
+    .galeria-item::after { content: ''; position: absolute; inset: 0; background: rgba(212,96,122,0.3); opacity: 0; transition: opacity var(--transition); }
+    .galeria-item:hover::after { opacity: 1; }
+    .galeria-item svg { color: rgba(255,255,255,0.6); width: 28px; height: 28px; }
+
+    /* ===== LOCALIZACAO ===== */
+    .localizacao { background: var(--rosa-bg); }
+    .localizacao-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+    .localizacao-info h3 { font-size: 1.1rem; margin-bottom: 20px; }
+    .info-item { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-start; }
+    .info-item .icon-circle { width: 36px; height: 36px; min-width: 36px; background: var(--branco); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--rosa); font-size: 0.9rem; box-shadow: var(--sombra); }
+    .info-item p { font-size: 0.9rem; color: var(--grafite); }
+    .info-item strong { color: var(--marrom); }
+    .horarios-card { background: var(--branco); border-radius: var(--radius); padding: 20px; margin: 20px 0; box-shadow: var(--sombra); }
+    .horario-linha { display: flex; justify-content: space-between; padding: 8px 0; font-size: 0.85rem; border-bottom: 1px solid var(--borda); }
+    .horario-linha:last-child { border-bottom: none; }
+    .horario-linha .dia { color: var(--marrom); font-weight: 500; }
+    .horario-linha .hora { color: var(--grafite); }
+    .horario-linha .fechado { color: var(--rosa); font-weight: 500; }
+    .localizacao-mapa { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--sombra); height: 400px; }
+    .localizacao-mapa iframe { width: 100%; height: 100%; border: 0; }
+
+    /* ===== FAQ ===== */
+    .faq { background: var(--branco); }
+    .faq-lista { max-width: 800px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--borda); }
+    .faq-pergunta { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 0; background: none; cursor: pointer; text-align: left; }
+    .faq-pergunta h3 { font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--marrom); }
+    .faq-pergunta .arrow { width: 20px; height: 20px; color: var(--rosa); transition: transform var(--transition); flex-shrink: 0; }
+    .faq-item.open .arrow { transform: rotate(180deg); }
+    .faq-resposta { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .faq-resposta-inner { padding: 0 0 20px; font-size: 0.9rem; color: var(--grafite); line-height: 1.7; }
+
+    /* ===== FOOTER ===== */
+    .footer { background: var(--marrom); color: rgba(255,255,255,0.8); padding: 60px 0 24px; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer h4 { color: #fff; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+    .footer p, .footer a { font-size: 0.85rem; line-height: 1.8; }
+    .footer a:hover { color: var(--rosa-claro); }
+    .footer-brand p { margin-bottom: 12px; }
+    .footer-social { display: flex; gap: 12px; margin-top: 12px; }
+    .footer-social a { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: all var(--transition); font-size: 0.85rem; }
+    .footer-social a:hover { background: var(--rosa); color: #fff; }
+    .footer-links a { display: block; padding: 4px 0; }
+    .footer-cta { text-align: center; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .footer-bottom { text-align: center; margin-top: 24px; font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+
+    /* ===== WHATSAPP FLOAT ===== */
+    .whatsapp-float { position: fixed; bottom: 24px; right: 24px; z-index: 900; }
+    .whatsapp-float a { display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: var(--whatsapp); border-radius: 50%; box-shadow: 0 4px 20px rgba(37,211,102,0.4); transition: all var(--transition); animation: pulse 3s ease-in-out infinite; }
+    .whatsapp-float a:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.5); }
+    .whatsapp-float svg { width: 30px; height: 30px; fill: #fff; }
+    .whatsapp-float .tooltip { position: absolute; right: 70px; top: 50%; transform: translateY(-50%); background: var(--marrom); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 500; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity var(--transition); }
+    .whatsapp-float a:hover + .tooltip, .whatsapp-float .tooltip:hover { opacity: 1; }
+    @keyframes pulse { 0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.4); } 50% { box-shadow: 0 4px 30px rgba(37,211,102,0.6), 0 0 0 12px rgba(37,211,102,0.1); } }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      h1 { font-size: 1.75rem; }
+      h2 { font-size: 1.4rem; }
+      .section-padding { padding: 60px 0; }
+      .hamburger { display: flex; }
+      .mobile-nav { display: block; }
+      .header-nav { display: none; }
+      .hero { padding: 100px 0 60px; }
+      .hero-content { grid-template-columns: 1fr; text-align: center; }
+      .hero-buttons { justify-content: center; }
+      .hero-badges { justify-content: center; }
+      .hero-image { max-height: 250px; }
+      .hero h1 { font-size: 1.85rem; }
+      .sobre-grid { grid-template-columns: 1fr; gap: 32px; }
+      .categorias-grid { grid-template-columns: repeat(2, 1fr); }
+      .doces-grid { grid-template-columns: 1fr; }
+      .kits-grid { grid-template-columns: 1fr; }
+      .personalizados-grid { grid-template-columns: repeat(2, 1fr); }
+      .recheios-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: span 1; }
+      .diferenciais-grid { grid-template-columns: repeat(2, 1fr); }
+      .galeria-grid { grid-template-columns: repeat(2, 1fr); }
+      .localizacao-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .passos { flex-direction: column; align-items: center; }
+      .config-form { padding: 24px; }
+      .whatsapp-float a { width: 54px; height: 54px; }
+      .whatsapp-float svg { width: 26px; height: 26px; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 1.55rem; }
+      .categorias-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .diferenciais-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<script>
+// ===== DADOS DO NEGOCIO (edite aqui para atualizar o site) =====
+const DADOS = {
+  empresa: {
+    nome: "Maria Alice & Mirian",
+    subtitulo: "Bolos e Doces",
+    endereco: "R. Dr. Fouad Mucari, 1252 – Jardim Campestre, Itápolis – SP",
+    whatsapp: "5516997126577",
+    whatsappFormatado: "(16) 99712-6577",
+    fixo: "(16) 3262-8573",
+    instagram: "@marialicemirianbolosedoces",
+    instagramUrl: "https://www.instagram.com/marialicemirianbolosedoces",
+    facebookUrl: "https://www.facebook.com/marialicemirianbolosedoces",
+    facebook: "Maria Alice & Mirian - Bolos e Doces",
+    mapsUrl: "https://www.google.com/maps/place/R.+Dr.+Fouad+Mucari,+1252+-+Jardim+Campestre,+It%C3%A1polis+-+SP",
+    mapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3715.5!2d-48.8128!3d-21.5951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sR.+Dr.+Fouad+Mucari%2C+1252+-+Itapolis!5e0!3m2!1spt-BR!2sbr",
+    horarios: [
+      { dias: "Terça a Sexta", horas: "08:00 às 18:00" },
+      { dias: "Sábado", horas: "08:00 às 16:00" },
+      { dias: "Domingo e Segunda", horas: "Fechado", fechado: true }
+    ]
+  },
+
+  bolos: [
+    {
+      peso: "1,5 kg", pessoas: 10, diametro: "17 cm", fatias: "~15",
+      coberturas: [
+        { nome: "Chantilly", preco: "R$ 115,00" },
+        { nome: "Ganache escorrido", preco: "R$ 115,00" },
+        { nome: "Marshmallow", preco: "R$ 115,00" },
+        { nome: "Ganache no bolo todo", preco: "R$ 135,00" },
+        { nome: "Brigadeiro no bolo todo", preco: "R$ 135,00" },
+        { nome: "Brigadeiro com raspas de chocolate e laço decorativo", preco: "R$ 155,00" },
+        { nome: "Leite ninho", preco: "R$ 155,00" },
+        { nome: "Naked cake (com frutas)", preco: "R$ 145,00" }
+      ]
+    },
+    {
+      peso: "2,5 kg", pessoas: 25, diametro: "24 cm", fatias: "~30",
+      coberturas: [
+        { nome: "Chantilly", preco: "R$ 190,00" },
+        { nome: "Ganache escorrido", preco: "R$ 190,00" },
+        { nome: "Marshmallow", preco: "R$ 190,00" },
+        { nome: "Ganache no bolo todo", preco: "R$ 215,00" },
+        { nome: "Brigadeiro no bolo todo", preco: "R$ 215,00" },
+        { nome: "Brigadeiro com raspas de chocolate e laço decorativo", preco: "R$ 240,00" },
+        { nome: "Leite ninho", preco: "R$ 240,00" },
+        { nome: "Naked cake (com frutas)", preco: "R$ 230,00" }
+      ]
+    },
+    {
+      peso: "3,5 kg", pessoas: 35, diametro: "28 cm", fatias: "~40",
+      coberturas: [
+        { nome: "Chantilly", preco: "R$ 310,00" },
+        { nome: "Ganache escorrido", preco: "R$ 310,00" },
+        { nome: "Marshmallow", preco: "R$ 310,00" },
+        { nome: "Ganache no bolo todo", preco: "R$ 340,00" },
+        { nome: "Brigadeiro no bolo todo", preco: "R$ 340,00" },
+        { nome: "Brigadeiro com raspas de chocolate e laço decorativo", preco: "R$ 370,00" },
+        { nome: "Leite ninho", preco: "R$ 370,00" },
+        { nome: "Naked cake (com frutas)", preco: "R$ 360,00" }
+      ]
+    },
+    {
+      peso: "4,5 kg", pessoas: 45, diametro: "", fatias: "~60",
+      coberturas: [
+        { nome: "Chantilly", preco: "R$ 390,00" },
+        { nome: "Ganache escorrido", preco: "R$ 390,00" },
+        { nome: "Marshmallow", preco: "R$ 390,00" },
+        { nome: "Ganache no bolo todo", preco: "R$ 430,00" },
+        { nome: "Brigadeiro no bolo todo", preco: "R$ 430,00" },
+        { nome: "Brigadeiro com raspas de chocolate e laço decorativo", preco: "R$ 460,00" },
+        { nome: "Leite ninho", preco: "R$ 460,00" },
+        { nome: "Naked cake (com frutas)", preco: "R$ 450,00" }
+      ]
+    },
+    {
+      peso: "6,5 kg", pessoas: 60, diametro: "", fatias: "~90",
+      coberturas: [
+        { nome: "Chantilly", preco: "R$ 460,00" },
+        { nome: "Ganache escorrido", preco: "R$ 460,00" },
+        { nome: "Marshmallow", preco: "R$ 460,00" },
+        { nome: "Ganache no bolo todo", preco: "R$ 520,00" },
+        { nome: "Brigadeiro no bolo todo", preco: "R$ 520,00" },
+        { nome: "Brigadeiro com raspas de chocolate e laço decorativo", preco: "R$ 550,00" },
+        { nome: "Leite ninho", preco: "R$ 550,00" },
+        { nome: "Naked cake (com frutas)", preco: "R$ 540,00" }
+      ]
+    }
+  ],
+
+  bolosEspeciais: [
+    { nome: "Charge", recheios: "Brigadeiro preto / leite ninho com doce de leite e amendoim" },
+    { nome: "Floresta Negra", recheios: "Trufa de chocolate com cereja e chantilly" },
+    { nome: "Marta Rocha", recheios: "Bába de moça / strogonoff de nozes e suspiro" },
+    { nome: "Napolitano", recheios: "Brigadeiro branco, romance e brigadeiro preto" }
+  ],
+
+  coberturasDisponiveis: [
+    "Brigadeiro branco ou preto",
+    "Ganache branco ou preto",
+    "Marshmallow limão ou baunilha"
+  ],
+
+  recheios: [
+    "Abacaxi com coco","Abacaxi com creme","Alpino","Bába de moça","Beijinho de coco",
+    "Brigadeiro branco","Brigadeiro branco com cereja","Brigadeiro de nutella","Brigadeiro preto",
+    "Brigadeiro preto com cereja","Chandelle de chocolate","Coco","Coco com ameixa","Creme",
+    "Creme com nozes","Damasco com brigadeiro branco","Doce de leite","Doce de leite com ameixa",
+    "Doce de leite com coco","Doce de leite com nozes","Doce de leite trufado","Ferrero rocher",
+    "Frutas vermelhas com brigadeiro branco","Leite ninho","Leite ninho com cereja",
+    "Leite ninho com frutas vermelhas","Leite ninho com nozes","Leite ninho com nutella",
+    "Leite ninho com polpa de morango","Leite ninho trufado","Mousse de coco",
+    "Mousse de chocolate ao leite","Mousse de chocolate branco","Mousse de chocolate meio amargo",
+    "Mousse de limão","Mousse de maracujá","Ouro branco","Prestígio","Rafaello","Romance",
+    "Sonho de valsa","Strogonoff de nozes","Três amores","Trufa de chocolate ao leite",
+    "Trufa de chocolate branco","Trufa de chocolate meio amargo"
+  ],
+
+  doces: {
+    grupo1: [
+      { nome: "Brigadeiro (branco, preto, romance, coco, cereja, damasco, abacaxi, leite ninho, ameixa, cajuzinho)", p100: "R$ 150,00", p50: "R$ 75,00" },
+      { nome: "Brigadeiro com escamas", p100: "R$ 165,00", p50: "R$ 83,00" },
+      { nome: "Casadinho (dois sabores)", p100: "R$ 185,00", p50: "R$ 93,00" },
+      { nome: "Tricolor (três sabores) / Brigadeiro broulet", p100: "R$ 215,00", p50: "R$ 108,00" },
+      { nome: "Brigadeiro ovomaltine, noir, laranja, café, limão, limão siciliano, capuccino, beijo doce de leite com coco queimado", p100: "R$ 190,00", p50: "R$ 95,00" },
+      { nome: "Ninho com nutella, joe maracujá, joe morango, brigadeiro com nutella", p100: "R$ 215,00", p50: "R$ 108,00" },
+      { nome: "Churros, prestígio, Romeu e Julieta, limão com merengue", p100: "R$ 195,00", p50: "R$ 98,00" },
+      { nome: "Bombom de brigadeiro (branco, preto, romance, coco, cereja, damasco, abacaxi, leite ninho, doce de leite, beijo rosado)", p100: "R$ 220,00", p50: "R$ 110,00" },
+      { nome: "Bala baiana", p100: "R$ 250,00", p50: "R$ 125,00" },
+      { nome: "Camafeu", p100: "R$ 260,00", p50: "R$ 130,00" },
+      { nome: "Bombom de ninho com nutella", p100: "R$ 260,00", p50: "R$ 130,00" },
+      { nome: "Bombom de uva, limão siciliano, churros", p100: "R$ 255,00", p50: "R$ 128,00" },
+      { nome: "Olho de sogra simples", p100: "R$ 230,00", p50: "R$ 115,00" },
+      { nome: "Olho de sogra caramelizado", p100: "R$ 260,00", p50: "R$ 130,00" },
+      { nome: "Damasco recheado com amêndoas / Olho de sogro caramelado", p100: "R$ 310,00", p50: "R$ 155,00" },
+      { nome: "Tâmaras carameladas", p100: "R$ 370,00", p50: "R$ 185,00" },
+      { nome: "Trufas (suflair, ao leite, capuccino, negresco, maracujá, limão, frutas vermelhas, morango, napolitano, caipirinha)", p100: "R$ 250,00", p50: "R$ 125,00" },
+      { nome: "Ferrero rocher, Rafaello, Pistache, Lollo", p100: "R$ 320,00", p50: "R$ 160,00" },
+      { nome: "Copinho de chocolate trufado com cereja", p100: "R$ 320,00", p50: "R$ 160,00" },
+      { nome: "Gotas ou coração de chocolate trufado", p100: "R$ 340,00", p50: "R$ 170,00" },
+      { nome: "Cestinha de frutas", p100: "R$ 340,00", p50: "R$ 170,00" },
+      { nome: "Escondidinho de cereja", p100: "R$ 360,00", p50: "R$ 180,00" },
+      { nome: "Tortinha de limão ou maracujá", p100: "R$ 420,00", p50: "R$ 210,00" },
+      { nome: "Tortinha de maçã, morango e nozes", p100: "R$ 530,00", p50: "R$ 265,00" },
+      { nome: "Romeu e Julieta com queijo parmesão", p100: "R$ 400,00", p50: "R$ 200,00" },
+      { nome: "Rosas de fita de coco", p100: "R$ 440,00", p50: "R$ 220,00" },
+      { nome: "Surpresa de Brownie", p100: "R$ 380,00", p50: "R$ 190,00" },
+      { nome: "Ninho de amor", p100: "R$ 290,00", p50: "R$ 145,00" }
+    ],
+    grupo2: [
+      { nome: "Coquelita", p100: "R$ 340,00", p50: "R$ 170,00" },
+      { nome: "Brigadeiro Red Velvet", p100: "R$ 215,00", p50: "R$ 108,00" },
+      { nome: "Ouriço de doce de leite / Brigadeiro de flor de sal", p100: "R$ 240,00", p50: "R$ 120,00" },
+      { nome: "Bombom surpresa de abacaxi / Bombom torta de limão", p100: "R$ 260,00", p50: "R$ 130,00" },
+      { nome: "Tricelanica (coco, nozes e castanha de caju)", p100: "R$ 480,00", p50: "R$ 240,00" },
+      { nome: "Surpresa de uva", p100: "R$ 230,00", p50: "R$ 115,00" },
+      { nome: "Olho de sogro simples", p100: "R$ 280,00", p50: "R$ 140,00" },
+      { nome: "Tortinha holandesa", p100: "R$ 470,00", p50: "R$ 235,00" },
+      { nome: "Prestígio divino", p100: "R$ 220,00", p50: "R$ 110,00" },
+      { nome: "Copinho de chocolate com Ferrero Rocher", p100: "R$ 430,00", p50: "R$ 215,00" },
+      { nome: "Bala de coco gourmet (cento)", p100: "R$ 260,00", p50: null },
+      { nome: "Bala de coco simples (receita ~200 balas, sem embrulhar)", p100: "R$ 90,00", p50: null },
+      { nome: "Bala de coco gelada", p100: "R$ 110,00", p50: null }
+    ]
+  },
+
+  kits: [
+    {
+      nome: "Kit Doces Simples",
+      preco: "R$ 175,00",
+      descricao: "100 doces divididos em 4 sabores à escolha",
+      sabores: ["Brigadeiro","Brigadeiro branco","Romance","Beijinho de coco","Beijinho de cereja","Beijinho de abacaxi","Beijinho de damasco","Leite ninho","Cajuzinho"]
+    },
+    {
+      nome: "Kit Doces Recheados",
+      preco: "R$ 230,00",
+      descricao: "100 doces divididos em 4 sabores à escolha",
+      sabores: ["Churros","Prestígio","Romeu e Julieta","Ninho com nutella","Limão com merengue","Joe de morango","Joe de maracujá"]
+    },
+    {
+      nome: "Kit Bombons e Trufas",
+      preco: "R$ 265,00",
+      descricao: "100 doces divididos em 4 sabores à escolha",
+      sabores: ["Brigadeiro","Brigadeiro branco","Romance","Coco","Cereja","Abacaxi","Damasco","Leite ninho","Camafeu","Suflair","Limão","Maracujá","Frutas vermelhas","Morango","Caipirinha"]
+    }
+  ],
+
+  personalizados: [
+    { nome: "Pirulitos de chocolate", icone: "🍭" },
+    { nome: "Pães de mel", icone: "🍯" },
+    { nome: "Porta retrato", icone: "🖼️" },
+    { nome: "Trufas", icone: "🍫" },
+    { nome: "Cupcakes", icone: "🧁" },
+    { nome: "Apliques para doces", icone: "✨" }
+  ],
+
+  avaliacoes: [
+    { nome: "Fernanda L.", iniciais: "FL", texto: "Encomendei o bolo para o aniversário da minha filha e superou todas as expectativas. Massa molhadinha, recheio na medida certa e uma apresentação impecável. Já virou tradição pedir aqui!" },
+    { nome: "Carla M.", iniciais: "CM", texto: "Os doces para o meu casamento ficaram maravilhosos. Grande variedade de sabores, todos muito bem feitos e com acabamento perfeito. As convidadas não pararam de elogiar!" },
+    { nome: "Patrícia R.", iniciais: "PR", texto: "Sempre peço os bolos da Maria Alice e Mirian para os eventos da família. Qualidade consistente, ótimo atendimento e preço justo. Recomendo de olhos fechados!" },
+    { nome: "Juliana S.", iniciais: "JS", texto: "Boa variedade de bolos, recheios e doces. Tudo muito saboroso, com aquele toque artesanal que faz toda a diferença. Atendimento sempre com muita atenção e carinho." }
+  ],
+
+  faq: [
+    { pergunta: "Vocês fazem bolos personalizados?", resposta: "Sim! Fazemos bolos decorados e personalizados para todos os tipos de eventos. Bolos coloridos ou com decoração especial têm acréscimo no valor — envie o tema ou foto de inspiração pelo WhatsApp para orçamento." },
+    { pergunta: "Como faço meu pedido?", resposta: "É muito simples! Escolha seus produtos no nosso cardápio, defina quantidades e sabores, e envie seu pedido pelo WhatsApp. Você também pode usar nosso formulário de encomenda aqui no site para montar o pedido completo." },
+    { pergunta: "Qual a antecedência ideal para encomendar?", resposta: "Recomendamos fazer o pedido com pelo menos 3 a 5 dias de antecedência. Para eventos maiores, como casamentos, o ideal é entrar em contato com 2 a 4 semanas de antecedência." },
+    { pergunta: "Posso montar orçamento pelo WhatsApp?", resposta: "Claro! Envie uma mensagem pelo WhatsApp com os detalhes do que precisa (tipo de produto, quantidade, data do evento) e retornamos com o orçamento completo." },
+    { pergunta: "Quais sabores de recheio estão disponíveis?", resposta: "Temos mais de 45 opções de recheio! Desde os clássicos como brigadeiro e doce de leite até opções especiais como Ferrero Rocher, leite ninho com nutella e frutas vermelhas. Confira a lista completa na seção de recheios do nosso cardápio." },
+    { pergunta: "Vocês fazem doces para casamento e aniversário?", resposta: "Sim! Somos especialistas em doces para festas e eventos. Atendemos casamentos, aniversários, formaturas, chás de bebê e confraternizações. Temos kits prontos e também montamos pedidos personalizados." },
+    { pergunta: "Qual o pedido mínimo de doces?", resposta: "O pedido mínimo é de 50 unidades do mesmo sabor. Para os kits, o mínimo é de 100 doces divididos em 4 sabores." },
+    { pergunta: "Vocês entregam?", resposta: "Consulte a disponibilidade de entrega pelo WhatsApp. Atendemos Itápolis e região." }
+  ]
+};
+</script>
+
+  <!-- HTML sections will be added in subsequent tasks -->
+
+  <!-- JS for interactivity will be added at the end -->
+
+</body>
+</html>
