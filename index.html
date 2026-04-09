@@ -391,6 +391,91 @@
     .animate-on-scroll { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
+    /* ===== TOAST NOTIFICATION ===== */
+    .toast {
+      position: fixed;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--rosa);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      font-size: 0.95rem;
+      font-weight: 600;
+      z-index: 2000;
+      box-shadow: 0 4px 20px rgba(212,96,122,0.4);
+      transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show {
+      top: 24px;
+    }
+
+    /* ===== CART BADGE PULSE ANIMATION ===== */
+    @keyframes badgePulse {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.35); }
+      60% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+    .cart-badge.pulse {
+      animation: badgePulse 0.5s ease;
+    }
+
+    /* ===== KIT STEPPER BUTTONS ===== */
+    .kit-stepper {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 2px solid var(--borda);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--nude);
+    }
+    .kit-stepper button {
+      width: 36px;
+      height: 36px;
+      background: var(--branco);
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--rosa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition);
+    }
+    .kit-stepper button:hover {
+      background: var(--rosa-bg);
+    }
+    .kit-stepper input[type="number"] {
+      width: 50px;
+      text-align: center;
+      padding: 6px 2px;
+      border: none;
+      border-left: 1px solid var(--borda);
+      border-right: 1px solid var(--borda);
+      background: var(--nude);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--marrom);
+      -moz-appearance: textfield;
+    }
+    .kit-stepper input[type="number"]::-webkit-inner-spin-button,
+    .kit-stepper input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* ===== BOLO CONFIG HIGHLIGHT (all selects filled) ===== */
+    .bolo-config.config-complete {
+      border: 2px solid var(--rosa-claro);
+      background: linear-gradient(135deg, var(--rosa-bg), #fff5f7);
+    }
+
     /* ===== CART SYSTEM ===== */
     .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity var(--transition); }
     .cart-overlay.open { opacity: 1; pointer-events: auto; }
@@ -466,12 +551,263 @@
     .doce-preco-display { font-size: 0.95rem; color: var(--rosa); font-weight: 700; margin-bottom: 10px; }
 
     @media (max-width: 768px) {
+      /* Cart sidebar: full-width + full-height takeover */
       .cart-sidebar { width: 100%; right: -100%; }
       .cart-sidebar.open { right: 0; }
       .header-inner .cart-icon-btn { order: 3; }
+
+      /* btn-row: stack vertically full-width */
       .btn-row { flex-direction: column; }
-      .btn-row .btn, .btn-row .btn-add-cart { width: 100%; }
+      .btn-row .btn, .btn-row .btn-add-cart { width: 100%; min-height: 48px; font-size: 0.95rem; }
+
+      /* All purchase-related buttons: bigger tap targets */
+      .btn-add-cart { min-height: 48px; font-size: 0.95rem; padding: 14px 20px; }
+      .btn-sm { min-height: 48px; padding: 12px 20px; font-size: 0.9rem; }
+      .kit-add-flavor { min-height: 48px; font-size: 0.95rem; padding: 14px; }
+
+      /* === BOLO CONFIG: touch-friendly selects + labels with icons === */
+      .bolo-config .form-group select {
+        width: 100%;
+        padding: 14px 36px 14px 14px;
+        font-size: 1rem;
+        min-height: 48px;
+      }
+      .bolo-config .form-group label {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      .bolo-config .btn-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .bolo-config .btn-row .btn,
+      .bolo-config .btn-row .btn-add-cart {
+        width: 100%;
+        min-height: 48px;
+        font-size: 0.95rem;
+        justify-content: center;
+      }
+
+      /* === DOCE TOGGLE: much bigger on mobile === */
+      .qty-toggle {
+        display: flex;
+        width: 100%;
+        margin-bottom: 12px;
+      }
+      .qty-toggle button {
+        flex: 1;
+        min-height: 44px;
+        font-size: 0.95rem;
+        padding: 10px 16px;
+        font-weight: 700;
+      }
+      .qty-toggle button.active {
+        background: var(--rosa);
+        color: #fff;
+      }
+      .qty-toggle button:not(.active) {
+        background: var(--branco);
+        color: var(--grafite);
+        border: 2px solid var(--borda);
+      }
+      .doce-preco-display {
+        font-size: 1.15rem;
+        font-weight: 800;
+        margin-bottom: 12px;
+      }
+      .doce-card .btn-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .doce-card .btn-row .btn,
+      .doce-card .btn-row .btn-add-cart {
+        width: 100%;
+        min-height: 48px;
+      }
+
+      /* === KIT CONFIG: better mobile layout === */
+      .kit-flavor-row {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+        background: var(--branco);
+        border-radius: var(--radius);
+        margin-bottom: 10px;
+        border: 1px solid var(--borda);
+      }
+      .kit-flavor-row select {
+        flex: 1 1 100%;
+        min-height: 44px;
+        font-size: 0.95rem;
+        padding: 12px 36px 12px 12px;
+      }
+      .kit-flavor-row .kit-stepper {
+        flex: 1 1 auto;
+      }
+      .kit-stepper button {
+        width: 44px;
+        height: 44px;
+        font-size: 1.3rem;
+      }
+      .kit-stepper input[type="number"] {
+        width: 56px;
+        height: 44px;
+        font-size: 1rem;
+      }
+      .kit-flavor-row .remove-flavor {
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .kit-flavor-row input[type="number"] {
+        min-height: 44px;
+        font-size: 1rem;
+        width: 80px;
+      }
+
+      /* Kit progress bar: more prominent */
+      .kit-progress-bar {
+        height: 10px;
+        border-radius: 5px;
+        margin-top: 8px;
+      }
+      .kit-progress-text {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      .kit-card .btn-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .kit-card .btn-row .btn,
+      .kit-card .btn-row .btn-add-cart {
+        width: 100%;
+        min-height: 48px;
+      }
+
+      /* === CART SIDEBAR: mobile improvements === */
+      .cart-header {
+        padding: 16px 20px;
+      }
+      .cart-header h3 {
+        font-size: 1.2rem;
+      }
+      .cart-summary-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background: var(--rosa-bg);
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--marrom);
+        border-bottom: 1px solid var(--borda);
+      }
+      .cart-summary-bar .cart-summary-total {
+        color: var(--rosa);
+        font-weight: 700;
+      }
+      .cart-item {
+        padding: 14px 20px;
+      }
+      .cart-item-info strong {
+        font-size: 0.95rem;
+        margin-bottom: 6px;
+      }
+      .cart-item-info small {
+        font-size: 0.82rem;
+        line-height: 1.6;
+      }
+      .cart-item-preco {
+        font-size: 0.95rem;
+        font-weight: 700;
+      }
+      .cart-item-remove {
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cart-form .form-group input,
+      .cart-form .form-group textarea {
+        padding: 14px 16px;
+        font-size: 1rem;
+        min-height: 48px;
+      }
+      .cart-footer .btn-whatsapp {
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        min-height: 52px;
+        font-size: 1.05rem;
+      }
+      .cart-continuar-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+        background: none;
+        border: 2px solid var(--borda);
+        border-radius: var(--radius-pill);
+        color: var(--grafite);
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        margin-top: 10px;
+        min-height: 44px;
+        transition: all var(--transition);
+      }
+      .cart-continuar-btn:hover {
+        border-color: var(--rosa-claro);
+        color: var(--rosa);
+      }
+
+      /* === CART BADGE: bigger on mobile === */
+      .cart-icon-btn {
+        padding: 8px;
+      }
+      .cart-badge {
+        width: 22px;
+        height: 22px;
+        font-size: 0.75rem;
+        top: -2px;
+        right: -4px;
+      }
+
+      /* === Product card visual separation === */
+      .doce-card {
+        padding: 20px;
+        border: 1px solid var(--borda);
+        display: flex;
+        flex-direction: column;
+      }
+      .doce-card h4 {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--borda);
+      }
+      .bolo-card {
+        padding: 20px;
+      }
+      .bolo-config {
+        padding: 20px;
+        margin-top: 20px;
+      }
+      .kit-card {
+        padding: 24px 20px;
+      }
     }
+
+    /* Cart summary bar hidden on desktop by default */
+    .cart-summary-bar { display: none; }
+    .cart-continuar-btn { display: none; }
+
   </style>
 </head>
 <body>
@@ -1220,6 +1556,10 @@ const DADOS = {
       <h3>Seu Pedido</h3>
       <button onclick="fecharCarrinho()" aria-label="Fechar" style="background:none;cursor:pointer;font-size:1.5rem;color:var(--grafite);">&times;</button>
     </div>
+    <div class="cart-summary-bar" id="cart-summary-bar">
+      <span id="cart-summary-count">0 itens</span>
+      <span class="cart-summary-total" id="cart-summary-total">R$ 0,00</span>
+    </div>
     <div class="cart-items" id="cart-items">
       <p class="cart-empty" id="cart-empty" style="text-align:center;padding:40px 20px;color:var(--grafite-claro);">Seu pedido esta vazio.<br>Adicione itens do cardapio!</p>
     </div>
@@ -1235,8 +1575,10 @@ const DADOS = {
         <div class="form-group"><label for="cart-obs">Observacoes</label><textarea id="cart-obs" placeholder="Alguma informacao adicional?" rows="2"></textarea></div>
       </div>
       <button class="btn btn-whatsapp" onclick="enviarCarrinhoWhatsApp()" style="width:100%;justify-content:center;margin-top:16px;font-size:1rem;padding:14px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:4px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Enviar Pedido no WhatsApp
       </button>
+      <button class="cart-continuar-btn" onclick="fecharCarrinho()">Continuar comprando</button>
     </div>
   </aside>
 
@@ -1372,29 +1714,29 @@ function renderBolos() {
         <div class="bolo-config" id="bolo-config-${boloIndex}">
           <div style="border-top:1px solid var(--borda);margin-bottom:14px;"></div>
           <div class="form-group">
-            <label for="bolo-cob-${boloIndex}">Cobertura</label>
-            <select id="bolo-cob-${boloIndex}">
+            <label for="bolo-cob-${boloIndex}">&#127856; Cobertura</label>
+            <select id="bolo-cob-${boloIndex}" onchange="checkBoloConfigComplete(${boloIndex})">
               <option value="">Selecione a cobertura...</option>
               ${coberturaOptions}
             </select>
           </div>
           <div class="form-group">
-            <label for="bolo-r1-${boloIndex}">Recheio 1</label>
-            <select id="bolo-r1-${boloIndex}">
+            <label for="bolo-r1-${boloIndex}">&#127846; Recheio 1</label>
+            <select id="bolo-r1-${boloIndex}" onchange="checkBoloConfigComplete(${boloIndex})">
               <option value="">Selecione o recheio...</option>
               ${recheioOptions}
             </select>
           </div>
           <div class="form-group">
-            <label for="bolo-r2-${boloIndex}">Recheio 2</label>
-            <select id="bolo-r2-${boloIndex}">
+            <label for="bolo-r2-${boloIndex}">&#127846; Recheio 2</label>
+            <select id="bolo-r2-${boloIndex}" onchange="checkBoloConfigComplete(${boloIndex})">
               <option value="">Selecione o recheio...</option>
               ${recheioOptions}
             </select>
           </div>
           <div class="btn-row">
             <button class="btn btn-whatsapp btn-sm" onclick="pedirBoloAgora(${boloIndex})">Pedir agora</button>
-            <button class="btn-add-cart" onclick="adicionarBolo(${boloIndex})">Adicionar ao pedido</button>
+            <button class="btn-add-cart" onclick="adicionarBolo(${boloIndex})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao pedido</button>
           </div>
         </div>
       </div>
@@ -1412,6 +1754,19 @@ function renderBolos() {
 }
 
 renderBolos();
+
+// ===== BOLO CONFIG HIGHLIGHT =====
+function checkBoloConfigComplete(boloIndex) {
+  const config = document.getElementById(`bolo-config-${boloIndex}`);
+  const cob = document.getElementById(`bolo-cob-${boloIndex}`).value;
+  const r1 = document.getElementById(`bolo-r1-${boloIndex}`).value;
+  const r2 = document.getElementById(`bolo-r2-${boloIndex}`).value;
+  if (cob && r1 && r2) {
+    config.classList.add('config-complete');
+  } else {
+    config.classList.remove('config-complete');
+  }
+}
 
 // ===== RENDER DOCES =====
 var doceIdCounter = 0;
@@ -1444,7 +1799,7 @@ function renderDoces() {
           ${precoDisplay}
           <div class="btn-row">
             <button class="btn btn-whatsapp btn-sm" onclick="pedirDoceAgora(${did})">Pedir agora</button>
-            <button class="btn-add-cart" onclick="adicionarDoceFromCard(${did})">Adicionar ao pedido</button>
+            <button class="btn-add-cart" onclick="adicionarDoceFromCard(${did})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao pedido</button>
           </div>
         </div>
       `;
@@ -1501,7 +1856,7 @@ function renderKits() {
             </div>
             <div class="btn-row">
               <button class="btn btn-whatsapp btn-sm" onclick="pedirKitAgora(${kitIndex})">Pedir agora</button>
-              <button class="btn-add-cart" onclick="adicionarKit(${kitIndex})">Adicionar ao pedido</button>
+              <button class="btn-add-cart" onclick="adicionarKit(${kitIndex})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao pedido</button>
             </div>
           </div>
         `;
@@ -1752,13 +2107,43 @@ function atualizarCarrinhoUI() {
   }
 
   const total = carrinho.reduce((sum, item) => sum + item.precoNum, 0);
-  document.getElementById('cart-total-valor').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+  const totalStr = `R$ ${total.toFixed(2).replace('.', ',')}`;
+  document.getElementById('cart-total-valor').textContent = totalStr;
+
+  // Update summary bar (only visible on mobile via CSS)
+  const summaryCount = document.getElementById('cart-summary-count');
+  const summaryTotal = document.getElementById('cart-summary-total');
+  if (summaryCount && summaryTotal) {
+    summaryCount.textContent = carrinho.length === 1 ? '1 item' : `${carrinho.length} itens`;
+    summaryTotal.textContent = totalStr;
+  }
+
   atualizarBadge();
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message || 'Adicionado ao pedido!';
+  toast.classList.add('show');
+  setTimeout(() => { toast.classList.remove('show'); }, 2000);
+}
+
+function pulseBadge() {
+  const badge = document.getElementById('cart-badge');
+  const badgeMobile = document.getElementById('cart-badge-mobile');
+  badge.classList.remove('pulse');
+  if (badgeMobile) badgeMobile.classList.remove('pulse');
+  // Force reflow to restart animation
+  void badge.offsetWidth;
+  badge.classList.add('pulse');
+  if (badgeMobile) { void badgeMobile.offsetWidth; badgeMobile.classList.add('pulse'); }
 }
 
 function adicionarAoCarrinho(item) {
   carrinho.push(item);
   atualizarCarrinhoUI();
+  showToast('Adicionado ao pedido!');
+  pulseBadge();
   abrirCarrinho();
 }
 
@@ -1905,7 +2290,11 @@ function kitAddFlavor(kitIndex) {
   row.dataset.rowId = rowId;
   row.innerHTML = `
     <select onchange="kitUpdateProgress(${kitIndex})"><option value="">Sabor...</option>${saborOptions}</select>
-    <input type="number" min="1" max="100" value="25" placeholder="Qtd" onchange="kitUpdateProgress(${kitIndex})" oninput="kitUpdateProgress(${kitIndex})">
+    <div class="kit-stepper">
+      <button type="button" onclick="kitStepQty(this,-1,${kitIndex})" aria-label="Diminuir">&minus;</button>
+      <input type="number" min="1" max="100" value="25" placeholder="Qtd" onchange="kitUpdateProgress(${kitIndex})" oninput="kitUpdateProgress(${kitIndex})">
+      <button type="button" onclick="kitStepQty(this,1,${kitIndex})" aria-label="Aumentar">+</button>
+    </div>
     <button class="remove-flavor" onclick="kitRemoveFlavor(${kitIndex}, ${rowId})" title="Remover">&times;</button>
   `;
   container.appendChild(row);
@@ -1937,6 +2326,14 @@ function kitUpdateProgress(kitIndex) {
   document.getElementById(`kit-bar-${kitIndex}`).style.width = pct + '%';
   document.getElementById(`kit-bar-${kitIndex}`).style.background = total > 100 ? '#e74c3c' : 'var(--rosa)';
   document.getElementById(`kit-remaining-${kitIndex}`).style.color = total > 100 ? '#e74c3c' : 'var(--grafite)';
+}
+
+function kitStepQty(btn, delta, kitIndex) {
+  var input = btn.parentElement.querySelector('input[type="number"]');
+  var val = parseInt(input.value) || 0;
+  val = Math.max(1, Math.min(100, val + delta));
+  input.value = val;
+  kitUpdateProgress(kitIndex);
 }
 
 function getKitSaboresData(kitIndex) {
@@ -1993,6 +2390,9 @@ function initAnimations() {
 }
 initAnimations();
 </script>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toast">Adicionado ao pedido!</div>
 
 </body>
 </html>
