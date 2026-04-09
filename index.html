@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧁</text></svg>">
   <title>Maria Alice & Mirian | Bolos e Doces em Itápolis-SP | Encomendas para Festas</title>
   <meta name="description" content="Há 25 anos preparando bolos, doces finos, bombons e trufas em Itápolis-SP. Encomendas para casamentos, aniversários e eventos. Faça seu pedido pelo WhatsApp!">
   <meta name="keywords" content="bolos em Itápolis, doces para festa em Itápolis, bolo de aniversário Itápolis, doces finos Itápolis, encomenda de bolo Itápolis, bolos e doces para casamento Itápolis">
@@ -179,9 +180,9 @@
 
     /* ===== CATALOGO ===== */
     .catalogo { background: var(--branco); }
-    .tabs-nav { display: flex; gap: 0; border-bottom: 2px solid var(--borda); margin-bottom: 32px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .tabs-nav { display: flex; gap: 0; border-bottom: 2px solid var(--borda); margin-bottom: 32px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; position: sticky; top: 74px; z-index: 50; background: white; scroll-snap-type: x mandatory; }
     .tabs-nav::-webkit-scrollbar { display: none; }
-    .tab-btn { padding: 14px 24px; font-size: 0.9rem; font-weight: 600; color: var(--grafite-claro); background: none; cursor: pointer; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: all var(--transition); }
+    .tab-btn { padding: 14px 24px; font-size: 0.9rem; font-weight: 600; color: var(--grafite-claro); background: none; cursor: pointer; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: all var(--transition); scroll-snap-align: start; }
     .tab-btn.active { color: var(--rosa); border-bottom-color: var(--rosa); }
     .tab-btn:hover:not(.active) { color: var(--marrom); }
     .tab-panel { display: none; animation: fadeIn 0.3s ease; }
@@ -818,6 +819,53 @@
     .cart-summary-bar { display: none; }
     .cart-continuar-btn { display: none; }
 
+    /* ===== MAIS PEDIDOS (POPULARES) ===== */
+    .populares-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .popular-card { background: var(--nude); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--sombra); transition: all var(--transition); }
+    .popular-card:hover { transform: translateY(-4px); box-shadow: var(--sombra-hover); }
+    .popular-card-img { height: 140px; background: linear-gradient(135deg, var(--rosa-bg), var(--rosa-bg2)); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+    .popular-card-body { padding: 20px; }
+    .popular-card-body h3 { font-size: 1rem; margin-bottom: 6px; }
+    .popular-card-body .popular-desc { font-size: 0.85rem; color: var(--grafite-claro); margin-bottom: 10px; }
+    .popular-card-body .popular-preco { display: inline-block; background: var(--rosa); color: #fff; padding: 4px 14px; border-radius: var(--radius-pill); font-size: 0.85rem; font-weight: 700; margin-bottom: 12px; }
+    .popular-card-body .btn-popular { display: block; width: 100%; text-align: center; padding: 10px 16px; border-radius: var(--radius-pill); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all var(--transition); border: 2px solid var(--rosa); background: transparent; color: var(--rosa); }
+    .popular-card-body .btn-popular:hover { background: var(--rosa); color: #fff; transform: translateY(-2px); }
+    @media (max-width: 768px) {
+      .populares-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===== BOLO PRICE HIGHLIGHT ===== */
+    .bolo-preco-destaque { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--rosa); font-weight: 700; text-align: center; padding: 8px 0; transition: all 0.3s; }
+    .bolo-preco-destaque.has-price { background: var(--rosa-bg); border-radius: var(--radius); margin-top: 8px; padding: 12px 0; }
+
+    /* ===== MOBILE FIXED BOTTOM CART BAR ===== */
+    .cart-bottom-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 899;
+      background: var(--branco);
+      border-top: 2px solid var(--rosa-claro);
+      padding: 12px 20px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cart-bottom-bar.visible { display: flex !important; }
+    .cart-bottom-info { display: flex; flex-direction: column; gap: 2px; }
+    .cart-bottom-info span { font-size: 0.8rem; color: var(--grafite); }
+    .cart-bottom-info strong { font-size: 1.1rem; color: var(--rosa); font-family: 'Playfair Display', serif; }
+    .cart-bottom-btn { background: var(--whatsapp); color: #fff; border: none; padding: 12px 24px; border-radius: var(--radius-pill); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all var(--transition); }
+    .cart-bottom-btn:hover { background: var(--whatsapp-hover); }
+    @media (min-width: 769px) { .cart-bottom-bar { display: none !important; } }
+    .cart-bottom-bar.visible ~ .whatsapp-float { bottom: 80px; }
+
+    /* ===== STAGGER ANIMATIONS ===== */
+    .stagger-item { opacity: 0; transform: translateY(16px); transition: opacity 0.4s ease, transform 0.4s ease; }
+    .stagger-item.visible { opacity: 1; transform: translateY(0); }
+
   </style>
 </head>
 <body>
@@ -1103,11 +1151,24 @@ const DADOS = {
             <span>Produção artesanal</span>
             <span>Ingredientes selecionados</span>
           </div>
+          <div class="hero-counter" style="margin-top:20px;font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--marrom);">
+            Mais de <strong style="color:var(--rosa);font-size:1.4rem;">5.000</strong> festas adoçadas em Itápolis e região
+          </div>
         </div>
         <div class="hero-image" style="background:none;">
           <img src="imagens/hero-bolo.png" alt="Bolo decorado artesanal da Maria Alice & Mirian" style="width:100%;height:100%;object-fit:contain;border-radius:var(--radius-lg);">
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- MAIS PEDIDOS -->
+  <section class="mais-pedidos section-padding" style="background:var(--branco);">
+    <div class="container text-center">
+      <p class="section-label">Favoritos</p>
+      <h2 class="section-title">Os <em>mais pedidos</em></h2>
+      <p class="section-subtitle">Os queridinhos dos nossos clientes</p>
+      <div class="populares-grid" id="populares-grid"></div>
     </div>
   </section>
 
@@ -1629,6 +1690,15 @@ const DADOS = {
     </div>
   </footer>
 
+  <!-- MOBILE BOTTOM CART BAR -->
+  <div class="cart-bottom-bar" id="cart-bottom-bar" style="display:none;">
+    <div class="cart-bottom-info">
+      <span id="cart-bottom-count">0 itens</span>
+      <strong id="cart-bottom-total">R$ 0,00</strong>
+    </div>
+    <button onclick="abrirCarrinho()" class="cart-bottom-btn">Ver pedido</button>
+  </div>
+
   <!-- WHATSAPP FLOAT -->
   <div class="whatsapp-float">
     <a href="https://wa.me/5516997126577?text=Ol%C3%A1!%20Vi%20o%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20produtos%20%F0%9F%98%8A" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
@@ -1718,11 +1788,12 @@ function renderBolos() {
           <div style="border-top:1px solid var(--borda);margin-bottom:14px;"></div>
           <div class="form-group">
             <label for="bolo-cob-${boloIndex}">&#127856; Cobertura</label>
-            <select id="bolo-cob-${boloIndex}" onchange="checkBoloConfigComplete(${boloIndex})">
+            <select id="bolo-cob-${boloIndex}" onchange="checkBoloConfigComplete(${boloIndex}); updateBoloPreco(${boloIndex})">
               <option value="">Selecione a cobertura...</option>
               ${coberturaOptions}
             </select>
           </div>
+          <div class="bolo-preco-destaque" id="bolo-preco-${boloIndex}">Selecione a cobertura</div>
           <div class="form-group">
             <label for="bolo-r1-${boloIndex}">&#127846; Recheio 1</label>
             <select id="bolo-r1-${boloIndex}" onchange="checkBoloConfigComplete(${boloIndex})">
@@ -1770,6 +1841,19 @@ function checkBoloConfigComplete(boloIndex) {
   document.getElementById(`bolo-btn-pedir-${boloIndex}`).disabled = !complete;
   document.getElementById(`bolo-btn-cart-${boloIndex}`).disabled = !complete;
   document.getElementById(`bolo-hint-${boloIndex}`).style.display = complete ? 'none' : '';
+}
+
+function updateBoloPreco(boloIndex) {
+  const sel = document.getElementById(`bolo-cob-${boloIndex}`);
+  const display = document.getElementById(`bolo-preco-${boloIndex}`);
+  const selected = sel.options[sel.selectedIndex];
+  if (sel.value && selected.dataset.preco) {
+    display.textContent = selected.dataset.preco;
+    display.classList.add('has-price');
+  } else {
+    display.textContent = 'Selecione a cobertura';
+    display.classList.remove('has-price');
+  }
 }
 
 // ===== RENDER DOCES =====
@@ -2056,12 +2140,18 @@ function abrirCarrinho() {
   document.getElementById('cart-sidebar').classList.add('open');
   document.getElementById('cart-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  // Hide bottom bar while cart sidebar is open
+  const bottomBar = document.getElementById('cart-bottom-bar');
+  if (bottomBar) bottomBar.classList.remove('visible');
 }
 
 function fecharCarrinho() {
   document.getElementById('cart-sidebar').classList.remove('open');
   document.getElementById('cart-overlay').classList.remove('open');
   document.body.style.overflow = '';
+  // Show bottom bar again if cart has items
+  const bottomBar = document.getElementById('cart-bottom-bar');
+  if (bottomBar && carrinho.length > 0) bottomBar.classList.add('visible');
 }
 
 function atualizarBadge() {
@@ -2125,6 +2215,18 @@ function atualizarCarrinhoUI() {
 
   atualizarBadge();
   checkCartReady();
+
+  // Update mobile bottom cart bar
+  const bottomBar = document.getElementById('cart-bottom-bar');
+  if (bottomBar) {
+    if (carrinho.length > 0) {
+      bottomBar.classList.add('visible');
+      document.getElementById('cart-bottom-count').textContent = carrinho.length + (carrinho.length === 1 ? ' item' : ' itens');
+      document.getElementById('cart-bottom-total').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    } else {
+      bottomBar.classList.remove('visible');
+    }
+  }
 }
 
 function showToast(message, type) {
@@ -2149,8 +2251,13 @@ function pulseBadge() {
   if (badgeMobile) { void badgeMobile.offsetWidth; badgeMobile.classList.add('pulse'); }
 }
 
+function salvarCarrinho() {
+  localStorage.setItem('carrinho', JSON.stringify(carrinho));
+}
+
 function adicionarAoCarrinho(item) {
   carrinho.push(item);
+  salvarCarrinho();
   atualizarCarrinhoUI();
   showToast('Adicionado ao pedido!');
   pulseBadge();
@@ -2159,6 +2266,7 @@ function adicionarAoCarrinho(item) {
 
 function removerDoCarrinho(id) {
   carrinho = carrinho.filter(item => item.id !== id);
+  salvarCarrinho();
   atualizarCarrinhoUI();
 }
 
@@ -2399,6 +2507,74 @@ function adicionarKit(kitIndex) {
     precoNum: parsePreco(kit.preco)
   });
 }
+
+// ===== RENDER POPULARES (MAIS PEDIDOS) =====
+function renderPopulares() {
+  const populares = [
+    { nome: 'Bolo 2,5kg com brigadeiro', preco: 'R$ 215,00', desc: 'O clássico para aniversários', emoji: '🎂', tab: 'bolos' },
+    { nome: 'Kit Doces Simples', preco: 'R$ 175,00', desc: '100 doces em 4 sabores', emoji: '🍬', tab: 'kits' },
+    { nome: 'Brigadeiro tradicional (100 un)', preco: 'R$ 150,00', desc: 'O mais pedido', emoji: '🍫', tab: 'doces' },
+    { nome: 'Bolo 3,5kg naked cake', preco: 'R$ 360,00', desc: 'Perfeito para casamentos', emoji: '🎂', tab: 'bolos' },
+    { nome: 'Trufa de chocolate (100 un)', preco: 'R$ 250,00', desc: 'Elegância em cada mordida', emoji: '🍬', tab: 'doces' },
+    { nome: 'Kit Bombons e Trufas', preco: 'R$ 265,00', desc: 'Para festas sofisticadas', emoji: '🎁', tab: 'kits' }
+  ];
+
+  const grid = document.getElementById('populares-grid');
+  grid.innerHTML = populares.map(p => `
+    <div class="popular-card">
+      <div class="popular-card-img">${p.emoji}</div>
+      <div class="popular-card-body">
+        <h3>${p.nome}</h3>
+        <p class="popular-desc">${p.desc}</p>
+        <span class="popular-preco">${p.preco}</span>
+        <button class="btn-popular" onclick="ativarAba('${p.tab}')">Encomendar</button>
+      </div>
+    </div>
+  `).join('');
+}
+renderPopulares();
+
+// ===== CART PERSISTENCE (localStorage) =====
+function carregarCarrinho() {
+  try {
+    const saved = localStorage.getItem('carrinho');
+    if (saved) {
+      carrinho = JSON.parse(saved);
+      atualizarCarrinhoUI();
+    }
+  } catch(e) { carrinho = []; }
+
+  // Restore cart form data
+  try {
+    const formData = localStorage.getItem('carrinho_form');
+    if (formData) {
+      const data = JSON.parse(formData);
+      if (data.nome) document.getElementById('cart-nome').value = data.nome;
+      if (data.tel) document.getElementById('cart-tel').value = data.tel;
+      if (data.data) document.getElementById('cart-data').value = data.data;
+      if (data.obs) document.getElementById('cart-obs').value = data.obs;
+      checkCartReady();
+    }
+  } catch(e) {}
+}
+
+function salvarCarrinhoForm() {
+  const formData = {
+    nome: document.getElementById('cart-nome').value,
+    tel: document.getElementById('cart-tel').value,
+    data: document.getElementById('cart-data').value,
+    obs: document.getElementById('cart-obs').value
+  };
+  localStorage.setItem('carrinho_form', JSON.stringify(formData));
+}
+
+// Add listeners to save form data on change
+['cart-nome', 'cart-tel', 'cart-data', 'cart-obs'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', salvarCarrinhoForm);
+});
+
+carregarCarrinho();
 
 // ===== SCROLL ANIMATIONS =====
 function initAnimations() {
