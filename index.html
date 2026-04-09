@@ -412,6 +412,14 @@
     .toast.show {
       top: 24px;
     }
+    .toast.toast-warn {
+      background: #f39c12;
+      box-shadow: 0 4px 20px rgba(243,156,18,0.4);
+    }
+    .toast.toast-error {
+      background: #e74c3c;
+      box-shadow: 0 4px 20px rgba(231,76,60,0.4);
+    }
 
     /* ===== CART BADGE PULSE ANIMATION ===== */
     @keyframes badgePulse {
@@ -1034,9 +1042,8 @@ const DADOS = {
   <!-- HEADER -->
   <header class="header" id="header">
     <div class="header-inner">
-      <a href="#" aria-label="Maria Alice & Mirian - Página inicial">
-        <img src="imagens/logo.png" alt="Maria Alice & Mirian - Bolos e Doces" class="header-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-        <span style="display:none;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--rosa);font-style:italic;">Maria Alice & Mirian</span>
+      <a href="#" aria-label="Maria Alice & Mirian - Página inicial" style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--rosa);font-style:italic;line-height:1.2;">
+        Maria Alice <span style="font-weight:400;">&</span> Mirian<br><span style="font-size:0.65rem;font-style:normal;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--grafite-claro);">Bolos e Doces</span>
       </a>
       <nav class="header-nav">
         <a href="#sobre">Sobre</a>
@@ -1944,8 +1951,8 @@ function enviarWhatsApp() {
   const pessoas = document.getElementById('cfg-pessoas').value;
   const obs = document.getElementById('cfg-obs').value.trim();
 
-  if (!nome) { alert('Por favor, informe seu nome.'); return; }
-  if (!tipo) { alert('Por favor, selecione o tipo de encomenda.'); return; }
+  if (!nome) { showToast('Por favor, informe seu nome.', 'warn'); return; }
+  if (!tipo) { showToast('Por favor, selecione o tipo de encomenda.', 'warn'); return; }
 
   let msg = `Olá! Gostaria de fazer uma encomenda 🎂\n\n`;
   msg += `*Nome:* ${nome}\n`;
@@ -2120,11 +2127,15 @@ function atualizarCarrinhoUI() {
   checkCartReady();
 }
 
-function showToast(message) {
+function showToast(message, type) {
   const toast = document.getElementById('toast');
   toast.textContent = message || 'Adicionado ao pedido!';
+  toast.classList.remove('show', 'toast-warn', 'toast-error');
+  if (type === 'warn') toast.classList.add('toast-warn');
+  if (type === 'error') toast.classList.add('toast-error');
+  void toast.offsetWidth;
   toast.classList.add('show');
-  setTimeout(() => { toast.classList.remove('show'); }, 2000);
+  setTimeout(() => { toast.classList.remove('show', 'toast-warn', 'toast-error'); }, 2500);
 }
 
 function pulseBadge() {
@@ -2162,8 +2173,8 @@ function checkCartReady() {
 
 function enviarCarrinhoWhatsApp() {
   const nome = document.getElementById('cart-nome').value.trim();
-  if (!nome) { alert('Por favor, informe seu nome completo.'); return; }
-  if (carrinho.length === 0) { alert('Seu pedido esta vazio.'); return; }
+  if (!nome) { showToast('Informe seu nome completo.', 'warn'); return; }
+  if (carrinho.length === 0) { showToast('Seu pedido está vazio.', 'warn'); return; }
 
   const tel = document.getElementById('cart-tel').value.trim();
   const data = document.getElementById('cart-data').value;
@@ -2205,9 +2216,9 @@ function pedirBoloAgora(boloIndex) {
   const cob = document.getElementById(`bolo-cob-${boloIndex}`).value;
   const r1 = document.getElementById(`bolo-r1-${boloIndex}`).value;
   const r2 = document.getElementById(`bolo-r2-${boloIndex}`).value;
-  if (!cob) { alert('Por favor, selecione a cobertura.'); return; }
-  if (!r1) { alert('Por favor, selecione o recheio 1.'); return; }
-  if (!r2) { alert('Por favor, selecione o recheio 2.'); return; }
+  if (!cob) { showToast('Selecione a cobertura.', 'warn'); return; }
+  if (!r1) { showToast('Selecione o recheio 1.', 'warn'); return; }
+  if (!r2) { showToast('Selecione o recheio 2.', 'warn'); return; }
 
   const cobObj = bolo.coberturas.find(c => c.nome === cob);
   const msg = `Ola! Gostaria de encomendar um bolo de ${bolo.peso} com cobertura ${cob}, recheio 1: ${r1}, recheio 2: ${r2}. \uD83C\uDF82`;
@@ -2219,9 +2230,9 @@ function adicionarBolo(boloIndex) {
   const cob = document.getElementById(`bolo-cob-${boloIndex}`).value;
   const r1 = document.getElementById(`bolo-r1-${boloIndex}`).value;
   const r2 = document.getElementById(`bolo-r2-${boloIndex}`).value;
-  if (!cob) { alert('Por favor, selecione a cobertura.'); return; }
-  if (!r1) { alert('Por favor, selecione o recheio 1.'); return; }
-  if (!r2) { alert('Por favor, selecione o recheio 2.'); return; }
+  if (!cob) { showToast('Selecione a cobertura.', 'warn'); return; }
+  if (!r1) { showToast('Selecione o recheio 1.', 'warn'); return; }
+  if (!r2) { showToast('Selecione o recheio 2.', 'warn'); return; }
 
   const cobObj = bolo.coberturas.find(c => c.nome === cob);
   const preco = cobObj ? cobObj.preco : bolo.coberturas[0].preco;
@@ -2270,7 +2281,7 @@ function pedirDoceAgora(did) {
 
 function adicionarDoceFromCard(did) {
   const data = getDoceCardData(did);
-  if (!data || !data.nome) { alert('Erro ao ler dados do doce.'); return; }
+  if (!data || !data.nome) { showToast('Erro ao ler dados do doce.', 'error'); return; }
   adicionarAoCarrinho({
     id: Date.now(),
     tipo: 'doce',
@@ -2366,8 +2377,8 @@ function getKitSaboresData(kitIndex) {
 function pedirKitAgora(kitIndex) {
   const kit = DADOS.kits[kitIndex];
   const { sabores, total } = getKitSaboresData(kitIndex);
-  if (sabores.length === 0) { alert('Adicione pelo menos um sabor com quantidade.'); return; }
-  if (total > 100) { alert('O total nao pode passar de 100 unidades.'); return; }
+  if (sabores.length === 0) { showToast('Adicione pelo menos um sabor com quantidade.', 'warn'); return; }
+  if (total > 100) { showToast('O total não pode passar de 100 unidades.', 'error'); return; }
   const saboresStr = sabores.map(s => `${s.sabor} (${s.qtd})`).join(', ');
   const msg = `Ola! Gostaria de encomendar o ${kit.nome} (${kit.preco}). Sabores: ${saboresStr}. Total: ${total} unidades. \uD83C\uDF81`;
   window.open(`https://wa.me/${DADOS.empresa.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
@@ -2376,8 +2387,8 @@ function pedirKitAgora(kitIndex) {
 function adicionarKit(kitIndex) {
   const kit = DADOS.kits[kitIndex];
   const { sabores, total } = getKitSaboresData(kitIndex);
-  if (sabores.length === 0) { alert('Adicione pelo menos um sabor com quantidade.'); return; }
-  if (total > 100) { alert('O total nao pode passar de 100 unidades.'); return; }
+  if (sabores.length === 0) { showToast('Adicione pelo menos um sabor com quantidade.', 'warn'); return; }
+  if (total > 100) { showToast('O total não pode passar de 100 unidades.', 'error'); return; }
   const saboresStr = sabores.map(s => `${s.sabor} (${s.qtd})`);
   adicionarAoCarrinho({
     id: Date.now(),
