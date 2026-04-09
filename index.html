@@ -383,6 +383,75 @@
     /* ===== SCROLL ANIMATIONS ===== */
     .animate-on-scroll { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== CART SYSTEM ===== */
+    .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity var(--transition); }
+    .cart-overlay.open { opacity: 1; pointer-events: auto; }
+    .cart-sidebar { position: fixed; top: 0; right: -320px; width: 320px; height: 100vh; background: var(--branco); z-index: 1001; transition: right var(--transition); display: flex; flex-direction: column; box-shadow: -4px 0 20px rgba(0,0,0,0.1); }
+    .cart-sidebar.open { right: 0; }
+    .cart-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--borda); flex-shrink: 0; }
+    .cart-header h3 { font-size: 1.15rem; margin: 0; }
+    .cart-items { flex: 1; overflow-y: auto; padding: 0; }
+    .cart-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 16px 20px; border-bottom: 1px solid var(--borda); gap: 10px; }
+    .cart-item-info { flex: 1; }
+    .cart-item-info strong { display: block; font-size: 0.9rem; color: var(--marrom); margin-bottom: 4px; }
+    .cart-item-info small { display: block; font-size: 0.78rem; color: var(--grafite-claro); line-height: 1.5; margin-bottom: 4px; }
+    .cart-item-preco { font-size: 0.85rem; font-weight: 600; color: var(--rosa); }
+    .cart-item-remove { background: none; border: none; color: var(--rosa); font-size: 1.3rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background var(--transition); flex-shrink: 0; line-height: 1; }
+    .cart-item-remove:hover { background: var(--rosa-bg); }
+    .cart-footer { flex-shrink: 0; border-top: 2px solid var(--borda); padding: 20px; overflow-y: auto; max-height: 55vh; }
+    .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 1rem; color: var(--marrom); }
+    .cart-total strong { font-size: 1.15rem; color: var(--rosa); }
+    .cart-form { display: flex; flex-direction: column; gap: 12px; }
+    .cart-form .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .cart-form .form-group label { font-size: 0.8rem; font-weight: 500; color: var(--marrom); }
+    .cart-form .form-group input,
+    .cart-form .form-group textarea { padding: 10px 14px; border: 2px solid var(--borda); border-radius: var(--radius); background: var(--nude); transition: border-color var(--transition); color: var(--marrom); font-size: 0.85rem; }
+    .cart-form .form-group input:focus,
+    .cart-form .form-group textarea:focus { border-color: var(--rosa-claro); }
+    .cart-form .form-group textarea { resize: vertical; min-height: 50px; }
+
+    /* Cart icon button in header */
+    .cart-icon-btn { position: relative; background: none; cursor: pointer; padding: 6px; color: var(--grafite); transition: color var(--transition); }
+    .cart-icon-btn:hover { color: var(--rosa); }
+    .cart-badge { position: absolute; top: -4px; right: -6px; width: 18px; height: 18px; border-radius: 50%; background: var(--rosa); color: #fff; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; line-height: 1; }
+
+    /* Bolo inline config panel */
+    .bolo-config { background: var(--rosa-bg); padding: 16px; border-radius: var(--radius); margin-top: 16px; }
+    .bolo-config .form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+    .bolo-config .form-group label { font-size: 0.8rem; font-weight: 500; color: var(--marrom); }
+    .bolo-config .form-group select { padding: 10px 14px; border: 2px solid var(--borda); border-radius: var(--radius); background: var(--branco); transition: border-color var(--transition); color: var(--marrom); font-size: 0.85rem; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a6b63' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+    .bolo-config .form-group select:focus { border-color: var(--rosa-claro); }
+
+    /* Doce quantity toggle */
+    .qty-toggle { display: inline-flex; border-radius: var(--radius-pill); overflow: hidden; border: 2px solid var(--borda); margin-bottom: 10px; }
+    .qty-toggle button { padding: 6px 16px; font-size: 0.8rem; font-weight: 600; cursor: pointer; background: var(--branco); color: var(--grafite); border: none; transition: all var(--transition); }
+    .qty-toggle button.active { background: var(--rosa); color: #fff; }
+
+    /* Kit config */
+    .kit-config { text-align: left; margin-bottom: 16px; }
+    .kit-config .form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+    .kit-config .form-group label { font-size: 0.78rem; font-weight: 500; color: var(--marrom); }
+    .kit-config .form-group select { padding: 8px 12px; border: 2px solid var(--borda); border-radius: var(--radius); background: var(--branco); transition: border-color var(--transition); color: var(--marrom); font-size: 0.82rem; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a6b63' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px; }
+    .kit-config .form-group select:focus { border-color: var(--rosa-claro); }
+
+    /* Shared button styles for cart/product actions */
+    .btn-add-cart { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 20px; border-radius: var(--radius-pill); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all var(--transition); border: 2px solid transparent; background: var(--rosa); color: #fff; border-color: var(--rosa); }
+    .btn-add-cart:hover { background: var(--rosa-hover); border-color: var(--rosa-hover); transform: translateY(-1px); }
+    .btn-row { display: flex; gap: 8px; margin-top: 12px; }
+    .btn-row .btn, .btn-row .btn-add-cart { flex: 1; justify-content: center; font-size: 0.8rem; padding: 10px 12px; }
+    .bolo-config .btn-row { margin-top: 14px; }
+
+    /* Doce card price display */
+    .doce-preco-display { font-size: 0.95rem; color: var(--rosa); font-weight: 700; margin-bottom: 10px; }
+
+    @media (max-width: 768px) {
+      .cart-sidebar { width: 100%; right: -100%; }
+      .cart-sidebar.open { right: 0; }
+      .header-inner .cart-icon-btn { order: 3; }
+      .btn-row { flex-direction: column; }
+      .btn-row .btn, .btn-row .btn-add-cart { width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -621,6 +690,10 @@ const DADOS = {
           WhatsApp
         </a>
       </nav>
+      <button class="cart-icon-btn" onclick="abrirCarrinho()" aria-label="Ver pedido">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-badge" id="cart-badge" style="display:none;">0</span>
+      </button>
       <button class="hamburger" id="hamburger" aria-label="Abrir menu">
         <span></span><span></span><span></span>
       </button>
@@ -634,6 +707,10 @@ const DADOS = {
     <a href="#cardapio" class="mobile-link">Cardápio</a>
     <a href="#como-pedir" class="mobile-link">Como Pedir</a>
     <a href="#contato" class="mobile-link">Contato</a>
+    <button class="mobile-link" onclick="toggleMobile();abrirCarrinho();" style="background:none;cursor:pointer;text-align:left;width:100%;display:flex;align-items:center;gap:10px;color:var(--marrom);font-weight:500;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      Meu Pedido <span class="cart-badge" id="cart-badge-mobile" style="display:none;position:static;margin-left:4px;">0</span>
+    </button>
     <a href="https://wa.me/5516997126577?text=Ol%C3%A1!%20Vi%20o%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20produtos%20%F0%9F%98%8A" target="_blank" rel="noopener" class="btn btn-whatsapp" style="margin-top:20px;width:100%;justify-content:center;">
       WhatsApp
     </a>
@@ -1091,6 +1168,33 @@ const DADOS = {
 
   </main>
 
+  <!-- CART SIDEBAR -->
+  <div class="cart-overlay" id="cart-overlay" onclick="fecharCarrinho()"></div>
+  <aside class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h3>Seu Pedido</h3>
+      <button onclick="fecharCarrinho()" aria-label="Fechar" style="background:none;cursor:pointer;font-size:1.5rem;color:var(--grafite);">&times;</button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <p class="cart-empty" id="cart-empty" style="text-align:center;padding:40px 20px;color:var(--grafite-claro);">Seu pedido esta vazio.<br>Adicione itens do cardapio!</p>
+    </div>
+    <div class="cart-footer" id="cart-footer" style="display:none;">
+      <div class="cart-total">
+        <span>Estimativa total:</span>
+        <strong id="cart-total-valor">R$ 0,00</strong>
+      </div>
+      <div class="cart-form">
+        <div class="form-group"><label for="cart-nome">Nome completo *</label><input type="text" id="cart-nome" placeholder="Seu nome completo"></div>
+        <div class="form-group"><label for="cart-tel">Telefone</label><input type="tel" id="cart-tel" placeholder="(00) 00000-0000"></div>
+        <div class="form-group"><label for="cart-data">Data do evento</label><input type="date" id="cart-data"></div>
+        <div class="form-group"><label for="cart-obs">Observacoes</label><textarea id="cart-obs" placeholder="Alguma informacao adicional?" rows="2"></textarea></div>
+      </div>
+      <button class="btn btn-whatsapp" onclick="enviarCarrinhoWhatsApp()" style="width:100%;justify-content:center;margin-top:16px;font-size:1rem;padding:14px;">
+        Enviar Pedido no WhatsApp
+      </button>
+    </div>
+  </aside>
+
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
@@ -1193,11 +1297,11 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 // ===== RENDER BOLOS =====
 function renderBolos() {
   const container = document.getElementById('bolos-content');
-  container.innerHTML = DADOS.bolos.map(bolo => {
+  container.innerHTML = DADOS.bolos.map((bolo, boloIndex) => {
     const badges = [
       `${bolo.peso}`,
       `${bolo.pessoas} pessoas`,
-      bolo.diametro ? `Ø ${bolo.diametro}` : '',
+      bolo.diametro ? `\u00D8 ${bolo.diametro}` : '',
       `${bolo.fatias} fatias`
     ].filter(Boolean);
 
@@ -1205,7 +1309,13 @@ function renderBolos() {
       `<div class="bolo-item"><span>${c.nome}</span><span>${c.preco}</span></div>`
     ).join('');
 
-    const msg = encodeURIComponent(`Olá! Gostaria de encomendar um bolo de ${bolo.peso}. Poderia me ajudar? 🎂`);
+    const coberturaOptions = bolo.coberturas.map(c =>
+      `<option value="${c.nome}" data-preco="${c.preco}">${c.nome} — ${c.preco}</option>`
+    ).join('');
+
+    const recheioOptions = DADOS.recheios.map(r =>
+      `<option value="${r}">${r}</option>`
+    ).join('');
 
     return `
       <div class="bolo-card">
@@ -1214,10 +1324,34 @@ function renderBolos() {
           <div class="bolo-badges">${badges.map(b => `<span class="bolo-badge">${b}</span>`).join('')}</div>
         </div>
         <div class="bolo-lista">${items}</div>
-        <a href="https://wa.me/${DADOS.empresa.whatsapp}?text=${msg}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" style="width:100%;justify-content:center;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Encomendar este bolo
-        </a>
+        <div class="bolo-config" id="bolo-config-${boloIndex}">
+          <div style="border-top:1px solid var(--borda);margin-bottom:14px;"></div>
+          <div class="form-group">
+            <label for="bolo-cob-${boloIndex}">Cobertura</label>
+            <select id="bolo-cob-${boloIndex}">
+              <option value="">Selecione a cobertura...</option>
+              ${coberturaOptions}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bolo-r1-${boloIndex}">Recheio 1</label>
+            <select id="bolo-r1-${boloIndex}">
+              <option value="">Selecione o recheio...</option>
+              ${recheioOptions}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bolo-r2-${boloIndex}">Recheio 2</label>
+            <select id="bolo-r2-${boloIndex}">
+              <option value="">Selecione o recheio...</option>
+              ${recheioOptions}
+            </select>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-whatsapp btn-sm" onclick="pedirBoloAgora(${boloIndex})">Pedir agora</button>
+            <button class="btn-add-cart" onclick="adicionarBolo(${boloIndex})">Adicionar ao pedido</button>
+          </div>
+        </div>
       </div>
     `;
   }).join('');
@@ -1227,7 +1361,7 @@ function renderBolos() {
   especiais.innerHTML = DADOS.bolosEspeciais.map(b =>
     `<div style="padding:8px 0;border-bottom:1px solid var(--borda);">
       <strong style="color:var(--marrom);">${b.nome}</strong>
-      <span style="color:var(--grafite);font-size:0.85rem;"> — ${b.recheios}</span>
+      <span style="color:var(--grafite);font-size:0.85rem;"> \u2014 ${b.recheios}</span>
     </div>`
   ).join('');
 }
@@ -1235,21 +1369,38 @@ function renderBolos() {
 renderBolos();
 
 // ===== RENDER DOCES =====
+var doceIdCounter = 0;
 function renderDoces() {
   const container = document.getElementById('doces-content');
+  doceIdCounter = 0;
 
   function renderGrupo(titulo, items) {
     const cards = items.map(d => {
-      const msg = encodeURIComponent(`Olá! Gostaria de encomendar: ${d.nome}. Poderia me passar mais informações? 🍬`);
-      const p50 = d.p50 ? `<span>50 un: <strong>${d.p50}</strong></span>` : '';
+      const did = doceIdCounter++;
+      const hasP50 = d.p50 !== null && d.p50 !== undefined;
+      let toggleHtml = '';
+      let precoDisplay = '';
+
+      if (hasP50) {
+        toggleHtml = `
+          <div class="qty-toggle" id="doce-toggle-${did}">
+            <button onclick="toggleDoceQtd(${did}, 50)" class="active">50 un</button>
+            <button onclick="toggleDoceQtd(${did}, 100)">100 un</button>
+          </div>`;
+        precoDisplay = `<div class="doce-preco-display" id="doce-preco-${did}" data-p50="${d.p50}" data-p100="${d.p100}" data-qty="50">${d.p50}</div>`;
+      } else {
+        precoDisplay = `<div class="doce-preco-display" id="doce-preco-${did}" data-p100="${d.p100}" data-qty="100">${d.p100}</div>`;
+      }
+
       return `
-        <div class="doce-card" data-nome="${d.nome.toLowerCase()}">
+        <div class="doce-card" data-nome="${d.nome.toLowerCase()}" data-doce-id="${did}" data-doce-nome="${d.nome}">
           <h4>${d.nome}</h4>
-          <div class="doce-precos">
-            <span>100 un: <strong>${d.p100}</strong></span>
-            ${p50}
+          ${toggleHtml}
+          ${precoDisplay}
+          <div class="btn-row">
+            <button class="btn btn-whatsapp btn-sm" onclick="pedirDoceAgora(${did})">Pedir agora</button>
+            <button class="btn-add-cart" onclick="adicionarDoceFromCard(${did})">Adicionar ao pedido</button>
           </div>
-          <a href="https://wa.me/${DADOS.empresa.whatsapp}?text=${msg}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm">Pedir este doce</a>
         </div>
       `;
     }).join('');
@@ -1280,20 +1431,39 @@ function renderKits() {
   const container = document.getElementById('kits-content');
   container.innerHTML = `
     <div class="kits-grid">
-      ${DADOS.kits.map(kit => {
-        const msg = encodeURIComponent(`Olá! Gostaria de encomendar o ${kit.nome} (${kit.preco}). Poderia me ajudar com os sabores? 🎁`);
+      ${DADOS.kits.map((kit, kitIndex) => {
+        const saborOptions = kit.sabores.map(s =>
+          `<option value="${s}">${s}</option>`
+        ).join('');
+
+        const saborSelects = [1,2,3,4].map(n => `
+          <div class="form-group">
+            <label for="kit-${kitIndex}-s${n}">Sabor ${n}</label>
+            <select id="kit-${kitIndex}-s${n}">
+              <option value="">Selecione...</option>
+              ${saborOptions}
+            </select>
+          </div>
+        `).join('');
+
         return `
           <div class="kit-card">
             <h3>${kit.nome}</h3>
             <div class="kit-preco">${kit.preco}</div>
             <p class="kit-desc">${kit.descricao}</p>
             <div class="kit-sabores">
-              <h4>Sabores disponíveis</h4>
+              <h4>Sabores disponiveis</h4>
               <div class="kit-sabores-lista">
                 ${kit.sabores.map(s => `<span>${s}</span>`).join('')}
               </div>
             </div>
-            <a href="https://wa.me/${DADOS.empresa.whatsapp}?text=${msg}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" style="width:100%;justify-content:center;">Montar meu kit</a>
+            <div class="kit-config" id="kit-config-${kitIndex}">
+              ${saborSelects}
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-whatsapp btn-sm" onclick="pedirKitAgora(${kitIndex})">Pedir agora</button>
+              <button class="btn-add-cart" onclick="adicionarKit(${kitIndex})">Adicionar ao pedido</button>
+            </div>
           </div>
         `;
       }).join('')}
@@ -1477,6 +1647,237 @@ function toggleFAQ(btn) {
 }
 
 renderFAQ();
+
+// ===== CART SYSTEM =====
+let carrinho = [];
+
+function abrirCarrinho() {
+  document.getElementById('cart-sidebar').classList.add('open');
+  document.getElementById('cart-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharCarrinho() {
+  document.getElementById('cart-sidebar').classList.remove('open');
+  document.getElementById('cart-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function atualizarBadge() {
+  const badge = document.getElementById('cart-badge');
+  const badgeMobile = document.getElementById('cart-badge-mobile');
+  if (carrinho.length > 0) {
+    badge.style.display = 'flex';
+    badge.textContent = carrinho.length;
+    if (badgeMobile) { badgeMobile.style.display = 'inline-flex'; badgeMobile.textContent = carrinho.length; }
+  } else {
+    badge.style.display = 'none';
+    if (badgeMobile) badgeMobile.style.display = 'none';
+  }
+}
+
+function atualizarCarrinhoUI() {
+  const container = document.getElementById('cart-items');
+  const empty = document.getElementById('cart-empty');
+  const footer = document.getElementById('cart-footer');
+
+  if (carrinho.length === 0) {
+    empty.style.display = 'block';
+    footer.style.display = 'none';
+    container.innerHTML = '';
+    container.appendChild(empty);
+  } else {
+    empty.style.display = 'none';
+    footer.style.display = 'block';
+    container.innerHTML = carrinho.map(item => {
+      let detalhes = '';
+      if (item.tipo === 'bolo') {
+        detalhes = `Cobertura: ${item.detalhes.cobertura}<br>Recheio 1: ${item.detalhes.recheio1}<br>Recheio 2: ${item.detalhes.recheio2}`;
+      } else if (item.tipo === 'doce') {
+        detalhes = `${item.detalhes.quantidade} unidades`;
+      } else if (item.tipo === 'kit') {
+        detalhes = `Sabores: ${item.detalhes.sabores.join(', ')}`;
+      }
+      return `<div class="cart-item">
+        <div class="cart-item-info">
+          <strong>${item.nome}</strong>
+          <small>${detalhes}</small>
+          <span class="cart-item-preco">${item.preco}</span>
+        </div>
+        <button class="cart-item-remove" onclick="removerDoCarrinho(${item.id})" aria-label="Remover">&times;</button>
+      </div>`;
+    }).join('');
+  }
+
+  const total = carrinho.reduce((sum, item) => sum + item.precoNum, 0);
+  document.getElementById('cart-total-valor').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+  atualizarBadge();
+}
+
+function adicionarAoCarrinho(item) {
+  carrinho.push(item);
+  atualizarCarrinhoUI();
+  abrirCarrinho();
+}
+
+function removerDoCarrinho(id) {
+  carrinho = carrinho.filter(item => item.id !== id);
+  atualizarCarrinhoUI();
+}
+
+function parsePreco(str) {
+  return parseFloat(str.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
+}
+
+function enviarCarrinhoWhatsApp() {
+  const nome = document.getElementById('cart-nome').value.trim();
+  if (!nome) { alert('Por favor, informe seu nome completo.'); return; }
+  if (carrinho.length === 0) { alert('Seu pedido esta vazio.'); return; }
+
+  const tel = document.getElementById('cart-tel').value.trim();
+  const data = document.getElementById('cart-data').value;
+  const obs = document.getElementById('cart-obs').value.trim();
+
+  let msg = 'Ola! Gostaria de fazer o seguinte pedido \uD83C\uDF82\n\n';
+  msg += `*Nome:* ${nome}\n`;
+  if (tel) msg += `*Telefone:* ${tel}\n`;
+  if (data) { const [y,m,d] = data.split('-'); msg += `*Data do evento:* ${d}/${m}/${y}\n`; }
+  msg += '\n\uD83D\uDCCB *Itens do pedido:*\n\n';
+
+  carrinho.forEach((item, i) => {
+    msg += `${i+1}. ${item.nome}\n`;
+    if (item.tipo === 'bolo') {
+      msg += `   Cobertura: ${item.detalhes.cobertura}\n`;
+      msg += `   Recheio 1: ${item.detalhes.recheio1}\n`;
+      msg += `   Recheio 2: ${item.detalhes.recheio2}\n`;
+    } else if (item.tipo === 'doce') {
+      msg += `   ${item.detalhes.quantidade} unidades\n`;
+    } else if (item.tipo === 'kit') {
+      msg += `   Sabores: ${item.detalhes.sabores.join(', ')}\n`;
+    }
+    msg += `   Valor: ${item.preco}\n\n`;
+  });
+
+  if (obs) msg += `*Observacoes:* ${obs}\n\n`;
+  const total = carrinho.reduce((sum, item) => sum + item.precoNum, 0);
+  msg += `\uD83D\uDCB0 *Estimativa total:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
+  msg += 'Aguardo retorno! \uD83D\uDE0A';
+
+  window.open(`https://wa.me/${DADOS.empresa.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ===== BOLO: Pedir Agora & Adicionar ao Carrinho =====
+function pedirBoloAgora(boloIndex) {
+  const bolo = DADOS.bolos[boloIndex];
+  const cob = document.getElementById(`bolo-cob-${boloIndex}`).value;
+  const r1 = document.getElementById(`bolo-r1-${boloIndex}`).value;
+  const r2 = document.getElementById(`bolo-r2-${boloIndex}`).value;
+  if (!cob) { alert('Por favor, selecione a cobertura.'); return; }
+  if (!r1) { alert('Por favor, selecione o recheio 1.'); return; }
+  if (!r2) { alert('Por favor, selecione o recheio 2.'); return; }
+
+  const cobObj = bolo.coberturas.find(c => c.nome === cob);
+  const msg = `Ola! Gostaria de encomendar um bolo de ${bolo.peso} com cobertura ${cob}, recheio 1: ${r1}, recheio 2: ${r2}. \uD83C\uDF82`;
+  window.open(`https://wa.me/${DADOS.empresa.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function adicionarBolo(boloIndex) {
+  const bolo = DADOS.bolos[boloIndex];
+  const cob = document.getElementById(`bolo-cob-${boloIndex}`).value;
+  const r1 = document.getElementById(`bolo-r1-${boloIndex}`).value;
+  const r2 = document.getElementById(`bolo-r2-${boloIndex}`).value;
+  if (!cob) { alert('Por favor, selecione a cobertura.'); return; }
+  if (!r1) { alert('Por favor, selecione o recheio 1.'); return; }
+  if (!r2) { alert('Por favor, selecione o recheio 2.'); return; }
+
+  const cobObj = bolo.coberturas.find(c => c.nome === cob);
+  const preco = cobObj ? cobObj.preco : bolo.coberturas[0].preco;
+  const precoNum = parsePreco(preco);
+
+  adicionarAoCarrinho({
+    id: Date.now(),
+    tipo: 'bolo',
+    nome: `Bolo ${bolo.peso}`,
+    detalhes: { cobertura: cob, recheio1: r1, recheio2: r2 },
+    preco: preco,
+    precoNum: precoNum
+  });
+}
+
+// ===== DOCE: Toggle Qtd, Pedir Agora & Adicionar =====
+function toggleDoceQtd(did, qty) {
+  const toggle = document.getElementById(`doce-toggle-${did}`);
+  const precoEl = document.getElementById(`doce-preco-${did}`);
+  toggle.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+  if (qty === 50) {
+    toggle.children[0].classList.add('active');
+    precoEl.textContent = precoEl.dataset.p50;
+    precoEl.dataset.qty = '50';
+  } else {
+    toggle.children[1].classList.add('active');
+    precoEl.textContent = precoEl.dataset.p100;
+    precoEl.dataset.qty = '100';
+  }
+}
+
+function getDoceCardData(did) {
+  const card = document.querySelector(`[data-doce-id="${did}"]`);
+  const nome = card.dataset.doceNome;
+  const precoEl = document.getElementById(`doce-preco-${did}`);
+  const precoStr = precoEl.textContent;
+  const qty = parseInt(precoEl.dataset.qty) || 100;
+  return { nome, precoStr, qty };
+}
+
+function pedirDoceAgora(did) {
+  const { nome, precoStr, qty } = getDoceCardData(did);
+  const msg = `Ola! Gostaria de encomendar: ${nome} \u2014 ${qty} unidades (${precoStr}). \uD83C\uDF6C`;
+  window.open(`https://wa.me/${DADOS.empresa.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function adicionarDoceFromCard(did) {
+  const { nome, precoStr, qty } = getDoceCardData(did);
+  adicionarAoCarrinho({
+    id: Date.now(),
+    tipo: 'doce',
+    nome: nome,
+    detalhes: { quantidade: qty },
+    preco: precoStr,
+    precoNum: parsePreco(precoStr)
+  });
+}
+
+// ===== KIT: Pedir Agora & Adicionar =====
+function getKitSabores(kitIndex) {
+  const sabores = [];
+  for (let n = 1; n <= 4; n++) {
+    const val = document.getElementById(`kit-${kitIndex}-s${n}`).value;
+    if (val) sabores.push(val);
+  }
+  return sabores;
+}
+
+function pedirKitAgora(kitIndex) {
+  const kit = DADOS.kits[kitIndex];
+  const sabores = getKitSabores(kitIndex);
+  if (sabores.length < 4) { alert('Por favor, selecione os 4 sabores do kit.'); return; }
+  const msg = `Ola! Gostaria de encomendar o ${kit.nome} (${kit.preco}). Sabores: ${sabores.join(', ')}. \uD83C\uDF81`;
+  window.open(`https://wa.me/${DADOS.empresa.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function adicionarKit(kitIndex) {
+  const kit = DADOS.kits[kitIndex];
+  const sabores = getKitSabores(kitIndex);
+  if (sabores.length < 4) { alert('Por favor, selecione os 4 sabores do kit.'); return; }
+  adicionarAoCarrinho({
+    id: Date.now(),
+    tipo: 'kit',
+    nome: kit.nome,
+    detalhes: { sabores: sabores },
+    preco: kit.preco,
+    precoNum: parsePreco(kit.preco)
+  });
+}
 
 // ===== SCROLL ANIMATIONS =====
 function initAnimations() {
