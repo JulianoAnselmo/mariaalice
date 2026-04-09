@@ -4,9 +4,6 @@
  *
  * Como usar:
  *   node atualizar-instagram.js
- *
- * As imagens sao salvas em imagens/instagram/post_1.jpg ... post_9.jpg
- * e os metadados em imagens/instagram/posts.json
  */
 
 const puppeteer = require('puppeteer-extra');
@@ -36,45 +33,74 @@ async function downloadImage(browser, imgSrc, dest) {
   }
 }
 
+async function extractPosts(page, max) {
+  return await page.evaluate((maxPosts) => {
+    const article = document.querySelector('article') || document.querySelector('main');
+    if (!article) return [];
+    const allImgs = article.querySelectorAll('img');
+    const results = [];
+    const seen = new Set();
+    for (const img of allImgs) {
+      const src = img.getAttribute('src') || '';
+      if (!src || src.includes('profile') || src.includes('44x44') || src.includes('150x150') || src.includes('s150x150')) continue;
+      if (seen.has(src)) continue;
+      seen.add(src);
+      const link = img.closest('a');
+      results.push({
+        imageUrl: src,
+        postUrl: link ? link.getAttribute('href') || '' : '',
+        alt: img.getAttribute('alt') || ''
+      });
+      if (results.length >= maxPosts) break;
+    }
+    return results;
+  }, max);
+}
+
 (async () => {
   console.log('Abrindo navegador...');
-  // Detecta se esta rodando no CI (GitHub Actions) ou local
-  const isCI = process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true';
+  if (!fs.existsSync(OUTPUT_DIR)) {
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+  }
+
   const browser = await puppeteer.launch({
-    headless: isCI ? 'new' : false,
+    headless: 'new',
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--window-size=1280,900']
   });
 
   try {
     const page = await browser.newPage();
     await page.setViewport({ width: 1280, height: 900 });
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
 
-    console.log('Acessando perfil @' + PROFILE + ' no Instagram...');
+    console.log('Acessando perfil @' + PROFILE + '...');
     await page.goto('https://www.instagram.com/' + PROFILE + '/', {
       waitUntil: 'networkidle2',
-      timeout: 30000
+      timeout: 45000
     });
 
-    await new Promise(r => setTimeout(r, 3000));
+    await new Promise(r => setTimeout(r, 4000));
 
-    // Fechar modal de login se aparecer
+    // Fechar modais
     try {
-      const closeBtn = await page.$('[aria-label="Fechar"], [aria-label="Close"], button svg[aria-label="Fechar"]');
-      if (closeBtn) {
-        await closeBtn.click();
-        console.log('Modal de login fechado.');
-        await new Promise(r => setTimeout(r, 1000));
-      }
+      await page.evaluate(() => {
+        const btns = document.querySelectorAll('button');
+        for (const btn of btns) {
+          const text = btn.textContent || '';
+          if (text.includes('Agora não') || text.includes('Not Now') || text.includes('Decline')) {
+            btn.click(); break;
+          }
+        }
+      });
+      await new Promise(r => setTimeout(r, 1000));
     } catch(e) {}
 
-    // Tentar fechar clicando no X do modal
     try {
       await page.evaluate(() => {
         const btns = document.querySelectorAll('button');
         for (const btn of btns) {
           if (btn.querySelector('svg') && btn.closest('[role="dialog"]')) {
-            btn.click();
-            break;
+            btn.click(); break;
           }
         }
       });
@@ -82,59 +108,36 @@ async function downloadImage(browser, imgSrc, dest) {
     } catch(e) {}
 
     // Scroll para carregar posts
-    await page.evaluate(() => window.scrollBy(0, 600));
-    await new Promise(r => setTimeout(r, 2000));
+    await page.evaluate(() => window.scrollBy(0, 800));
+    await new Promise(r => setTimeout(r, 3000));
 
-    // Extrair URLs das imagens dos posts (grid de 3 colunas do Instagram)
+    // Extrair posts com retry
     console.log('Extraindo posts...');
-    const posts = await page.evaluate((max) => {
-      // Instagram usa <article> para o grid de posts
-      const article = document.querySelector('article') || document.querySelector('main');
-      if (!article) return [];
-
-      // Pegar todas as imagens dentro do grid de posts
-      const allImgs = article.querySelectorAll('img');
-      const results = [];
-      const seen = new Set();
-
-      for (const img of allImgs) {
-        const src = img.getAttribute('src') || '';
-        if (!src || src.includes('profile') || src.includes('44x44') || src.includes('150x150')) continue;
-        if (seen.has(src)) continue;
-        seen.add(src);
-
-        const link = img.closest('a');
-        results.push({
-          imageUrl: src,
-          postUrl: link ? link.getAttribute('href') || '' : '',
-          alt: img.getAttribute('alt') || ''
-        });
-
-        if (results.length >= max) break;
+    let posts = [];
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        posts = await extractPosts(page, MAX_POSTS);
+        if (posts.length > 0) break;
+      } catch(e) {
+        console.log('Tentativa ' + (attempt + 1) + ' falhou: ' + e.message);
       }
-      return results;
-    }, MAX_POSTS);
+      await new Promise(r => setTimeout(r, 2000));
+      await page.evaluate(() => window.scrollBy(0, 400));
+      await new Promise(r => setTimeout(r, 2000));
+    }
 
     console.log('Encontrados ' + posts.length + ' posts.');
 
     if (posts.length === 0) {
-      // Salvar screenshot para debug
-      if (!fs.existsSync(OUTPUT_DIR)) {
-        fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-      }
       await page.screenshot({ path: path.join(OUTPUT_DIR, 'debug.png') });
-      console.log('Nenhum post encontrado. Screenshot salvo em imagens/instagram/debug.png');
-      console.log('Titulo da pagina: ' + await page.title());
+      console.log('Nenhum post encontrado. Screenshot salvo em debug.png');
+      console.log('URL: ' + page.url());
+      console.log('Titulo: ' + await page.title());
       await browser.close();
       return;
     }
 
     console.log('Baixando imagens...');
-
-    if (!fs.existsSync(OUTPUT_DIR)) {
-      fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-    }
-
     const postsData = [];
 
     for (let i = 0; i < posts.length; i++) {
@@ -159,14 +162,13 @@ async function downloadImage(browser, imgSrc, dest) {
     }
 
     // Salvar metadados JSON
-    const meta = {
+    fs.writeFileSync(POSTS_JSON, JSON.stringify({
       profile: PROFILE,
       updatedAt: new Date().toISOString(),
       posts: postsData
-    };
-    fs.writeFileSync(POSTS_JSON, JSON.stringify(meta, null, 2));
+    }, null, 2));
 
-    // Atualizar dados inline no index.html (entre marcadores)
+    // Atualizar inline no index.html
     const indexPath = path.join(__dirname, 'index.html');
     let html = fs.readFileSync(indexPath, 'utf8');
     const startMarker = '/* INSTAGRAM-POSTS-START */';
@@ -175,28 +177,22 @@ async function downloadImage(browser, imgSrc, dest) {
     const endIdx = html.indexOf(endMarker);
 
     if (startIdx !== -1 && endIdx !== -1) {
-      const jsData = postsData.map(function(p) {
-        return { image: p.image, postUrl: p.postUrl, alt: 'Post do @' + PROFILE };
-      });
+      const jsData = postsData.map(p => ({ image: p.image, postUrl: p.postUrl, alt: 'Post do @' + PROFILE }));
       const newBlock = startMarker + '\n  var instagramPosts = ' + JSON.stringify(jsData) + ';\n  ' + endMarker;
       html = html.substring(0, startIdx) + newBlock + html.substring(endIdx + endMarker.length);
       fs.writeFileSync(indexPath, html);
-      console.log('\nindex.html atualizado com novos posts.');
+      console.log('\nindex.html atualizado com ' + postsData.length + ' posts.');
     }
 
-    // Salvar arquivo JS externo tambem (backup)
-    const jsData2 = postsData.map(function(p) {
-      return { image: p.image, postUrl: p.postUrl, alt: 'Post do @' + PROFILE };
-    });
-    fs.writeFileSync(path.join(__dirname, 'instagram-posts.js'), 'var instagramPosts = ' + JSON.stringify(jsData2, null, 2) + ';\n');
-
-    console.log('Sucesso! ' + postsData.length + ' imagens dos ultimos posts do @' + PROFILE);
+    console.log('Sucesso! ' + postsData.length + ' imagens baixadas.');
 
   } catch (err) {
     console.error('Erro:', err.message);
     try {
-      await page.screenshot({ path: path.join(OUTPUT_DIR, 'debug.png') });
-      console.log('Screenshot de debug salvo.');
+      const pages = await browser.pages();
+      if (pages.length > 0) {
+        await pages[0].screenshot({ path: path.join(OUTPUT_DIR, 'debug.png') });
+      }
     } catch(e) {}
   } finally {
     await browser.close();

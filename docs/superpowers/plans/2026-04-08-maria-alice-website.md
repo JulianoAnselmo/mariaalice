@@ -1,3 +1,38 @@
+# Maria Alice & Mirian — Website Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Build a premium, high-conversion single-page website for a traditional bakery in Itapolis-SP, with WhatsApp as the sole conversion channel.
+
+**Architecture:** Single `index.html` file containing embedded CSS (in `<style>`), a `DADOS` JS object with all catalog data (in first `<script>`), semantic HTML sections, and JS for interactivity (in second `<script>` at end of body). No build tools, no dependencies beyond Google Fonts.
+
+**Tech Stack:** HTML5, CSS3 (custom properties, grid, flexbox, scroll-snap), vanilla JS, Google Fonts (Playfair Display + Inter)
+
+**File structure:**
+- `index.html` — the entire website (head + style + data + html + script)
+
+**Important context for all tasks:**
+- This is a SINGLE FILE project. All CSS goes in the `<style>` tag in `<head>`. All JS goes in `<script>` tags.
+- The `DADOS` object is the single source of truth for all catalog data. The HTML rendering reads from it.
+- WhatsApp number: `5516997126577` (formatted: `(16) 99712-6577`)
+- WhatsApp link format: `https://wa.me/5516997126577?text=ENCODED_MESSAGE`
+- All copy is in Brazilian Portuguese
+- Design tokens: see CSS custom properties in Task 1
+
+---
+
+### Task 1: Foundation — HTML shell, meta tags, CSS design system, DADOS object
+
+Create `index.html` with the complete `<head>` (meta, SEO, Open Graph, JSON-LD, Google Fonts, full CSS), the `DADOS` object with ALL catalog data, and an empty `<body>` shell with section placeholders.
+
+**Files:**
+- Create: `index.html`
+
+- [ ] **Step 1: Create index.html with head, CSS, and DADOS**
+
+Create `index.html` with this content. This is the foundation — everything else builds on it.
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -282,20 +317,14 @@
     .avaliacao-estrelas { color: var(--dourado); font-size: 0.85rem; letter-spacing: 2px; }
     .avaliacao-texto { font-size: 0.9rem; color: var(--grafite); line-height: 1.7; font-style: italic; }
 
-    /* ===== GALERIA / INSTAGRAM ===== */
+    /* ===== GALERIA ===== */
     .galeria { background: var(--branco); }
-    .galeria-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .galeria-item, .instagram-item { aspect-ratio: 1; background: linear-gradient(135deg, var(--rosa-bg), var(--rosa-claro)); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all var(--transition); position: relative; overflow: hidden; }
-    .galeria-item:hover, .instagram-item:hover { transform: scale(1.05); }
+    .galeria-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .galeria-item { aspect-ratio: 1; background: linear-gradient(135deg, var(--rosa-bg), var(--rosa-claro)); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all var(--transition); position: relative; overflow: hidden; }
+    .galeria-item:hover { transform: scale(1.03); }
     .galeria-item::after { content: ''; position: absolute; inset: 0; background: rgba(212,96,122,0.3); opacity: 0; transition: opacity var(--transition); }
     .galeria-item:hover::after { opacity: 1; }
     .galeria-item svg { color: rgba(255,255,255,0.6); width: 28px; height: 28px; }
-    .instagram-item { text-decoration: none; display: block; }
-    .instagram-item img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition); }
-    .instagram-item:hover img { transform: scale(1.05); }
-    .instagram-item .ig-overlay { position: absolute; inset: 0; background: rgba(212,96,122,0.3); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity var(--transition); z-index: 1; }
-    .instagram-item:hover .ig-overlay { opacity: 1; }
-    .instagram-item .ig-overlay svg { width: 32px; height: 32px; color: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3)); }
 
     /* ===== LOCALIZACAO ===== */
     .localizacao { background: var(--rosa-bg); }
@@ -372,7 +401,6 @@
       .form-group.full { grid-column: span 1; }
       .diferenciais-grid { grid-template-columns: repeat(2, 1fr); }
       .galeria-grid { grid-template-columns: repeat(2, 1fr); }
-      .instagram-item .ig-overlay { opacity: 0; }
       .localizacao-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
       .passos { flex-direction: column; align-items: center; }
@@ -385,92 +413,6 @@
       .categorias-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
       .footer-grid { grid-template-columns: 1fr; }
       .diferenciais-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ===== SCROLL ANIMATIONS ===== */
-    .animate-on-scroll { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
-
-    /* ===== CART SYSTEM ===== */
-    .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity var(--transition); }
-    .cart-overlay.open { opacity: 1; pointer-events: auto; }
-    .cart-sidebar { position: fixed; top: 0; right: -320px; width: 320px; height: 100vh; background: var(--branco); z-index: 1001; transition: right var(--transition); display: flex; flex-direction: column; box-shadow: -4px 0 20px rgba(0,0,0,0.1); }
-    .cart-sidebar.open { right: 0; }
-    .cart-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--borda); flex-shrink: 0; }
-    .cart-header h3 { font-size: 1.15rem; margin: 0; }
-    .cart-items { flex: 1; overflow-y: auto; padding: 0; }
-    .cart-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 16px 20px; border-bottom: 1px solid var(--borda); gap: 10px; }
-    .cart-item-info { flex: 1; }
-    .cart-item-info strong { display: block; font-size: 0.9rem; color: var(--marrom); margin-bottom: 4px; }
-    .cart-item-info small { display: block; font-size: 0.78rem; color: var(--grafite-claro); line-height: 1.5; margin-bottom: 4px; }
-    .cart-item-preco { font-size: 0.85rem; font-weight: 600; color: var(--rosa); }
-    .cart-item-remove { background: none; border: none; color: var(--rosa); font-size: 1.3rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background var(--transition); flex-shrink: 0; line-height: 1; }
-    .cart-item-remove:hover { background: var(--rosa-bg); }
-    .cart-footer { flex-shrink: 0; border-top: 2px solid var(--borda); padding: 20px; overflow-y: auto; max-height: 55vh; }
-    .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 1rem; color: var(--marrom); }
-    .cart-total strong { font-size: 1.15rem; color: var(--rosa); }
-    .cart-form { display: flex; flex-direction: column; gap: 12px; }
-    .cart-form .form-group { display: flex; flex-direction: column; gap: 4px; }
-    .cart-form .form-group label { font-size: 0.8rem; font-weight: 500; color: var(--marrom); }
-    .cart-form .form-group input,
-    .cart-form .form-group textarea { padding: 10px 14px; border: 2px solid var(--borda); border-radius: var(--radius); background: var(--nude); transition: border-color var(--transition); color: var(--marrom); font-size: 0.85rem; }
-    .cart-form .form-group input:focus,
-    .cart-form .form-group textarea:focus { border-color: var(--rosa-claro); }
-    .cart-form .form-group textarea { resize: vertical; min-height: 50px; }
-
-    /* Cart icon button in header */
-    .cart-icon-btn { position: relative; background: none; cursor: pointer; padding: 6px; color: var(--grafite); transition: color var(--transition); }
-    .cart-icon-btn:hover { color: var(--rosa); }
-    .cart-badge { position: absolute; top: -4px; right: -6px; width: 18px; height: 18px; border-radius: 50%; background: var(--rosa); color: #fff; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; line-height: 1; }
-
-    /* Bolo inline config panel */
-    .bolo-config { background: var(--rosa-bg); padding: 16px; border-radius: var(--radius); margin-top: 16px; }
-    .bolo-config .form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
-    .bolo-config .form-group label { font-size: 0.8rem; font-weight: 500; color: var(--marrom); }
-    .bolo-config .form-group select { padding: 10px 14px; border: 2px solid var(--borda); border-radius: var(--radius); background: var(--branco); transition: border-color var(--transition); color: var(--marrom); font-size: 0.85rem; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a6b63' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
-    .bolo-config .form-group select:focus { border-color: var(--rosa-claro); }
-
-    /* Doce quantity toggle */
-    .qty-toggle { display: inline-flex; border-radius: var(--radius-pill); overflow: hidden; border: 2px solid var(--borda); margin-bottom: 10px; }
-    .qty-toggle button { padding: 6px 16px; font-size: 0.8rem; font-weight: 600; cursor: pointer; background: var(--branco); color: var(--grafite); border: none; transition: all var(--transition); }
-    .qty-toggle button.active { background: var(--rosa); color: #fff; }
-
-    /* Kit config */
-    .kit-config { text-align: left; margin-bottom: 16px; }
-    .kit-flavor-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
-    .kit-flavor-row select { flex: 1; padding: 10px 12px; border: 2px solid var(--borda); border-radius: var(--radius); background: var(--nude); font-size: 0.85rem; color: var(--marrom); }
-    .kit-flavor-row select:focus { border-color: var(--rosa-claro); }
-    .kit-flavor-row input[type="number"] { width: 70px; text-align: center; padding: 10px 4px; border: 2px solid var(--borda); border-radius: var(--radius); background: var(--nude); font-size: 0.85rem; color: var(--marrom); }
-    .kit-flavor-row input[type="number"]:focus { border-color: var(--rosa-claro); }
-    .kit-flavor-row .remove-flavor { background: none; cursor: pointer; color: var(--rosa); font-size: 1.3rem; padding: 4px 8px; border-radius: 50%; transition: background var(--transition); border: none; }
-    .kit-flavor-row .remove-flavor:hover { background: var(--rosa-bg); }
-    .kit-add-flavor { background: var(--rosa-bg); color: var(--rosa); border: 1px dashed var(--rosa-claro); border-radius: var(--radius); padding: 10px; width: 100%; cursor: pointer; font-weight: 500; font-size: 0.85rem; transition: all var(--transition); margin-bottom: 12px; }
-    .kit-add-flavor:hover { background: var(--rosa-bg2); }
-    .kit-progress { margin-bottom: 16px; }
-    .kit-progress-bar { height: 6px; background: var(--borda); border-radius: 3px; overflow: hidden; margin-top: 6px; }
-    .kit-progress-fill { height: 100%; background: var(--rosa); border-radius: 3px; transition: width 0.3s ease; }
-    .kit-progress-text { font-size: 0.8rem; color: var(--grafite); display: flex; justify-content: space-between; }
-    .kit-config .form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
-    .kit-config .form-group label { font-size: 0.78rem; font-weight: 500; color: var(--marrom); }
-    .kit-config .form-group select { padding: 8px 12px; border: 2px solid var(--borda); border-radius: var(--radius); background: var(--branco); transition: border-color var(--transition); color: var(--marrom); font-size: 0.82rem; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a6b63' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px; }
-    .kit-config .form-group select:focus { border-color: var(--rosa-claro); }
-
-    /* Shared button styles for cart/product actions */
-    .btn-add-cart { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 20px; border-radius: var(--radius-pill); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all var(--transition); border: 2px solid transparent; background: var(--rosa); color: #fff; border-color: var(--rosa); }
-    .btn-add-cart:hover { background: var(--rosa-hover); border-color: var(--rosa-hover); transform: translateY(-1px); }
-    .btn-row { display: flex; gap: 8px; margin-top: 12px; }
-    .btn-row .btn, .btn-row .btn-add-cart { flex: 1; justify-content: center; font-size: 0.8rem; padding: 10px 12px; }
-    .bolo-config .btn-row { margin-top: 14px; }
-
-    /* Doce card price display */
-    .doce-preco-display { font-size: 0.95rem; color: var(--rosa); font-weight: 700; margin-bottom: 10px; }
-
-    @media (max-width: 768px) {
-      .cart-sidebar { width: 100%; right: -100%; }
-      .cart-sidebar.open { right: 0; }
-      .header-inner .cart-icon-btn { order: 3; }
-      .btn-row { flex-direction: column; }
-      .btn-row .btn, .btn-row .btn-add-cart { width: 100%; }
     }
   </style>
 </head>
@@ -693,6 +635,43 @@ const DADOS = {
 };
 </script>
 
+  <!-- HTML sections will be added in subsequent tasks -->
+
+  <!-- JS for interactivity will be added at the end -->
+
+</body>
+</html>
+```
+
+- [ ] **Step 2: Open in browser and verify**
+
+Open `index.html` in a browser. The page should load with a blank body but no console errors. Check:
+- DevTools console is clean (no errors)
+- Google Fonts loaded (check Network tab)
+- JSON-LD is valid (paste it into Google's Rich Results Test)
+
+- [ ] **Step 3: Commit**
+
+```bash
+git init
+git add index.html
+git commit -m "feat: foundation — HTML shell with CSS design system and DADOS catalog object"
+```
+
+---
+
+### Task 2: Header + Hero + WhatsApp float
+
+Add the fixed header with mobile hamburger, hero section, and floating WhatsApp button. These are the first visible elements and establish the visual tone.
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add header HTML**
+
+Replace the `<!-- HTML sections will be added in subsequent tasks -->` comment in `index.html` with:
+
+```html
   <!-- HEADER -->
   <header class="header" id="header">
     <div class="header-inner">
@@ -710,10 +689,6 @@ const DADOS = {
           WhatsApp
         </a>
       </nav>
-      <button class="cart-icon-btn" onclick="abrirCarrinho()" aria-label="Ver pedido">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-        <span class="cart-badge" id="cart-badge" style="display:none;">0</span>
-      </button>
       <button class="hamburger" id="hamburger" aria-label="Abrir menu">
         <span></span><span></span><span></span>
       </button>
@@ -727,10 +702,6 @@ const DADOS = {
     <a href="#cardapio" class="mobile-link">Cardápio</a>
     <a href="#como-pedir" class="mobile-link">Como Pedir</a>
     <a href="#contato" class="mobile-link">Contato</a>
-    <button class="mobile-link" onclick="toggleMobile();abrirCarrinho();" style="background:none;cursor:pointer;text-align:left;width:100%;display:flex;align-items:center;gap:10px;color:var(--marrom);font-weight:500;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-      Meu Pedido <span class="cart-badge" id="cart-badge-mobile" style="display:none;position:static;margin-left:4px;">0</span>
-    </button>
     <a href="https://wa.me/5516997126577?text=Ol%C3%A1!%20Vi%20o%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20produtos%20%F0%9F%98%8A" target="_blank" rel="noopener" class="btn btn-whatsapp" style="margin-top:20px;width:100%;justify-content:center;">
       WhatsApp
     </a>
@@ -769,6 +740,81 @@ const DADOS = {
     </div>
   </section>
 
+  <!-- Remaining sections placeholder -->
+
+  </main>
+
+  <!-- WHATSAPP FLOAT -->
+  <div class="whatsapp-float">
+    <a href="https://wa.me/5516997126577?text=Ol%C3%A1!%20Vi%20o%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20produtos%20%F0%9F%98%8A" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+    <span class="tooltip">Fale conosco</span>
+  </div>
+```
+
+- [ ] **Step 2: Add header/nav JS**
+
+Replace the `<!-- JS for interactivity will be added at the end -->` comment with:
+
+```html
+<script>
+// ===== HEADER SCROLL SHADOW =====
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ===== MOBILE MENU =====
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobile-nav');
+const mobileOverlay = document.getElementById('mobile-overlay');
+
+function toggleMobile() {
+  hamburger.classList.toggle('active');
+  mobileNav.classList.toggle('open');
+  mobileOverlay.classList.toggle('open');
+  document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+}
+
+hamburger.addEventListener('click', toggleMobile);
+mobileOverlay.addEventListener('click', toggleMobile);
+document.querySelectorAll('.mobile-link').forEach(link => {
+  link.addEventListener('click', toggleMobile);
+});
+</script>
+```
+
+- [ ] **Step 3: Verify in browser**
+
+Open `index.html`. Check:
+- Header is fixed at top with logo fallback text, nav links, green WhatsApp button
+- On scroll, header gets a subtle shadow
+- Hero section shows with gradient background, title, subtitle, two buttons, three badges, image placeholder
+- Green WhatsApp float button in bottom-right with pulse animation
+- Resize to mobile: hamburger appears, menu drawer works, hero stacks vertically
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: header with mobile menu, hero section, WhatsApp floating button"
+```
+
+---
+
+### Task 3: Sobre + Categorias sections
+
+Add the about section with emotional copy and the category cards grid.
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add Sobre and Categorias HTML**
+
+Insert after the closing `</section>` of the hero (before `<!-- Remaining sections placeholder -->`):
+
+```html
   <!-- SOBRE -->
   <section class="sobre section-padding" id="sobre">
     <div class="container">
@@ -832,7 +878,56 @@ const DADOS = {
       </div>
     </div>
   </section>
+```
 
+- [ ] **Step 2: Add ativarAba JS stub**
+
+In the `<script>` at end of body, add before the closing `</script>`:
+
+```javascript
+
+// ===== ATIVAR ABA DO CATALOGO =====
+function ativarAba(aba) {
+  const section = document.getElementById('cardapio');
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth' });
+    // Tab activation will be wired in Task 4
+    const btn = document.querySelector(`[data-tab="${aba}"]`);
+    if (btn) btn.click();
+  }
+}
+```
+
+- [ ] **Step 3: Verify in browser**
+
+Check:
+- Sobre section shows with text on right, image placeholder on left
+- Decorative quote with gold left border
+- Categorias section has 6 cards in 3-column grid (desktop), 2 columns on mobile
+- Cards have hover effect (lift + shadow)
+- Clicking a card scrolls but no error (catalog not built yet)
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: sobre section with brand story, categorias grid with 6 clickable cards"
+```
+
+---
+
+### Task 4: Catalogo — tab system + Bolos tab
+
+Build the tabbed catalog section with full tab switching logic and the complete Bolos tab rendered from DADOS.
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add Catalogo HTML shell and Bolos tab**
+
+Insert after the categorias `</section>`:
+
+```html
   <!-- CATALOGO -->
   <section class="catalogo section-padding" id="cardapio">
     <div class="container">
@@ -887,7 +982,249 @@ const DADOS = {
       </div>
     </div>
   </section>
+```
 
+- [ ] **Step 2: Add tab switching + Bolos rendering JS**
+
+In the `<script>` at end of body, add before the closing `</script>`:
+
+```javascript
+
+// ===== TABS =====
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected','true');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ===== RENDER BOLOS =====
+function renderBolos() {
+  const container = document.getElementById('bolos-content');
+  container.innerHTML = DADOS.bolos.map(bolo => {
+    const badges = [
+      `${bolo.peso}`,
+      `${bolo.pessoas} pessoas`,
+      bolo.diametro ? `Ø ${bolo.diametro}` : '',
+      `${bolo.fatias} fatias`
+    ].filter(Boolean);
+
+    const items = bolo.coberturas.map(c =>
+      `<div class="bolo-item"><span>${c.nome}</span><span>${c.preco}</span></div>`
+    ).join('');
+
+    const msg = encodeURIComponent(`Olá! Gostaria de encomendar um bolo de ${bolo.peso}. Poderia me ajudar? 🎂`);
+
+    return `
+      <div class="bolo-card">
+        <div class="bolo-header">
+          <h3>Bolo ${bolo.peso}</h3>
+          <div class="bolo-badges">${badges.map(b => `<span class="bolo-badge">${b}</span>`).join('')}</div>
+        </div>
+        <div class="bolo-lista">${items}</div>
+        <a href="https://wa.me/${DADOS.empresa.whatsapp}?text=${msg}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" style="width:100%;justify-content:center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Encomendar este bolo
+        </a>
+      </div>
+    `;
+  }).join('');
+
+  // Bolos especiais
+  const especiais = document.getElementById('bolos-especiais-content');
+  especiais.innerHTML = DADOS.bolosEspeciais.map(b =>
+    `<div style="padding:8px 0;border-bottom:1px solid var(--borda);">
+      <strong style="color:var(--marrom);">${b.nome}</strong>
+      <span style="color:var(--grafite);font-size:0.85rem;"> — ${b.recheios}</span>
+    </div>`
+  ).join('');
+}
+
+renderBolos();
+```
+
+- [ ] **Step 3: Verify in browser**
+
+Check:
+- Tab bar shows 5 tabs, "Bolos" active by default
+- Clicking tabs switches content with fade animation
+- Bolos tab shows 5 size cards with all prices
+- Bolos especiais section shows 4 special cakes
+- "Encomendar este bolo" buttons open WhatsApp with pre-filled message
+- Mobile: tabs scroll horizontally, price list stacks well
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: tabbed catalog with complete Bolos tab and all pricing data"
+```
+
+---
+
+### Task 5: Catalogo — Doces, Kits, Recheios, Personalizados tabs
+
+Render the remaining 4 tabs from DADOS.
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add rendering functions for all remaining tabs**
+
+In the `<script>` at end of body, add before the closing `</script>`:
+
+```javascript
+
+// ===== RENDER DOCES =====
+function renderDoces() {
+  const container = document.getElementById('doces-content');
+
+  function renderGrupo(titulo, items) {
+    const cards = items.map(d => {
+      const msg = encodeURIComponent(`Olá! Gostaria de encomendar: ${d.nome}. Poderia me passar mais informações? 🍬`);
+      const p50 = d.p50 ? `<span>50 un: <strong>${d.p50}</strong></span>` : '';
+      return `
+        <div class="doce-card" data-nome="${d.nome.toLowerCase()}">
+          <h4>${d.nome}</h4>
+          <div class="doce-precos">
+            <span>100 un: <strong>${d.p100}</strong></span>
+            ${p50}
+          </div>
+          <a href="https://wa.me/${DADOS.empresa.whatsapp}?text=${msg}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm">Pedir este doce</a>
+        </div>
+      `;
+    }).join('');
+    return `<h3 class="doces-grupo-titulo">${titulo}</h3><div class="doces-grid">${cards}</div>`;
+  }
+
+  container.innerHTML = `
+    <div class="doces-filter">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="doces-search" placeholder="Buscar doce por nome..." oninput="filtrarDoces(this.value)">
+    </div>
+    <div id="doces-lista">
+      ${renderGrupo('Doces Tradicionais', DADOS.doces.grupo1)}
+      ${renderGrupo('Novidades & Especiais', DADOS.doces.grupo2)}
+    </div>
+  `;
+}
+
+function filtrarDoces(query) {
+  const q = query.toLowerCase().trim();
+  document.querySelectorAll('.doce-card').forEach(card => {
+    card.style.display = card.dataset.nome.includes(q) ? '' : 'none';
+  });
+}
+
+// ===== RENDER KITS =====
+function renderKits() {
+  const container = document.getElementById('kits-content');
+  container.innerHTML = `
+    <div class="kits-grid">
+      ${DADOS.kits.map(kit => {
+        const msg = encodeURIComponent(`Olá! Gostaria de encomendar o ${kit.nome} (${kit.preco}). Poderia me ajudar com os sabores? 🎁`);
+        return `
+          <div class="kit-card">
+            <h3>${kit.nome}</h3>
+            <div class="kit-preco">${kit.preco}</div>
+            <p class="kit-desc">${kit.descricao}</p>
+            <div class="kit-sabores">
+              <h4>Sabores disponíveis</h4>
+              <div class="kit-sabores-lista">
+                ${kit.sabores.map(s => `<span>${s}</span>`).join('')}
+              </div>
+            </div>
+            <a href="https://wa.me/${DADOS.empresa.whatsapp}?text=${msg}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" style="width:100%;justify-content:center;">Montar meu kit</a>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+// ===== RENDER RECHEIOS =====
+function renderRecheios() {
+  const container = document.getElementById('recheios-content');
+  container.innerHTML = `
+    <p style="color:var(--grafite);margin-bottom:24px;font-size:0.95rem;">Escolha 2 recheios para o seu bolo. Todos os sabores abaixo estão disponíveis:</p>
+    <div class="recheios-grid">
+      ${DADOS.recheios.map(r => `<div class="recheio-pill">${r}</div>`).join('')}
+    </div>
+    <div class="bolo-especial" style="margin-top:32px;">
+      <h3>🌟 Bolos Especiais — combinações clássicas com 2 recheios</h3>
+      ${DADOS.bolosEspeciais.map(b =>
+        `<div style="padding:8px 0;border-bottom:1px solid var(--borda);">
+          <strong style="color:var(--marrom);">${b.nome}</strong>
+          <span style="color:var(--grafite);font-size:0.85rem;"> — ${b.recheios}</span>
+        </div>`
+      ).join('')}
+    </div>
+  `;
+}
+
+// ===== RENDER PERSONALIZADOS =====
+function renderPersonalizados() {
+  const container = document.getElementById('personalizados-content');
+  const msg = encodeURIComponent('Olá! Gostaria de consultar valores para produtos personalizados. Poderia me ajudar? ✨');
+  container.innerHTML = `
+    <div class="personalizados-grid">
+      ${DADOS.personalizados.map(p => `
+        <div class="personalizado-card">
+          <div class="icon">${p.icone}</div>
+          <h4>${p.nome}</h4>
+        </div>
+      `).join('')}
+    </div>
+    <div style="text-align:center;margin-top:28px;">
+      <p style="color:var(--grafite);margin-bottom:16px;font-style:italic;">Para consultar valores, envie o tema ou foto de inspiração pelo WhatsApp.</p>
+      <a href="https://wa.me/${DADOS.empresa.whatsapp}?text=${msg}" target="_blank" rel="noopener" class="btn btn-whatsapp">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Consultar personalizado
+      </a>
+    </div>
+  `;
+}
+
+// ===== INIT ALL TABS =====
+renderDoces();
+renderKits();
+renderRecheios();
+renderPersonalizados();
+```
+
+- [ ] **Step 2: Verify in browser**
+
+Check:
+- Doces tab: search input filters cards in real-time, 2-column grid on desktop, 1-column mobile, all prices correct, WhatsApp buttons work
+- Kits tab: 3 featured kit cards with prices, flavor lists, and CTA buttons
+- Recheios tab: 46 pills in 3-column grid, special cakes section below
+- Personalizados tab: 6 product cards with icons, WhatsApp CTA
+- Category cards from previous task now scroll to catalog AND activate correct tab
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: complete catalog — doces, kits, recheios, personalizados tabs with search filter"
+```
+
+---
+
+### Task 6: Como Pedir + Configurador WhatsApp
+
+Add the step-by-step ordering guide and the smart order form that builds a WhatsApp message.
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add Como Pedir + Configurador HTML**
+
+Insert after the catalogo `</section>` (before `</main>`):
+
+```html
   <!-- COMO PEDIR -->
   <section class="como-pedir section-padding" id="como-pedir">
     <div class="container text-center">
@@ -1047,519 +1384,13 @@ const DADOS = {
       </div>
     </div>
   </section>
+```
 
-  <!-- DIFERENCIAIS -->
-  <section class="diferenciais section-padding">
-    <div class="container text-center">
-      <p class="section-label">Nossos Diferenciais</p>
-      <h2 class="section-title">Por que escolher a <em>Maria Alice & Mirian?</em></h2>
-      <div class="decorative-line"></div>
-      <div class="diferenciais-grid">
-        <div class="diferencial-card">
-          <div class="icon">🕰️</div>
-          <h3>25 anos de tradição</h3>
-          <p>Desde 2000 adoçando os momentos mais especiais de Itápolis e região com qualidade e dedicação.</p>
-        </div>
-        <div class="diferencial-card">
-          <div class="icon">🎉</div>
-          <h3>Festas e eventos</h3>
-          <p>Casamentos, aniversários, formaturas e confraternizações — cuidamos de cada detalhe do seu evento.</p>
-        </div>
-        <div class="diferencial-card">
-          <div class="icon">⭐</div>
-          <h3>Personalizados</h3>
-          <p>Bolos e doces feitos sob medida para o seu tema, com acabamento impecável e sabor inesquecível.</p>
-        </div>
-        <div class="diferencial-card">
-          <div class="icon">💛</div>
-          <h3>Atendimento com carinho</h3>
-          <p>Cada cliente é especial. Ajudamos você a escolher os sabores e quantidades ideais para sua ocasião.</p>
-        </div>
-        <div class="diferencial-card">
-          <div class="icon">✅</div>
-          <h3>Ingredientes de qualidade</h3>
-          <p>Selecionamos os melhores ingredientes para garantir sabor, textura e frescor em cada produto.</p>
-        </div>
-        <div class="diferencial-card">
-          <div class="icon">🧁</div>
-          <h3>Produção artesanal</h3>
-          <p>Cada bolo e doce é preparado à mão, com técnicas tradicionais e o capricho que só o artesanal oferece.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+- [ ] **Step 2: Add configurador JS**
 
-  <!-- AVALIACOES -->
-  <section class="avaliacoes section-padding">
-    <div class="container text-center">
-      <p class="section-label">Depoimentos</p>
-      <h2 class="section-title">O que nossos clientes <em>dizem</em></h2>
-      <div class="decorative-line"></div>
-    </div>
-    <div class="container">
-      <div class="avaliacoes-grid" id="avaliacoes-grid"></div>
-    </div>
-  </section>
+In the `<script>`, add before closing `</script>`:
 
-  <!-- GALERIA / INSTAGRAM -->
-  <script>
-  /* INSTAGRAM-POSTS-START */
-  var instagramPosts = [{"image":"imagens/instagram/post_1.jpg","postUrl":"https://www.instagram.com/marialicemirianbolosedoces/reel/DVwwbNtBvRE/","alt":"Post do @marialicemirianbolosedoces"},{"image":"imagens/instagram/post_2.jpg","postUrl":"https://www.instagram.com/marialicemirianbolosedoces/reel/DVyJomJBBRB/","alt":"Post do @marialicemirianbolosedoces"},{"image":"imagens/instagram/post_3.jpg","postUrl":"https://www.instagram.com/marialicemirianbolosedoces/reel/DVwXUfHDwUF/","alt":"Post do @marialicemirianbolosedoces"},{"image":"imagens/instagram/post_4.jpg","postUrl":"https://www.instagram.com/marialicemirianbolosedoces/reel/DWtd5XygKTi/","alt":"Post do @marialicemirianbolosedoces"},{"image":"imagens/instagram/post_5.jpg","postUrl":"https://www.instagram.com/marialicemirianbolosedoces/reel/DWtcFN4gKtA/","alt":"Post do @marialicemirianbolosedoces"},{"image":"imagens/instagram/post_6.jpg","postUrl":"https://www.instagram.com/marialicemirianbolosedoces/p/DWlq2ohgDtu/","alt":"Post do @marialicemirianbolosedoces"},{"image":"imagens/instagram/post_7.jpg","postUrl":"https://www.instagram.com/marialicemirianbolosedoces/reel/DWjLyn_DhKc/","alt":"Post do @marialicemirianbolosedoces"},{"image":"imagens/instagram/post_8.jpg","postUrl":"https://www.instagram.com/marialicemirianbolosedoces/reel/DWcEMA5j5qr/","alt":"Post do @marialicemirianbolosedoces"},{"image":"imagens/instagram/post_9.jpg","postUrl":"https://www.instagram.com/marialicemirianbolosedoces/reel/DWZSFd4gC5J/","alt":"Post do @marialicemirianbolosedoces"}];
-  /* INSTAGRAM-POSTS-END */
-  </script>
-  <section class="galeria section-padding">
-    <div class="container text-center">
-      <p class="section-label">Inspirações</p>
-      <h2 class="section-title">Confira nossas <em>criações</em></h2>
-      <p class="section-subtitle">Siga-nos no Instagram <a href="https://www.instagram.com/marialicemirianbolosedoces" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:600;">@marialicemirianbolosedoces</a></p>
-      <div class="galeria-grid" id="instagramGrid">
-        <!-- Fallback placeholders (replaced by JS when instagramPosts has data) -->
-        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-      </div>
-      <div style="margin-top:28px;">
-        <a href="https://www.instagram.com/marialicemirianbolosedoces" target="_blank" rel="noopener" class="btn btn-outline">Seguir no Instagram</a>
-      </div>
-    </div>
-  </section>
-  <script>
-  (function() {
-    if (typeof instagramPosts !== 'undefined' && instagramPosts.length > 0) {
-      var grid = document.getElementById('instagramGrid');
-      if (!grid) return;
-      var igSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>';
-      var html = '';
-      for (var i = 0; i < instagramPosts.length; i++) {
-        var post = instagramPosts[i];
-        html += '<a href="' + post.postUrl + '" target="_blank" rel="noopener" class="instagram-item">';
-        html += '<img src="' + post.image + '" alt="' + (post.alt || 'Post do Instagram') + '" loading="lazy">';
-        html += '<div class="ig-overlay">' + igSvg + '</div>';
-        html += '</a>';
-      }
-      grid.innerHTML = html;
-    }
-  })();
-  </script>
-
-  <!-- LOCALIZACAO -->
-  <section class="localizacao section-padding" id="contato">
-    <div class="container">
-      <div class="text-center" style="margin-bottom:40px;">
-        <p class="section-label">Localização & Contato</p>
-        <h2 class="section-title">Venha nos <em>visitar</em></h2>
-        <p class="section-subtitle">Atendemos Itápolis e região com carinho e dedicação</p>
-      </div>
-      <div class="localizacao-grid">
-        <div class="localizacao-info">
-          <div class="info-item">
-            <div class="icon-circle">📍</div>
-            <div><strong>Endereço</strong><p>R. Dr. Fouad Mucari, 1252 – Jardim Campestre, Itápolis – SP</p></div>
-          </div>
-          <div class="info-item">
-            <div class="icon-circle">📱</div>
-            <div><strong>WhatsApp</strong><p><a href="https://wa.me/5516997126577" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:500;">(16) 99712-6577</a></p></div>
-          </div>
-          <div class="info-item">
-            <div class="icon-circle">📞</div>
-            <div><strong>Telefone fixo</strong><p>(16) 3262-8573</p></div>
-          </div>
-          <div class="info-item">
-            <div class="icon-circle">📷</div>
-            <div><strong>Instagram</strong><p><a href="https://www.instagram.com/marialicemirianbolosedoces" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:500;">@marialicemirianbolosedoces</a></p></div>
-          </div>
-          <div class="info-item">
-            <div class="icon-circle">👍</div>
-            <div><strong>Facebook</strong><p><a href="https://www.facebook.com/marialicemirianbolosedoces" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:500;">Maria Alice & Mirian</a></p></div>
-          </div>
-
-          <div class="horarios-card">
-            <h4 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--marrom);margin-bottom:12px;">Horário de Funcionamento</h4>
-            <div class="horario-linha"><span class="dia">Terça a Sexta</span><span class="hora">08:00 às 18:00</span></div>
-            <div class="horario-linha"><span class="dia">Sábado</span><span class="hora">08:00 às 16:00</span></div>
-            <div class="horario-linha"><span class="dia">Domingo e Segunda</span><span class="fechado">Fechado</span></div>
-          </div>
-
-          <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <a href="https://www.google.com/maps/place/R.+Dr.+Fouad+Mucari,+1252+-+Jardim+Campestre,+It%C3%A1polis+-+SP" target="_blank" rel="noopener" class="btn btn-outline btn-sm">📍 Como chegar</a>
-            <a href="https://wa.me/5516997126577?text=Ol%C3%A1!%20Gostaria%20de%20fazer%20uma%20encomenda%20%F0%9F%8E%82" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm">📱 Chamar no WhatsApp</a>
-          </div>
-        </div>
-
-        <div class="localizacao-mapa">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3715.5!2d-48.8128!3d-21.5951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sR.+Dr.+Fouad+Mucari%2C+1252+-+Itapolis!5e0!3m2!1spt-BR!2sbr" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Localização Maria Alice & Mirian" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="faq section-padding" id="faq">
-    <div class="container text-center">
-      <p class="section-label">Dúvidas</p>
-      <h2 class="section-title">Perguntas <em>Frequentes</em></h2>
-      <div class="decorative-line"></div>
-    </div>
-    <div class="container">
-      <div class="faq-lista" id="faq-lista"></div>
-    </div>
-  </section>
-
-  </main>
-
-  <!-- CART SIDEBAR -->
-  <div class="cart-overlay" id="cart-overlay" onclick="fecharCarrinho()"></div>
-  <aside class="cart-sidebar" id="cart-sidebar">
-    <div class="cart-header">
-      <h3>Seu Pedido</h3>
-      <button onclick="fecharCarrinho()" aria-label="Fechar" style="background:none;cursor:pointer;font-size:1.5rem;color:var(--grafite);">&times;</button>
-    </div>
-    <div class="cart-items" id="cart-items">
-      <p class="cart-empty" id="cart-empty" style="text-align:center;padding:40px 20px;color:var(--grafite-claro);">Seu pedido esta vazio.<br>Adicione itens do cardapio!</p>
-    </div>
-    <div class="cart-footer" id="cart-footer" style="display:none;">
-      <div class="cart-total">
-        <span>Estimativa total:</span>
-        <strong id="cart-total-valor">R$ 0,00</strong>
-      </div>
-      <div class="cart-form">
-        <div class="form-group"><label for="cart-nome">Nome completo *</label><input type="text" id="cart-nome" placeholder="Seu nome completo"></div>
-        <div class="form-group"><label for="cart-tel">Telefone</label><input type="tel" id="cart-tel" placeholder="(00) 00000-0000"></div>
-        <div class="form-group"><label for="cart-data">Data do evento</label><input type="date" id="cart-data"></div>
-        <div class="form-group"><label for="cart-obs">Observacoes</label><textarea id="cart-obs" placeholder="Alguma informacao adicional?" rows="2"></textarea></div>
-      </div>
-      <button class="btn btn-whatsapp" onclick="enviarCarrinhoWhatsApp()" style="width:100%;justify-content:center;margin-top:16px;font-size:1rem;padding:14px;">
-        Enviar Pedido no WhatsApp
-      </button>
-    </div>
-  </aside>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <h4 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-style:italic;margin-bottom:8px;">Maria Alice & Mirian</h4>
-          <p>Bolos e doces artesanais com 25 anos de tradição em Itápolis-SP. Encomendas para casamentos, aniversários e eventos especiais.</p>
-          <div class="footer-social">
-            <a href="https://www.instagram.com/marialicemirianbolosedoces" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
-            <a href="https://www.facebook.com/marialicemirianbolosedoces" target="_blank" rel="noopener" aria-label="Facebook">👍</a>
-            <a href="https://wa.me/5516997126577" target="_blank" rel="noopener" aria-label="WhatsApp">📱</a>
-          </div>
-        </div>
-        <div class="footer-links">
-          <h4>Navegação</h4>
-          <a href="#sobre">Sobre nós</a>
-          <a href="#cardapio">Cardápio</a>
-          <a href="#como-pedir">Como pedir</a>
-          <a href="#configurador">Montar pedido</a>
-          <a href="#contato">Contato</a>
-          <a href="#faq">Dúvidas</a>
-        </div>
-        <div>
-          <h4>Contato</h4>
-          <p>R. Dr. Fouad Mucari, 1252<br>Jardim Campestre<br>Itápolis – SP</p>
-          <p style="margin-top:8px;">(16) 99712-6577<br>(16) 3262-8573</p>
-        </div>
-        <div>
-          <h4>Horários</h4>
-          <p>Terça a Sexta<br>08:00 às 18:00</p>
-          <p style="margin-top:8px;">Sábado<br>08:00 às 16:00</p>
-          <p style="margin-top:8px;color:var(--rosa-claro);">Dom. e Seg.: fechado</p>
-        </div>
-      </div>
-
-      <div class="footer-cta">
-        <a href="https://wa.me/5516997126577?text=Ol%C3%A1!%20Gostaria%20de%20fazer%20uma%20encomenda%20%F0%9F%8E%82" target="_blank" rel="noopener" class="btn btn-whatsapp" style="font-size:1rem;">
-          Faça sua encomenda pelo WhatsApp
-        </a>
-      </div>
-      <p class="footer-bottom">© 2026 Maria Alice & Mirian — Bolos e Doces. Todos os direitos reservados.</p>
-    </div>
-  </footer>
-
-  <!-- WHATSAPP FLOAT -->
-  <div class="whatsapp-float">
-    <a href="https://wa.me/5516997126577?text=Ol%C3%A1!%20Vi%20o%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20produtos%20%F0%9F%98%8A" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
-      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    </a>
-    <span class="tooltip">Fale conosco</span>
-  </div>
-
-<script>
-// ===== HEADER SCROLL SHADOW =====
-const header = document.getElementById('header');
-window.addEventListener('scroll', () => {
-  header.classList.toggle('scrolled', window.scrollY > 20);
-});
-
-// ===== MOBILE MENU =====
-const hamburger = document.getElementById('hamburger');
-const mobileNav = document.getElementById('mobile-nav');
-const mobileOverlay = document.getElementById('mobile-overlay');
-
-function toggleMobile() {
-  hamburger.classList.toggle('active');
-  mobileNav.classList.toggle('open');
-  mobileOverlay.classList.toggle('open');
-  document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
-}
-
-hamburger.addEventListener('click', toggleMobile);
-mobileOverlay.addEventListener('click', toggleMobile);
-document.querySelectorAll('.mobile-link').forEach(link => {
-  link.addEventListener('click', toggleMobile);
-});
-
-// ===== ATIVAR ABA DO CATALOGO =====
-function ativarAba(aba) {
-  const section = document.getElementById('cardapio');
-  if (section) {
-    section.scrollIntoView({ behavior: 'smooth' });
-    // Tab activation will be wired in Task 4
-    const btn = document.querySelector(`[data-tab="${aba}"]`);
-    if (btn) btn.click();
-  }
-}
-
-// ===== TABS =====
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    btn.setAttribute('aria-selected','true');
-    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-  });
-});
-
-// ===== RENDER BOLOS =====
-function renderBolos() {
-  const container = document.getElementById('bolos-content');
-  container.innerHTML = DADOS.bolos.map((bolo, boloIndex) => {
-    const badges = [
-      `${bolo.peso}`,
-      `${bolo.pessoas} pessoas`,
-      bolo.diametro ? `\u00D8 ${bolo.diametro}` : '',
-      `${bolo.fatias} fatias`
-    ].filter(Boolean);
-
-    const items = bolo.coberturas.map(c =>
-      `<div class="bolo-item"><span>${c.nome}</span><span>${c.preco}</span></div>`
-    ).join('');
-
-    const coberturaOptions = bolo.coberturas.map(c =>
-      `<option value="${c.nome}" data-preco="${c.preco}">${c.nome} — ${c.preco}</option>`
-    ).join('');
-
-    const recheioOptions = DADOS.recheios.map(r =>
-      `<option value="${r}">${r}</option>`
-    ).join('');
-
-    return `
-      <div class="bolo-card">
-        <div class="bolo-header">
-          <h3>Bolo ${bolo.peso}</h3>
-          <div class="bolo-badges">${badges.map(b => `<span class="bolo-badge">${b}</span>`).join('')}</div>
-        </div>
-        <div class="bolo-lista">${items}</div>
-        <div class="bolo-config" id="bolo-config-${boloIndex}">
-          <div style="border-top:1px solid var(--borda);margin-bottom:14px;"></div>
-          <div class="form-group">
-            <label for="bolo-cob-${boloIndex}">Cobertura</label>
-            <select id="bolo-cob-${boloIndex}">
-              <option value="">Selecione a cobertura...</option>
-              ${coberturaOptions}
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="bolo-r1-${boloIndex}">Recheio 1</label>
-            <select id="bolo-r1-${boloIndex}">
-              <option value="">Selecione o recheio...</option>
-              ${recheioOptions}
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="bolo-r2-${boloIndex}">Recheio 2</label>
-            <select id="bolo-r2-${boloIndex}">
-              <option value="">Selecione o recheio...</option>
-              ${recheioOptions}
-            </select>
-          </div>
-          <div class="btn-row">
-            <button class="btn btn-whatsapp btn-sm" onclick="pedirBoloAgora(${boloIndex})">Pedir agora</button>
-            <button class="btn-add-cart" onclick="adicionarBolo(${boloIndex})">Adicionar ao pedido</button>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  // Bolos especiais
-  const especiais = document.getElementById('bolos-especiais-content');
-  especiais.innerHTML = DADOS.bolosEspeciais.map(b =>
-    `<div style="padding:8px 0;border-bottom:1px solid var(--borda);">
-      <strong style="color:var(--marrom);">${b.nome}</strong>
-      <span style="color:var(--grafite);font-size:0.85rem;"> \u2014 ${b.recheios}</span>
-    </div>`
-  ).join('');
-}
-
-renderBolos();
-
-// ===== RENDER DOCES =====
-var doceIdCounter = 0;
-function renderDoces() {
-  const container = document.getElementById('doces-content');
-  doceIdCounter = 0;
-
-  function renderGrupo(titulo, items) {
-    const cards = items.map(d => {
-      const did = doceIdCounter++;
-      const hasP50 = d.p50 !== null && d.p50 !== undefined;
-      let toggleHtml = '';
-      let precoDisplay = '';
-
-      if (hasP50) {
-        toggleHtml = `
-          <div class="qty-toggle" id="doce-toggle-${did}">
-            <button onclick="toggleDoceQtd(${did}, 50)" class="active">50 un</button>
-            <button onclick="toggleDoceQtd(${did}, 100)">100 un</button>
-          </div>`;
-        precoDisplay = `<div class="doce-preco-display" id="doce-preco-${did}" data-p50="${d.p50}" data-p100="${d.p100}" data-qty="50">${d.p50}</div>`;
-      } else {
-        precoDisplay = `<div class="doce-preco-display" id="doce-preco-${did}" data-p100="${d.p100}" data-qty="100">${d.p100}</div>`;
-      }
-
-      return `
-        <div class="doce-card" data-nome="${d.nome.toLowerCase()}" data-doce-id="${did}" data-doce-nome="${d.nome}">
-          <h4>${d.nome}</h4>
-          ${toggleHtml}
-          ${precoDisplay}
-          <div class="btn-row">
-            <button class="btn btn-whatsapp btn-sm" onclick="pedirDoceAgora(${did})">Pedir agora</button>
-            <button class="btn-add-cart" onclick="adicionarDoceFromCard(${did})">Adicionar ao pedido</button>
-          </div>
-        </div>
-      `;
-    }).join('');
-    return `<h3 class="doces-grupo-titulo">${titulo}</h3><div class="doces-grid">${cards}</div>`;
-  }
-
-  container.innerHTML = `
-    <div class="doces-filter">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input type="text" id="doces-search" placeholder="Buscar doce por nome..." oninput="filtrarDoces(this.value)">
-    </div>
-    <div id="doces-lista">
-      ${renderGrupo('Doces Tradicionais', DADOS.doces.grupo1)}
-      ${renderGrupo('Novidades & Especiais', DADOS.doces.grupo2)}
-    </div>
-  `;
-}
-
-function filtrarDoces(query) {
-  const q = query.toLowerCase().trim();
-  document.querySelectorAll('.doce-card').forEach(card => {
-    card.style.display = card.dataset.nome.includes(q) ? '' : 'none';
-  });
-}
-
-// ===== RENDER KITS =====
-function renderKits() {
-  const container = document.getElementById('kits-content');
-  container.innerHTML = `
-    <div class="kits-grid">
-      ${DADOS.kits.map((kit, kitIndex) => {
-        return `
-          <div class="kit-card">
-            <h3>${kit.nome}</h3>
-            <div class="kit-preco">${kit.preco}</div>
-            <p class="kit-desc">${kit.descricao}</p>
-            <div class="kit-sabores">
-              <h4>Sabores disponiveis</h4>
-              <div class="kit-sabores-lista">
-                ${kit.sabores.map(s => `<span>${s}</span>`).join('')}
-              </div>
-            </div>
-            <div class="kit-config" id="kit-config-${kitIndex}">
-              <div id="kit-flavors-${kitIndex}"></div>
-              <button class="kit-add-flavor" id="kit-add-btn-${kitIndex}" onclick="kitAddFlavor(${kitIndex})">+ Adicionar sabor</button>
-              <div class="kit-progress">
-                <div class="kit-progress-text">
-                  <span id="kit-count-${kitIndex}">0 de 100 unidades</span>
-                  <span id="kit-remaining-${kitIndex}">Restam 100</span>
-                </div>
-                <div class="kit-progress-bar"><div class="kit-progress-fill" id="kit-bar-${kitIndex}" style="width:0%"></div></div>
-              </div>
-            </div>
-            <div class="btn-row">
-              <button class="btn btn-whatsapp btn-sm" onclick="pedirKitAgora(${kitIndex})">Pedir agora</button>
-              <button class="btn-add-cart" onclick="adicionarKit(${kitIndex})">Adicionar ao pedido</button>
-            </div>
-          </div>
-        `;
-      }).join('')}
-    </div>
-  `;
-  // Initialize each kit with one flavor row
-  DADOS.kits.forEach((kit, i) => kitAddFlavor(i));
-}
-
-// ===== RENDER RECHEIOS =====
-function renderRecheios() {
-  const container = document.getElementById('recheios-content');
-  container.innerHTML = `
-    <p style="color:var(--grafite);margin-bottom:24px;font-size:0.95rem;">Escolha 2 recheios para o seu bolo. Todos os sabores abaixo estão disponíveis:</p>
-    <div class="recheios-grid">
-      ${DADOS.recheios.map(r => `<div class="recheio-pill">${r}</div>`).join('')}
-    </div>
-    <div class="bolo-especial" style="margin-top:32px;">
-      <h3>🌟 Bolos Especiais — combinações clássicas com 2 recheios</h3>
-      ${DADOS.bolosEspeciais.map(b =>
-        `<div style="padding:8px 0;border-bottom:1px solid var(--borda);">
-          <strong style="color:var(--marrom);">${b.nome}</strong>
-          <span style="color:var(--grafite);font-size:0.85rem;"> — ${b.recheios}</span>
-        </div>`
-      ).join('')}
-    </div>
-  `;
-}
-
-// ===== RENDER PERSONALIZADOS =====
-function renderPersonalizados() {
-  const container = document.getElementById('personalizados-content');
-  const msg = encodeURIComponent('Olá! Gostaria de consultar valores para produtos personalizados. Poderia me ajudar? ✨');
-  container.innerHTML = `
-    <div class="personalizados-grid">
-      ${DADOS.personalizados.map(p => `
-        <div class="personalizado-card">
-          <div class="icon">${p.icone}</div>
-          <h4>${p.nome}</h4>
-        </div>
-      `).join('')}
-    </div>
-    <div style="text-align:center;margin-top:28px;">
-      <p style="color:var(--grafite);margin-bottom:16px;font-style:italic;">Para consultar valores, envie o tema ou foto de inspiração pelo WhatsApp.</p>
-      <a href="https://wa.me/${DADOS.empresa.whatsapp}?text=${msg}" target="_blank" rel="noopener" class="btn btn-whatsapp">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Consultar personalizado
-      </a>
-    </div>
-  `;
-}
-
-// ===== INIT ALL TABS =====
-renderDoces();
-renderKits();
-renderRecheios();
-renderPersonalizados();
+```javascript
 
 // ===== POPULATE RECHEIOS SELECTS =====
 function populateRecheios() {
@@ -1626,6 +1457,119 @@ function enviarWhatsApp() {
 
   window.open(`https://wa.me/${DADOS.empresa.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
 }
+```
+
+- [ ] **Step 3: Verify in browser**
+
+Check:
+- "Como Pedir" shows 5 numbered steps in a row (desktop) or stacked (mobile)
+- Configurador form: selecting "Bolo" shows size/recheio/cobertura selects; "Doces" shows textarea; "Kit" shows kit select; "Personalizado" shows textarea
+- Recheio dropdowns populated with all 46 options
+- Click "Enviar" without name shows alert
+- Fill form and click: WhatsApp opens with formatted message
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: how-to-order steps and smart WhatsApp order builder with conditional fields"
+```
+
+---
+
+### Task 7: Diferenciais + Avaliacoes + Galeria
+
+Add the features grid, testimonials carousel, and Instagram gallery placeholder.
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add three sections HTML**
+
+Insert after the configurador `</section>`:
+
+```html
+  <!-- DIFERENCIAIS -->
+  <section class="diferenciais section-padding">
+    <div class="container text-center">
+      <p class="section-label">Nossos Diferenciais</p>
+      <h2 class="section-title">Por que escolher a <em>Maria Alice & Mirian?</em></h2>
+      <div class="decorative-line"></div>
+      <div class="diferenciais-grid">
+        <div class="diferencial-card">
+          <div class="icon">🕰️</div>
+          <h3>25 anos de tradição</h3>
+          <p>Desde 2000 adoçando os momentos mais especiais de Itápolis e região com qualidade e dedicação.</p>
+        </div>
+        <div class="diferencial-card">
+          <div class="icon">🎉</div>
+          <h3>Festas e eventos</h3>
+          <p>Casamentos, aniversários, formaturas e confraternizações — cuidamos de cada detalhe do seu evento.</p>
+        </div>
+        <div class="diferencial-card">
+          <div class="icon">⭐</div>
+          <h3>Personalizados</h3>
+          <p>Bolos e doces feitos sob medida para o seu tema, com acabamento impecável e sabor inesquecível.</p>
+        </div>
+        <div class="diferencial-card">
+          <div class="icon">💛</div>
+          <h3>Atendimento com carinho</h3>
+          <p>Cada cliente é especial. Ajudamos você a escolher os sabores e quantidades ideais para sua ocasião.</p>
+        </div>
+        <div class="diferencial-card">
+          <div class="icon">✅</div>
+          <h3>Ingredientes de qualidade</h3>
+          <p>Selecionamos os melhores ingredientes para garantir sabor, textura e frescor em cada produto.</p>
+        </div>
+        <div class="diferencial-card">
+          <div class="icon">🧁</div>
+          <h3>Produção artesanal</h3>
+          <p>Cada bolo e doce é preparado à mão, com técnicas tradicionais e o capricho que só o artesanal oferece.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AVALIACOES -->
+  <section class="avaliacoes section-padding">
+    <div class="container text-center">
+      <p class="section-label">Depoimentos</p>
+      <h2 class="section-title">O que nossos clientes <em>dizem</em></h2>
+      <div class="decorative-line"></div>
+    </div>
+    <div class="container">
+      <div class="avaliacoes-grid" id="avaliacoes-grid"></div>
+    </div>
+  </section>
+
+  <!-- GALERIA -->
+  <section class="galeria section-padding">
+    <div class="container text-center">
+      <p class="section-label">Inspirações</p>
+      <h2 class="section-title">Confira nossas <em>criações</em></h2>
+      <p class="section-subtitle">Siga-nos no Instagram <a href="https://www.instagram.com/marialicemirianbolosedoces" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:600;">@marialicemirianbolosedoces</a></p>
+      <div class="galeria-grid">
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+      </div>
+      <div style="margin-top:28px;">
+        <a href="https://www.instagram.com/marialicemirianbolosedoces" target="_blank" rel="noopener" class="btn btn-outline">Seguir no Instagram</a>
+      </div>
+    </div>
+  </section>
+```
+
+- [ ] **Step 2: Add avaliacoes rendering JS**
+
+In the `<script>`, add before closing `</script>`:
+
+```javascript
 
 // ===== RENDER AVALIACOES =====
 function renderAvaliacoes() {
@@ -1644,6 +1588,159 @@ function renderAvaliacoes() {
   `).join('');
 }
 renderAvaliacoes();
+```
+
+- [ ] **Step 3: Verify in browser**
+
+Check:
+- 6 differential cards in 3-column grid (desktop), 2-column (mobile)
+- Cards have gold icons and hover effect
+- 4 testimonial cards with scroll-snap on mobile (swipe works)
+- Stars are gold, quotes are italic
+- 8 gallery placeholder items in 4-column grid (desktop), 2 (mobile)
+- Hover shows overlay effect on gallery items
+- Instagram link works
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: diferenciais grid, testimonials carousel, instagram gallery placeholders"
+```
+
+---
+
+### Task 8: Localizacao + FAQ + Footer
+
+Add the location/contact section with map, FAQ accordion, and complete footer.
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add Location + FAQ + Footer HTML**
+
+Insert after the galeria `</section>` and before `</main>`:
+
+```html
+  <!-- LOCALIZACAO -->
+  <section class="localizacao section-padding" id="contato">
+    <div class="container">
+      <div class="text-center" style="margin-bottom:40px;">
+        <p class="section-label">Localização & Contato</p>
+        <h2 class="section-title">Venha nos <em>visitar</em></h2>
+        <p class="section-subtitle">Atendemos Itápolis e região com carinho e dedicação</p>
+      </div>
+      <div class="localizacao-grid">
+        <div class="localizacao-info">
+          <div class="info-item">
+            <div class="icon-circle">📍</div>
+            <div><strong>Endereço</strong><p>R. Dr. Fouad Mucari, 1252 – Jardim Campestre, Itápolis – SP</p></div>
+          </div>
+          <div class="info-item">
+            <div class="icon-circle">📱</div>
+            <div><strong>WhatsApp</strong><p><a href="https://wa.me/5516997126577" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:500;">(16) 99712-6577</a></p></div>
+          </div>
+          <div class="info-item">
+            <div class="icon-circle">📞</div>
+            <div><strong>Telefone fixo</strong><p>(16) 3262-8573</p></div>
+          </div>
+          <div class="info-item">
+            <div class="icon-circle">📷</div>
+            <div><strong>Instagram</strong><p><a href="https://www.instagram.com/marialicemirianbolosedoces" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:500;">@marialicemirianbolosedoces</a></p></div>
+          </div>
+          <div class="info-item">
+            <div class="icon-circle">👍</div>
+            <div><strong>Facebook</strong><p><a href="https://www.facebook.com/marialicemirianbolosedoces" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:500;">Maria Alice & Mirian</a></p></div>
+          </div>
+
+          <div class="horarios-card">
+            <h4 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--marrom);margin-bottom:12px;">Horário de Funcionamento</h4>
+            <div class="horario-linha"><span class="dia">Terça a Sexta</span><span class="hora">08:00 às 18:00</span></div>
+            <div class="horario-linha"><span class="dia">Sábado</span><span class="hora">08:00 às 16:00</span></div>
+            <div class="horario-linha"><span class="dia">Domingo e Segunda</span><span class="fechado">Fechado</span></div>
+          </div>
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="https://www.google.com/maps/place/R.+Dr.+Fouad+Mucari,+1252+-+Jardim+Campestre,+It%C3%A1polis+-+SP" target="_blank" rel="noopener" class="btn btn-outline btn-sm">📍 Como chegar</a>
+            <a href="https://wa.me/5516997126577?text=Ol%C3%A1!%20Gostaria%20de%20fazer%20uma%20encomenda%20%F0%9F%8E%82" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm">📱 Chamar no WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="localizacao-mapa">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3715.5!2d-48.8128!3d-21.5951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sR.+Dr.+Fouad+Mucari%2C+1252+-+Itapolis!5e0!3m2!1spt-BR!2sbr" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Localização Maria Alice & Mirian" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq section-padding" id="faq">
+    <div class="container text-center">
+      <p class="section-label">Dúvidas</p>
+      <h2 class="section-title">Perguntas <em>Frequentes</em></h2>
+      <div class="decorative-line"></div>
+    </div>
+    <div class="container">
+      <div class="faq-lista" id="faq-lista"></div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-style:italic;margin-bottom:8px;">Maria Alice & Mirian</h4>
+          <p>Bolos e doces artesanais com 25 anos de tradição em Itápolis-SP. Encomendas para casamentos, aniversários e eventos especiais.</p>
+          <div class="footer-social">
+            <a href="https://www.instagram.com/marialicemirianbolosedoces" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
+            <a href="https://www.facebook.com/marialicemirianbolosedoces" target="_blank" rel="noopener" aria-label="Facebook">👍</a>
+            <a href="https://wa.me/5516997126577" target="_blank" rel="noopener" aria-label="WhatsApp">📱</a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>Navegação</h4>
+          <a href="#sobre">Sobre nós</a>
+          <a href="#cardapio">Cardápio</a>
+          <a href="#como-pedir">Como pedir</a>
+          <a href="#configurador">Montar pedido</a>
+          <a href="#contato">Contato</a>
+          <a href="#faq">Dúvidas</a>
+        </div>
+        <div>
+          <h4>Contato</h4>
+          <p>R. Dr. Fouad Mucari, 1252<br>Jardim Campestre<br>Itápolis – SP</p>
+          <p style="margin-top:8px;">(16) 99712-6577<br>(16) 3262-8573</p>
+        </div>
+        <div>
+          <h4>Horários</h4>
+          <p>Terça a Sexta<br>08:00 às 18:00</p>
+          <p style="margin-top:8px;">Sábado<br>08:00 às 16:00</p>
+          <p style="margin-top:8px;color:var(--rosa-claro);">Dom. e Seg.: fechado</p>
+        </div>
+      </div>
+
+      <div class="footer-cta">
+        <a href="https://wa.me/5516997126577?text=Ol%C3%A1!%20Gostaria%20de%20fazer%20uma%20encomenda%20%F0%9F%8E%82" target="_blank" rel="noopener" class="btn btn-whatsapp" style="font-size:1rem;">
+          Faça sua encomenda pelo WhatsApp
+        </a>
+      </div>
+      <p class="footer-bottom">© 2026 Maria Alice & Mirian — Bolos e Doces. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+```
+
+- [ ] **Step 2: Remove the old `</main>` and placeholder comment**
+
+Delete the line `<!-- Remaining sections placeholder -->` and any duplicate `</main>` tag that was left from Task 2. The `</main>` is now inside the FAQ/Footer block above.
+
+- [ ] **Step 3: Add FAQ rendering JS**
+
+In the `<script>`, add before closing `</script>`:
+
+```javascript
 
 // ===== RENDER FAQ =====
 function renderFAQ() {
@@ -1688,295 +1785,52 @@ function toggleFAQ(btn) {
 }
 
 renderFAQ();
+```
 
-// ===== CART SYSTEM =====
-let carrinho = [];
+- [ ] **Step 4: Verify in browser**
 
-function abrirCarrinho() {
-  document.getElementById('cart-sidebar').classList.add('open');
-  document.getElementById('cart-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
+Check:
+- Location section: two columns — contact info left, map right (stacks on mobile)
+- Map iframe loads (may show generic location)
+- "Como chegar" and "Chamar no WhatsApp" buttons work
+- Hours display correctly with "Fechado" in pink
+- FAQ: clicking a question opens the answer with smooth animation, clicking again closes it
+- Only one FAQ can be open at a time
+- Footer: 4-column grid with brand, navigation links, contact, hours
+- Footer WhatsApp CTA button works
+- Social links in footer work
+- Scroll navigation from header links reaches all sections correctly
+- Mobile: everything stacks properly, footer becomes single column
 
-function fecharCarrinho() {
-  document.getElementById('cart-sidebar').classList.remove('open');
-  document.getElementById('cart-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
+- [ ] **Step 5: Commit**
 
-function atualizarBadge() {
-  const badge = document.getElementById('cart-badge');
-  const badgeMobile = document.getElementById('cart-badge-mobile');
-  if (carrinho.length > 0) {
-    badge.style.display = 'flex';
-    badge.textContent = carrinho.length;
-    if (badgeMobile) { badgeMobile.style.display = 'inline-flex'; badgeMobile.textContent = carrinho.length; }
-  } else {
-    badge.style.display = 'none';
-    if (badgeMobile) badgeMobile.style.display = 'none';
-  }
-}
+```bash
+git add index.html
+git commit -m "feat: location with map, FAQ accordion, complete footer — site fully functional"
+```
 
-function atualizarCarrinhoUI() {
-  const container = document.getElementById('cart-items');
-  const empty = document.getElementById('cart-empty');
-  const footer = document.getElementById('cart-footer');
+---
 
-  if (carrinho.length === 0) {
-    empty.style.display = 'block';
-    footer.style.display = 'none';
-    container.innerHTML = '';
-    container.appendChild(empty);
-  } else {
-    empty.style.display = 'none';
-    footer.style.display = 'block';
-    container.innerHTML = carrinho.map(item => {
-      let detalhes = '';
-      if (item.tipo === 'bolo') {
-        detalhes = `Cobertura: ${item.detalhes.cobertura}<br>Recheio 1: ${item.detalhes.recheio1}<br>Recheio 2: ${item.detalhes.recheio2}`;
-      } else if (item.tipo === 'doce') {
-        detalhes = `${item.detalhes.quantidade} unidades`;
-      } else if (item.tipo === 'kit') {
-        const sabList = Array.isArray(item.detalhes.sabores) ? item.detalhes.sabores.join(', ') : '';
-        detalhes = sabList + (item.detalhes.total ? ` (${item.detalhes.total} un)` : '');
-      }
-      return `<div class="cart-item">
-        <div class="cart-item-info">
-          <strong>${item.nome}</strong>
-          <small>${detalhes}</small>
-          <span class="cart-item-preco">${item.preco}</span>
-        </div>
-        <button class="cart-item-remove" onclick="removerDoCarrinho(${item.id})" aria-label="Remover">&times;</button>
-      </div>`;
-    }).join('');
-  }
+### Task 9: Final polish and verification
 
-  const total = carrinho.reduce((sum, item) => sum + item.precoNum, 0);
-  document.getElementById('cart-total-valor').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
-  atualizarBadge();
-}
+Review the complete site for consistency, fix any issues, and ensure everything works end-to-end.
 
-function adicionarAoCarrinho(item) {
-  carrinho.push(item);
-  atualizarCarrinhoUI();
-  abrirCarrinho();
-}
+**Files:**
+- Modify: `index.html`
 
-function removerDoCarrinho(id) {
-  carrinho = carrinho.filter(item => item.id !== id);
-  atualizarCarrinhoUI();
-}
+- [ ] **Step 1: Add scroll-based animation**
 
-function parsePreco(str) {
-  return parseFloat(str.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
-}
+In the `<style>`, add before the closing `</style>`:
 
-function enviarCarrinhoWhatsApp() {
-  const nome = document.getElementById('cart-nome').value.trim();
-  if (!nome) { alert('Por favor, informe seu nome completo.'); return; }
-  if (carrinho.length === 0) { alert('Seu pedido esta vazio.'); return; }
+```css
+    /* ===== SCROLL ANIMATIONS ===== */
+    .animate-on-scroll { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+```
 
-  const tel = document.getElementById('cart-tel').value.trim();
-  const data = document.getElementById('cart-data').value;
-  const obs = document.getElementById('cart-obs').value.trim();
+In the `<script>`, add before closing `</script>`:
 
-  let msg = 'Ola! Gostaria de fazer o seguinte pedido \uD83C\uDF82\n\n';
-  msg += `*Nome:* ${nome}\n`;
-  if (tel) msg += `*Telefone:* ${tel}\n`;
-  if (data) { const [y,m,d] = data.split('-'); msg += `*Data do evento:* ${d}/${m}/${y}\n`; }
-  msg += '\n\uD83D\uDCCB *Itens do pedido:*\n\n';
-
-  carrinho.forEach((item, i) => {
-    msg += `${i+1}. ${item.nome}\n`;
-    if (item.tipo === 'bolo') {
-      msg += `   Cobertura: ${item.detalhes.cobertura}\n`;
-      msg += `   Recheio 1: ${item.detalhes.recheio1}\n`;
-      msg += `   Recheio 2: ${item.detalhes.recheio2}\n`;
-    } else if (item.tipo === 'doce') {
-      msg += `   ${item.detalhes.quantidade} unidades\n`;
-    } else if (item.tipo === 'kit') {
-      const sabList = Array.isArray(item.detalhes.sabores) ? item.detalhes.sabores.join(', ') : '';
-      msg += `   Sabores: ${sabList}\n`;
-      if (item.detalhes.total) msg += `   Total: ${item.detalhes.total} unidades\n`;
-    }
-    msg += `   Valor: ${item.preco}\n\n`;
-  });
-
-  if (obs) msg += `*Observacoes:* ${obs}\n\n`;
-  const total = carrinho.reduce((sum, item) => sum + item.precoNum, 0);
-  msg += `\uD83D\uDCB0 *Estimativa total:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
-  msg += 'Aguardo retorno! \uD83D\uDE0A';
-
-  window.open(`https://wa.me/${DADOS.empresa.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-}
-
-// ===== BOLO: Pedir Agora & Adicionar ao Carrinho =====
-function pedirBoloAgora(boloIndex) {
-  const bolo = DADOS.bolos[boloIndex];
-  const cob = document.getElementById(`bolo-cob-${boloIndex}`).value;
-  const r1 = document.getElementById(`bolo-r1-${boloIndex}`).value;
-  const r2 = document.getElementById(`bolo-r2-${boloIndex}`).value;
-  if (!cob) { alert('Por favor, selecione a cobertura.'); return; }
-  if (!r1) { alert('Por favor, selecione o recheio 1.'); return; }
-  if (!r2) { alert('Por favor, selecione o recheio 2.'); return; }
-
-  const cobObj = bolo.coberturas.find(c => c.nome === cob);
-  const msg = `Ola! Gostaria de encomendar um bolo de ${bolo.peso} com cobertura ${cob}, recheio 1: ${r1}, recheio 2: ${r2}. \uD83C\uDF82`;
-  window.open(`https://wa.me/${DADOS.empresa.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-}
-
-function adicionarBolo(boloIndex) {
-  const bolo = DADOS.bolos[boloIndex];
-  const cob = document.getElementById(`bolo-cob-${boloIndex}`).value;
-  const r1 = document.getElementById(`bolo-r1-${boloIndex}`).value;
-  const r2 = document.getElementById(`bolo-r2-${boloIndex}`).value;
-  if (!cob) { alert('Por favor, selecione a cobertura.'); return; }
-  if (!r1) { alert('Por favor, selecione o recheio 1.'); return; }
-  if (!r2) { alert('Por favor, selecione o recheio 2.'); return; }
-
-  const cobObj = bolo.coberturas.find(c => c.nome === cob);
-  const preco = cobObj ? cobObj.preco : bolo.coberturas[0].preco;
-  const precoNum = parsePreco(preco);
-
-  adicionarAoCarrinho({
-    id: Date.now(),
-    tipo: 'bolo',
-    nome: `Bolo ${bolo.peso}`,
-    detalhes: { cobertura: cob, recheio1: r1, recheio2: r2 },
-    preco: preco,
-    precoNum: precoNum
-  });
-}
-
-// ===== DOCE: Toggle Qtd, Pedir Agora & Adicionar =====
-function toggleDoceQtd(did, qty) {
-  const toggle = document.getElementById(`doce-toggle-${did}`);
-  const precoEl = document.getElementById(`doce-preco-${did}`);
-  toggle.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
-  if (qty === 50) {
-    toggle.children[0].classList.add('active');
-    precoEl.textContent = precoEl.dataset.p50;
-    precoEl.dataset.qty = '50';
-  } else {
-    toggle.children[1].classList.add('active');
-    precoEl.textContent = precoEl.dataset.p100;
-    precoEl.dataset.qty = '100';
-  }
-}
-
-function getDoceCardData(did) {
-  const card = document.querySelector(`[data-doce-id="${did}"]`);
-  const nome = card.dataset.doceNome;
-  const precoEl = document.getElementById(`doce-preco-${did}`);
-  const precoStr = precoEl.textContent;
-  const qty = parseInt(precoEl.dataset.qty) || 100;
-  return { nome, precoStr, qty };
-}
-
-function pedirDoceAgora(did) {
-  const { nome, precoStr, qty } = getDoceCardData(did);
-  const msg = `Ola! Gostaria de encomendar: ${nome} \u2014 ${qty} unidades (${precoStr}). \uD83C\uDF6C`;
-  window.open(`https://wa.me/${DADOS.empresa.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-}
-
-function adicionarDoceFromCard(did) {
-  const data = getDoceCardData(did);
-  if (!data || !data.nome) { alert('Erro ao ler dados do doce.'); return; }
-  adicionarAoCarrinho({
-    id: Date.now(),
-    tipo: 'doce',
-    nome: data.nome,
-    detalhes: { quantidade: data.qty },
-    preco: data.precoStr,
-    precoNum: parsePreco(data.precoStr)
-  });
-}
-
-// ===== KIT: Flavor Distribution System =====
-function kitAddFlavor(kitIndex) {
-  const container = document.getElementById(`kit-flavors-${kitIndex}`);
-  const rows = container.querySelectorAll('.kit-flavor-row');
-  if (rows.length >= 4) return;
-  const kit = DADOS.kits[kitIndex];
-  const rowId = Date.now();
-  const saborOptions = kit.sabores.map(s => `<option value="${s}">${s}</option>`).join('');
-  const row = document.createElement('div');
-  row.className = 'kit-flavor-row';
-  row.dataset.rowId = rowId;
-  row.innerHTML = `
-    <select onchange="kitUpdateProgress(${kitIndex})"><option value="">Sabor...</option>${saborOptions}</select>
-    <input type="number" min="1" max="100" value="25" placeholder="Qtd" onchange="kitUpdateProgress(${kitIndex})" oninput="kitUpdateProgress(${kitIndex})">
-    <button class="remove-flavor" onclick="kitRemoveFlavor(${kitIndex}, ${rowId})" title="Remover">&times;</button>
-  `;
-  container.appendChild(row);
-  kitUpdateProgress(kitIndex);
-  // Hide add button if 4 flavors
-  if (container.querySelectorAll('.kit-flavor-row').length >= 4) {
-    document.getElementById(`kit-add-btn-${kitIndex}`).style.display = 'none';
-  }
-}
-
-function kitRemoveFlavor(kitIndex, rowId) {
-  const container = document.getElementById(`kit-flavors-${kitIndex}`);
-  const row = container.querySelector(`[data-row-id="${rowId}"]`);
-  if (row && container.querySelectorAll('.kit-flavor-row').length > 1) {
-    row.remove();
-    kitUpdateProgress(kitIndex);
-    document.getElementById(`kit-add-btn-${kitIndex}`).style.display = '';
-  }
-}
-
-function kitUpdateProgress(kitIndex) {
-  const container = document.getElementById(`kit-flavors-${kitIndex}`);
-  const rows = container.querySelectorAll('.kit-flavor-row');
-  let total = 0;
-  rows.forEach(row => { total += parseInt(row.querySelector('input').value) || 0; });
-  const pct = Math.min(100, (total / 100) * 100);
-  document.getElementById(`kit-count-${kitIndex}`).textContent = `${total} de 100 unidades`;
-  document.getElementById(`kit-remaining-${kitIndex}`).textContent = total > 100 ? 'Excedeu!' : `Restam ${100 - total}`;
-  document.getElementById(`kit-bar-${kitIndex}`).style.width = pct + '%';
-  document.getElementById(`kit-bar-${kitIndex}`).style.background = total > 100 ? '#e74c3c' : 'var(--rosa)';
-  document.getElementById(`kit-remaining-${kitIndex}`).style.color = total > 100 ? '#e74c3c' : 'var(--grafite)';
-}
-
-function getKitSaboresData(kitIndex) {
-  const container = document.getElementById(`kit-flavors-${kitIndex}`);
-  const rows = container.querySelectorAll('.kit-flavor-row');
-  const sabores = [];
-  let total = 0;
-  rows.forEach(row => {
-    const sabor = row.querySelector('select').value;
-    const qtd = parseInt(row.querySelector('input').value) || 0;
-    if (sabor && qtd > 0) { sabores.push({ sabor, qtd }); total += qtd; }
-  });
-  return { sabores, total };
-}
-
-function pedirKitAgora(kitIndex) {
-  const kit = DADOS.kits[kitIndex];
-  const { sabores, total } = getKitSaboresData(kitIndex);
-  if (sabores.length === 0) { alert('Adicione pelo menos um sabor com quantidade.'); return; }
-  if (total > 100) { alert('O total nao pode passar de 100 unidades.'); return; }
-  const saboresStr = sabores.map(s => `${s.sabor} (${s.qtd})`).join(', ');
-  const msg = `Ola! Gostaria de encomendar o ${kit.nome} (${kit.preco}). Sabores: ${saboresStr}. Total: ${total} unidades. \uD83C\uDF81`;
-  window.open(`https://wa.me/${DADOS.empresa.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-}
-
-function adicionarKit(kitIndex) {
-  const kit = DADOS.kits[kitIndex];
-  const { sabores, total } = getKitSaboresData(kitIndex);
-  if (sabores.length === 0) { alert('Adicione pelo menos um sabor com quantidade.'); return; }
-  if (total > 100) { alert('O total nao pode passar de 100 unidades.'); return; }
-  const saboresStr = sabores.map(s => `${s.sabor} (${s.qtd})`);
-  adicionarAoCarrinho({
-    id: Date.now(),
-    tipo: 'kit',
-    nome: kit.nome,
-    detalhes: { sabores: saboresStr, total: total },
-    preco: kit.preco,
-    precoNum: parsePreco(kit.preco)
-  });
-}
+```javascript
 
 // ===== SCROLL ANIMATIONS =====
 function initAnimations() {
@@ -1992,7 +1846,50 @@ function initAnimations() {
   document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 }
 initAnimations();
-</script>
+```
 
-</body>
-</html>
+- [ ] **Step 2: Full site verification checklist**
+
+Open `index.html` in browser. Check every item:
+
+**Desktop (1200px+):**
+- [ ] Header: logo, 4 nav links, WhatsApp button, shadow on scroll
+- [ ] Hero: two columns, title, subtitle, 2 buttons, 3 badges, image placeholder
+- [ ] Sobre: two columns, text + placeholder image
+- [ ] Categorias: 3-column grid, 6 cards, click navigates to correct tab
+- [ ] Catalogo: 5 tabs switch correctly, Bolos shows 5 sizes with all prices, Doces search works, Kits shows 3 cards, Recheios shows 46 pills, Personalizados shows 6 items
+- [ ] Como Pedir: 5 steps in row
+- [ ] Configurador: conditional fields work, WhatsApp message builds correctly
+- [ ] Diferenciais: 3-column grid
+- [ ] Avaliacoes: 4 cards in row
+- [ ] Galeria: 4-column grid
+- [ ] Localizacao: 2 columns, map, hours, buttons
+- [ ] FAQ: accordion works, one-at-a-time
+- [ ] Footer: 4 columns, all links work, WhatsApp CTA
+- [ ] Floating WhatsApp: bottom-right, pulse animation, tooltip on hover
+
+**Mobile (375px):**
+- [ ] Hamburger menu opens/closes drawer
+- [ ] Hero stacks vertically, centered text
+- [ ] All grids collapse to 1-2 columns
+- [ ] Tabs scroll horizontally
+- [ ] Form fields are full-width
+- [ ] Testimonials scroll-snap works with swipe
+- [ ] Footer stacks to single column
+- [ ] WhatsApp float doesn't overlap content
+
+**WhatsApp flows:**
+- [ ] Header WhatsApp button opens with generic message
+- [ ] Hero "Fazer Pedido" opens with order message
+- [ ] Each bolo "Encomendar" includes bolo size
+- [ ] Each doce "Pedir" includes doce name
+- [ ] Each kit "Montar meu kit" includes kit name
+- [ ] Configurador builds complete formatted message
+- [ ] Floating button opens with generic message
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: scroll animations and full site polish — production ready"
+```
