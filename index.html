@@ -379,6 +379,10 @@
       .footer-grid { grid-template-columns: 1fr; }
       .diferenciais-grid { grid-template-columns: 1fr; }
     }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .animate-on-scroll { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
@@ -787,9 +791,349 @@ const DADOS = {
     </div>
   </section>
 
-  <!-- Remaining sections placeholder -->
+  <!-- COMO PEDIR -->
+  <section class="como-pedir section-padding" id="como-pedir">
+    <div class="container text-center">
+      <p class="section-label">Passo a Passo</p>
+      <h2 class="section-title">Como fazer <em>seu pedido</em></h2>
+      <p class="section-subtitle">É simples, rápido e todo o atendimento é personalizado</p>
+      <div class="passos">
+        <div class="passo">
+          <div class="passo-num">1</div>
+          <h4>Escolha a categoria</h4>
+          <p>Bolos, doces, kits ou personalizados</p>
+        </div>
+        <div class="passo">
+          <div class="passo-num">2</div>
+          <h4>Defina os detalhes</h4>
+          <p>Sabores, quantidades e tamanho</p>
+        </div>
+        <div class="passo">
+          <div class="passo-num">3</div>
+          <h4>Informe a data</h4>
+          <p>Data e horário do seu evento</p>
+        </div>
+        <div class="passo">
+          <div class="passo-num">4</div>
+          <h4>Envie pelo WhatsApp</h4>
+          <p>Mensagem pronta em um clique</p>
+        </div>
+        <div class="passo">
+          <div class="passo-num">5</div>
+          <h4>Atendimento especial</h4>
+          <p>Retornamos com carinho e agilidade</p>
+        </div>
+      </div>
+      <div style="margin-top:40px;">
+        <a href="#configurador" class="btn btn-whatsapp">Fazer meu pedido agora</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONFIGURADOR -->
+  <section class="configurador section-padding" id="configurador">
+    <div class="container text-center">
+      <p class="section-label">Monte Seu Pedido</p>
+      <h2 class="section-title">Envie sua encomenda <em>pelo WhatsApp</em></h2>
+      <p class="section-subtitle">Preencha os dados abaixo e clique para enviar — a mensagem vai pronta!</p>
+    </div>
+    <div class="config-form" id="config-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="cfg-nome">Seu nome</label>
+          <input type="text" id="cfg-nome" placeholder="Nome completo">
+        </div>
+        <div class="form-group">
+          <label for="cfg-tel">Seu telefone</label>
+          <input type="tel" id="cfg-tel" placeholder="(00) 00000-0000">
+        </div>
+        <div class="form-group">
+          <label for="cfg-tipo">Tipo de encomenda</label>
+          <select id="cfg-tipo" onchange="toggleCamposCondicionais()">
+            <option value="">Selecione...</option>
+            <option value="Bolo">Bolo</option>
+            <option value="Doces">Doces</option>
+            <option value="Kit de doces">Kit de doces</option>
+            <option value="Personalizado">Personalizado</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="cfg-data">Data do evento</label>
+          <input type="date" id="cfg-data">
+        </div>
+        <div class="form-group">
+          <label for="cfg-pessoas">Quantidade de pessoas</label>
+          <input type="number" id="cfg-pessoas" placeholder="Ex: 50" min="1">
+        </div>
+
+        <!-- Campos condicionais: Bolo -->
+        <div class="conditional-fields" id="campos-bolo">
+          <div class="form-group">
+            <label for="cfg-tamanho">Tamanho do bolo</label>
+            <select id="cfg-tamanho">
+              <option value="">Selecione...</option>
+              <option value="1,5 kg (~15 fatias)">1,5 kg — ~15 fatias</option>
+              <option value="2,5 kg (~30 fatias)">2,5 kg — ~30 fatias</option>
+              <option value="3,5 kg (~40 fatias)">3,5 kg — ~40 fatias</option>
+              <option value="4,5 kg (~60 fatias)">4,5 kg — ~60 fatias</option>
+              <option value="6,5 kg (~90 fatias)">6,5 kg — ~90 fatias</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cfg-recheio1">Recheio 1</label>
+            <select id="cfg-recheio1">
+              <option value="">Selecione o recheio...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cfg-recheio2">Recheio 2</label>
+            <select id="cfg-recheio2">
+              <option value="">Selecione o recheio...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cfg-cobertura">Cobertura</label>
+            <select id="cfg-cobertura">
+              <option value="">Selecione a cobertura...</option>
+              <option>Chantilly</option>
+              <option>Ganache escorrido</option>
+              <option>Marshmallow</option>
+              <option>Ganache no bolo todo</option>
+              <option>Brigadeiro no bolo todo</option>
+              <option>Brigadeiro com raspas de chocolate e laço decorativo</option>
+              <option>Leite ninho</option>
+              <option>Naked cake (com frutas)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Campos condicionais: Doces -->
+        <div class="conditional-fields" id="campos-doces">
+          <div class="form-group full">
+            <label for="cfg-sabores-doces">Sabores e quantidades desejados</label>
+            <textarea id="cfg-sabores-doces" placeholder="Ex: 50 brigadeiros, 50 beijinhos de coco..."></textarea>
+          </div>
+        </div>
+
+        <!-- Campos condicionais: Kit -->
+        <div class="conditional-fields" id="campos-kit">
+          <div class="form-group">
+            <label for="cfg-tipo-kit">Tipo de kit</label>
+            <select id="cfg-tipo-kit">
+              <option value="">Selecione...</option>
+              <option>Kit Doces Simples — R$ 175,00</option>
+              <option>Kit Doces Recheados — R$ 230,00</option>
+              <option>Kit Bombons e Trufas — R$ 265,00</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Campos condicionais: Personalizado -->
+        <div class="conditional-fields" id="campos-personalizado">
+          <div class="form-group full">
+            <label for="cfg-desc-pers">Descreva o que precisa (tema, foto de inspiração, etc.)</label>
+            <textarea id="cfg-desc-pers" placeholder="Descreva o produto desejado e envie fotos de referência pelo WhatsApp..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-group full">
+          <label for="cfg-obs">Observações</label>
+          <textarea id="cfg-obs" placeholder="Alguma informação adicional?"></textarea>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:24px;">
+        <button type="button" class="btn btn-whatsapp" onclick="enviarWhatsApp()" style="font-size:1.05rem;padding:16px 36px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Enviar Pedido no WhatsApp
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFERENCIAIS -->
+  <section class="diferenciais section-padding">
+    <div class="container text-center">
+      <p class="section-label">Nossos Diferenciais</p>
+      <h2 class="section-title">Por que escolher a <em>Maria Alice & Mirian?</em></h2>
+      <div class="decorative-line"></div>
+      <div class="diferenciais-grid">
+        <div class="diferencial-card">
+          <div class="icon">🕰️</div>
+          <h3>25 anos de tradição</h3>
+          <p>Desde 2000 adoçando os momentos mais especiais de Itápolis e região com qualidade e dedicação.</p>
+        </div>
+        <div class="diferencial-card">
+          <div class="icon">🎉</div>
+          <h3>Festas e eventos</h3>
+          <p>Casamentos, aniversários, formaturas e confraternizações — cuidamos de cada detalhe do seu evento.</p>
+        </div>
+        <div class="diferencial-card">
+          <div class="icon">⭐</div>
+          <h3>Personalizados</h3>
+          <p>Bolos e doces feitos sob medida para o seu tema, com acabamento impecável e sabor inesquecível.</p>
+        </div>
+        <div class="diferencial-card">
+          <div class="icon">💛</div>
+          <h3>Atendimento com carinho</h3>
+          <p>Cada cliente é especial. Ajudamos você a escolher os sabores e quantidades ideais para sua ocasião.</p>
+        </div>
+        <div class="diferencial-card">
+          <div class="icon">✅</div>
+          <h3>Ingredientes de qualidade</h3>
+          <p>Selecionamos os melhores ingredientes para garantir sabor, textura e frescor em cada produto.</p>
+        </div>
+        <div class="diferencial-card">
+          <div class="icon">🧁</div>
+          <h3>Produção artesanal</h3>
+          <p>Cada bolo e doce é preparado à mão, com técnicas tradicionais e o capricho que só o artesanal oferece.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AVALIACOES -->
+  <section class="avaliacoes section-padding">
+    <div class="container text-center">
+      <p class="section-label">Depoimentos</p>
+      <h2 class="section-title">O que nossos clientes <em>dizem</em></h2>
+      <div class="decorative-line"></div>
+    </div>
+    <div class="container">
+      <div class="avaliacoes-grid" id="avaliacoes-grid"></div>
+    </div>
+  </section>
+
+  <!-- GALERIA -->
+  <section class="galeria section-padding">
+    <div class="container text-center">
+      <p class="section-label">Inspirações</p>
+      <h2 class="section-title">Confira nossas <em>criações</em></h2>
+      <p class="section-subtitle">Siga-nos no Instagram <a href="https://www.instagram.com/marialicemirianbolosedoces" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:600;">@marialicemirianbolosedoces</a></p>
+      <div class="galeria-grid">
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="galeria-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+      </div>
+      <div style="margin-top:28px;">
+        <a href="https://www.instagram.com/marialicemirianbolosedoces" target="_blank" rel="noopener" class="btn btn-outline">Seguir no Instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCALIZACAO -->
+  <section class="localizacao section-padding" id="contato">
+    <div class="container">
+      <div class="text-center" style="margin-bottom:40px;">
+        <p class="section-label">Localização & Contato</p>
+        <h2 class="section-title">Venha nos <em>visitar</em></h2>
+        <p class="section-subtitle">Atendemos Itápolis e região com carinho e dedicação</p>
+      </div>
+      <div class="localizacao-grid">
+        <div class="localizacao-info">
+          <div class="info-item">
+            <div class="icon-circle">📍</div>
+            <div><strong>Endereço</strong><p>R. Dr. Fouad Mucari, 1252 – Jardim Campestre, Itápolis – SP</p></div>
+          </div>
+          <div class="info-item">
+            <div class="icon-circle">📱</div>
+            <div><strong>WhatsApp</strong><p><a href="https://wa.me/5516997126577" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:500;">(16) 99712-6577</a></p></div>
+          </div>
+          <div class="info-item">
+            <div class="icon-circle">📞</div>
+            <div><strong>Telefone fixo</strong><p>(16) 3262-8573</p></div>
+          </div>
+          <div class="info-item">
+            <div class="icon-circle">📷</div>
+            <div><strong>Instagram</strong><p><a href="https://www.instagram.com/marialicemirianbolosedoces" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:500;">@marialicemirianbolosedoces</a></p></div>
+          </div>
+          <div class="info-item">
+            <div class="icon-circle">👍</div>
+            <div><strong>Facebook</strong><p><a href="https://www.facebook.com/marialicemirianbolosedoces" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:500;">Maria Alice & Mirian</a></p></div>
+          </div>
+
+          <div class="horarios-card">
+            <h4 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--marrom);margin-bottom:12px;">Horário de Funcionamento</h4>
+            <div class="horario-linha"><span class="dia">Terça a Sexta</span><span class="hora">08:00 às 18:00</span></div>
+            <div class="horario-linha"><span class="dia">Sábado</span><span class="hora">08:00 às 16:00</span></div>
+            <div class="horario-linha"><span class="dia">Domingo e Segunda</span><span class="fechado">Fechado</span></div>
+          </div>
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="https://www.google.com/maps/place/R.+Dr.+Fouad+Mucari,+1252+-+Jardim+Campestre,+It%C3%A1polis+-+SP" target="_blank" rel="noopener" class="btn btn-outline btn-sm">📍 Como chegar</a>
+            <a href="https://wa.me/5516997126577?text=Ol%C3%A1!%20Gostaria%20de%20fazer%20uma%20encomenda%20%F0%9F%8E%82" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm">📱 Chamar no WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="localizacao-mapa">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3715.5!2d-48.8128!3d-21.5951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sR.+Dr.+Fouad+Mucari%2C+1252+-+Itapolis!5e0!3m2!1spt-BR!2sbr" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Localização Maria Alice & Mirian" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq section-padding" id="faq">
+    <div class="container text-center">
+      <p class="section-label">Dúvidas</p>
+      <h2 class="section-title">Perguntas <em>Frequentes</em></h2>
+      <div class="decorative-line"></div>
+    </div>
+    <div class="container">
+      <div class="faq-lista" id="faq-lista"></div>
+    </div>
+  </section>
 
   </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-style:italic;margin-bottom:8px;">Maria Alice & Mirian</h4>
+          <p>Bolos e doces artesanais com 25 anos de tradição em Itápolis-SP. Encomendas para casamentos, aniversários e eventos especiais.</p>
+          <div class="footer-social">
+            <a href="https://www.instagram.com/marialicemirianbolosedoces" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
+            <a href="https://www.facebook.com/marialicemirianbolosedoces" target="_blank" rel="noopener" aria-label="Facebook">👍</a>
+            <a href="https://wa.me/5516997126577" target="_blank" rel="noopener" aria-label="WhatsApp">📱</a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>Navegação</h4>
+          <a href="#sobre">Sobre nós</a>
+          <a href="#cardapio">Cardápio</a>
+          <a href="#como-pedir">Como pedir</a>
+          <a href="#configurador">Montar pedido</a>
+          <a href="#contato">Contato</a>
+          <a href="#faq">Dúvidas</a>
+        </div>
+        <div>
+          <h4>Contato</h4>
+          <p>R. Dr. Fouad Mucari, 1252<br>Jardim Campestre<br>Itápolis – SP</p>
+          <p style="margin-top:8px;">(16) 99712-6577<br>(16) 3262-8573</p>
+        </div>
+        <div>
+          <h4>Horários</h4>
+          <p>Terça a Sexta<br>08:00 às 18:00</p>
+          <p style="margin-top:8px;">Sábado<br>08:00 às 16:00</p>
+          <p style="margin-top:8px;color:var(--rosa-claro);">Dom. e Seg.: fechado</p>
+        </div>
+      </div>
+
+      <div class="footer-cta">
+        <a href="https://wa.me/5516997126577?text=Ol%C3%A1!%20Gostaria%20de%20fazer%20uma%20encomenda%20%F0%9F%8E%82" target="_blank" rel="noopener" class="btn btn-whatsapp" style="font-size:1rem;">
+          Faça sua encomenda pelo WhatsApp
+        </a>
+      </div>
+      <p class="footer-bottom">© 2026 Maria Alice & Mirian — Bolos e Doces. Todos os direitos reservados.</p>
+    </div>
+  </footer>
 
   <!-- WHATSAPP FLOAT -->
   <div class="whatsapp-float">
@@ -1005,6 +1349,149 @@ renderDoces();
 renderKits();
 renderRecheios();
 renderPersonalizados();
+
+// ===== POPULATE RECHEIOS SELECTS =====
+function populateRecheios() {
+  ['cfg-recheio1', 'cfg-recheio2'].forEach(id => {
+    const sel = document.getElementById(id);
+    DADOS.recheios.forEach(r => {
+      const opt = document.createElement('option');
+      opt.value = r; opt.textContent = r;
+      sel.appendChild(opt);
+    });
+  });
+}
+populateRecheios();
+
+// ===== CONDITIONAL FIELDS =====
+function toggleCamposCondicionais() {
+  const tipo = document.getElementById('cfg-tipo').value;
+  document.querySelectorAll('.conditional-fields').forEach(el => el.classList.remove('visible'));
+  const map = { 'Bolo': 'campos-bolo', 'Doces': 'campos-doces', 'Kit de doces': 'campos-kit', 'Personalizado': 'campos-personalizado' };
+  if (map[tipo]) document.getElementById(map[tipo]).classList.add('visible');
+}
+
+// ===== BUILD WHATSAPP MESSAGE =====
+function enviarWhatsApp() {
+  const nome = document.getElementById('cfg-nome').value.trim();
+  const tel = document.getElementById('cfg-tel').value.trim();
+  const tipo = document.getElementById('cfg-tipo').value;
+  const data = document.getElementById('cfg-data').value;
+  const pessoas = document.getElementById('cfg-pessoas').value;
+  const obs = document.getElementById('cfg-obs').value.trim();
+
+  if (!nome) { alert('Por favor, informe seu nome.'); return; }
+  if (!tipo) { alert('Por favor, selecione o tipo de encomenda.'); return; }
+
+  let msg = `Olá! Gostaria de fazer uma encomenda 🎂\n\n`;
+  msg += `*Nome:* ${nome}\n`;
+  if (tel) msg += `*Telefone:* ${tel}\n`;
+  msg += `*Tipo:* ${tipo}\n`;
+  if (data) { const [y,m,d] = data.split('-'); msg += `*Data do evento:* ${d}/${m}/${y}\n`; }
+  if (pessoas) msg += `*Pessoas:* ${pessoas}\n`;
+
+  if (tipo === 'Bolo') {
+    const tam = document.getElementById('cfg-tamanho').value;
+    const r1 = document.getElementById('cfg-recheio1').value;
+    const r2 = document.getElementById('cfg-recheio2').value;
+    const cob = document.getElementById('cfg-cobertura').value;
+    if (tam) msg += `*Tamanho:* ${tam}\n`;
+    if (r1) msg += `*Recheio 1:* ${r1}\n`;
+    if (r2) msg += `*Recheio 2:* ${r2}\n`;
+    if (cob) msg += `*Cobertura:* ${cob}\n`;
+  } else if (tipo === 'Doces') {
+    const sab = document.getElementById('cfg-sabores-doces').value.trim();
+    if (sab) msg += `*Sabores/Qtd:* ${sab}\n`;
+  } else if (tipo === 'Kit de doces') {
+    const kit = document.getElementById('cfg-tipo-kit').value;
+    if (kit) msg += `*Kit:* ${kit}\n`;
+  } else if (tipo === 'Personalizado') {
+    const desc = document.getElementById('cfg-desc-pers').value.trim();
+    if (desc) msg += `*Descrição:* ${desc}\n`;
+  }
+
+  if (obs) msg += `*Observações:* ${obs}\n`;
+  msg += `\nAguardo retorno! 😊`;
+
+  window.open(`https://wa.me/${DADOS.empresa.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ===== RENDER AVALIACOES =====
+function renderAvaliacoes() {
+  const container = document.getElementById('avaliacoes-grid');
+  container.innerHTML = DADOS.avaliacoes.map(a => `
+    <div class="avaliacao-card">
+      <div class="avaliacao-header">
+        <div class="avaliacao-avatar">${a.iniciais}</div>
+        <div>
+          <div class="avaliacao-nome">${a.nome}</div>
+          <div class="avaliacao-estrelas">★★★★★</div>
+        </div>
+      </div>
+      <p class="avaliacao-texto">"${a.texto}"</p>
+    </div>
+  `).join('');
+}
+renderAvaliacoes();
+
+// ===== RENDER FAQ =====
+function renderFAQ() {
+  const container = document.getElementById('faq-lista');
+  container.innerHTML = DADOS.faq.map((item, i) => `
+    <div class="faq-item">
+      <button class="faq-pergunta" onclick="toggleFAQ(this)" aria-expanded="false">
+        <h3>${item.pergunta}</h3>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="faq-resposta">
+        <div class="faq-resposta-inner">${item.resposta}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleFAQ(btn) {
+  const item = btn.parentElement;
+  const resposta = item.querySelector('.faq-resposta');
+  const inner = resposta.querySelector('.faq-resposta-inner');
+  const isOpen = item.classList.contains('open');
+
+  // Close all others
+  document.querySelectorAll('.faq-item.open').forEach(other => {
+    if (other !== item) {
+      other.classList.remove('open');
+      other.querySelector('.faq-pergunta').setAttribute('aria-expanded','false');
+      other.querySelector('.faq-resposta').style.maxHeight = '0';
+    }
+  });
+
+  if (isOpen) {
+    item.classList.remove('open');
+    btn.setAttribute('aria-expanded','false');
+    resposta.style.maxHeight = '0';
+  } else {
+    item.classList.add('open');
+    btn.setAttribute('aria-expanded','true');
+    resposta.style.maxHeight = inner.scrollHeight + 'px';
+  }
+}
+
+renderFAQ();
+
+// ===== SCROLL ANIMATIONS =====
+function initAnimations() {
+  document.querySelectorAll('.section-padding').forEach(el => el.classList.add('animate-on-scroll'));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+}
+initAnimations();
 </script>
 
 </body>
