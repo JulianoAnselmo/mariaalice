@@ -3,7 +3,11 @@
     "allow": [
       "Bash(bash \"C:/Users/julia/.claude/plugins/marketplaces/superpowers-dev/skills/brainstorming/scripts/start-server.sh\" --project-dir \"C:/dev/prototipos/maria alice\")",
       "Bash(cat \"C:/dev/prototipos/maria alice/.superpowers/brainstorm/\"*/state/server-info)",
-      "Bash(node atualizar-instagram.js)"
+      "Bash(node atualizar-instagram.js)",
+      "Bash(cp \"/c/Users/julia/Downloads/Maria Alice/bolo.png\" \"C:/dev/prototipos/maria alice/imagens/hero-bolo.png\")",
+      "Bash(cp \"/c/Users/julia/Downloads/Maria Alice/logo.PNG\" \"C:/dev/prototipos/maria alice/imagens/logo.png\")",
+      "Bash(cp \"/c/Users/julia/Downloads/Maria Alice/Bolo de casamento com flores de açúcar.png\" \"C:/dev/prototipos/maria alice/imagens/bolo-casamento.png\")",
+      "Bash(ls -la \"C:/dev/prototipos/maria alice/imagens/\"*.png)"
     ]
   }
 }
