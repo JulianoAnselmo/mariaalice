@@ -437,6 +437,19 @@
 
     /* Kit config */
     .kit-config { text-align: left; margin-bottom: 16px; }
+    .kit-flavor-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .kit-flavor-row select { flex: 1; padding: 10px 12px; border: 2px solid var(--borda); border-radius: var(--radius); background: var(--nude); font-size: 0.85rem; color: var(--marrom); }
+    .kit-flavor-row select:focus { border-color: var(--rosa-claro); }
+    .kit-flavor-row input[type="number"] { width: 70px; text-align: center; padding: 10px 4px; border: 2px solid var(--borda); border-radius: var(--radius); background: var(--nude); font-size: 0.85rem; color: var(--marrom); }
+    .kit-flavor-row input[type="number"]:focus { border-color: var(--rosa-claro); }
+    .kit-flavor-row .remove-flavor { background: none; cursor: pointer; color: var(--rosa); font-size: 1.3rem; padding: 4px 8px; border-radius: 50%; transition: background var(--transition); border: none; }
+    .kit-flavor-row .remove-flavor:hover { background: var(--rosa-bg); }
+    .kit-add-flavor { background: var(--rosa-bg); color: var(--rosa); border: 1px dashed var(--rosa-claro); border-radius: var(--radius); padding: 10px; width: 100%; cursor: pointer; font-weight: 500; font-size: 0.85rem; transition: all var(--transition); margin-bottom: 12px; }
+    .kit-add-flavor:hover { background: var(--rosa-bg2); }
+    .kit-progress { margin-bottom: 16px; }
+    .kit-progress-bar { height: 6px; background: var(--borda); border-radius: 3px; overflow: hidden; margin-top: 6px; }
+    .kit-progress-fill { height: 100%; background: var(--rosa); border-radius: 3px; transition: width 0.3s ease; }
+    .kit-progress-text { font-size: 0.8rem; color: var(--grafite); display: flex; justify-content: space-between; }
     .kit-config .form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
     .kit-config .form-group label { font-size: 0.78rem; font-weight: 500; color: var(--marrom); }
     .kit-config .form-group select { padding: 8px 12px; border: 2px solid var(--borda); border-radius: var(--radius); background: var(--branco); transition: border-color var(--transition); color: var(--marrom); font-size: 0.82rem; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a6b63' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px; }
@@ -1464,20 +1477,6 @@ function renderKits() {
   container.innerHTML = `
     <div class="kits-grid">
       ${DADOS.kits.map((kit, kitIndex) => {
-        const saborOptions = kit.sabores.map(s =>
-          `<option value="${s}">${s}</option>`
-        ).join('');
-
-        const saborSelects = [1,2,3,4].map(n => `
-          <div class="form-group">
-            <label for="kit-${kitIndex}-s${n}">Sabor ${n}</label>
-            <select id="kit-${kitIndex}-s${n}">
-              <option value="">Selecione...</option>
-              ${saborOptions}
-            </select>
-          </div>
-        `).join('');
-
         return `
           <div class="kit-card">
             <h3>${kit.nome}</h3>
@@ -1490,7 +1489,15 @@ function renderKits() {
               </div>
             </div>
             <div class="kit-config" id="kit-config-${kitIndex}">
-              ${saborSelects}
+              <div id="kit-flavors-${kitIndex}"></div>
+              <button class="kit-add-flavor" id="kit-add-btn-${kitIndex}" onclick="kitAddFlavor(${kitIndex})">+ Adicionar sabor</button>
+              <div class="kit-progress">
+                <div class="kit-progress-text">
+                  <span id="kit-count-${kitIndex}">0 de 100 unidades</span>
+                  <span id="kit-remaining-${kitIndex}">Restam 100</span>
+                </div>
+                <div class="kit-progress-bar"><div class="kit-progress-fill" id="kit-bar-${kitIndex}" style="width:0%"></div></div>
+              </div>
             </div>
             <div class="btn-row">
               <button class="btn btn-whatsapp btn-sm" onclick="pedirKitAgora(${kitIndex})">Pedir agora</button>
@@ -1501,6 +1508,8 @@ function renderKits() {
       }).join('')}
     </div>
   `;
+  // Initialize each kit with one flavor row
+  DADOS.kits.forEach((kit, i) => kitAddFlavor(i));
 }
 
 // ===== RENDER RECHEIOS =====
@@ -1728,7 +1737,8 @@ function atualizarCarrinhoUI() {
       } else if (item.tipo === 'doce') {
         detalhes = `${item.detalhes.quantidade} unidades`;
       } else if (item.tipo === 'kit') {
-        detalhes = `Sabores: ${item.detalhes.sabores.join(', ')}`;
+        const sabList = Array.isArray(item.detalhes.sabores) ? item.detalhes.sabores.join(', ') : '';
+        detalhes = sabList + (item.detalhes.total ? ` (${item.detalhes.total} un)` : '');
       }
       return `<div class="cart-item">
         <div class="cart-item-info">
@@ -1785,7 +1795,9 @@ function enviarCarrinhoWhatsApp() {
     } else if (item.tipo === 'doce') {
       msg += `   ${item.detalhes.quantidade} unidades\n`;
     } else if (item.tipo === 'kit') {
-      msg += `   Sabores: ${item.detalhes.sabores.join(', ')}\n`;
+      const sabList = Array.isArray(item.detalhes.sabores) ? item.detalhes.sabores.join(', ') : '';
+      msg += `   Sabores: ${sabList}\n`;
+      if (item.detalhes.total) msg += `   Total: ${item.detalhes.total} unidades\n`;
     }
     msg += `   Valor: ${item.preco}\n\n`;
   });
@@ -1868,44 +1880,99 @@ function pedirDoceAgora(did) {
 }
 
 function adicionarDoceFromCard(did) {
-  const { nome, precoStr, qty } = getDoceCardData(did);
+  const data = getDoceCardData(did);
+  if (!data || !data.nome) { alert('Erro ao ler dados do doce.'); return; }
   adicionarAoCarrinho({
     id: Date.now(),
     tipo: 'doce',
-    nome: nome,
-    detalhes: { quantidade: qty },
-    preco: precoStr,
-    precoNum: parsePreco(precoStr)
+    nome: data.nome,
+    detalhes: { quantidade: data.qty },
+    preco: data.precoStr,
+    precoNum: parsePreco(data.precoStr)
   });
 }
 
-// ===== KIT: Pedir Agora & Adicionar =====
-function getKitSabores(kitIndex) {
-  const sabores = [];
-  for (let n = 1; n <= 4; n++) {
-    const val = document.getElementById(`kit-${kitIndex}-s${n}`).value;
-    if (val) sabores.push(val);
+// ===== KIT: Flavor Distribution System =====
+function kitAddFlavor(kitIndex) {
+  const container = document.getElementById(`kit-flavors-${kitIndex}`);
+  const rows = container.querySelectorAll('.kit-flavor-row');
+  if (rows.length >= 4) return;
+  const kit = DADOS.kits[kitIndex];
+  const rowId = Date.now();
+  const saborOptions = kit.sabores.map(s => `<option value="${s}">${s}</option>`).join('');
+  const row = document.createElement('div');
+  row.className = 'kit-flavor-row';
+  row.dataset.rowId = rowId;
+  row.innerHTML = `
+    <select onchange="kitUpdateProgress(${kitIndex})"><option value="">Sabor...</option>${saborOptions}</select>
+    <input type="number" min="1" max="100" value="25" placeholder="Qtd" onchange="kitUpdateProgress(${kitIndex})" oninput="kitUpdateProgress(${kitIndex})">
+    <button class="remove-flavor" onclick="kitRemoveFlavor(${kitIndex}, ${rowId})" title="Remover">&times;</button>
+  `;
+  container.appendChild(row);
+  kitUpdateProgress(kitIndex);
+  // Hide add button if 4 flavors
+  if (container.querySelectorAll('.kit-flavor-row').length >= 4) {
+    document.getElementById(`kit-add-btn-${kitIndex}`).style.display = 'none';
   }
-  return sabores;
+}
+
+function kitRemoveFlavor(kitIndex, rowId) {
+  const container = document.getElementById(`kit-flavors-${kitIndex}`);
+  const row = container.querySelector(`[data-row-id="${rowId}"]`);
+  if (row && container.querySelectorAll('.kit-flavor-row').length > 1) {
+    row.remove();
+    kitUpdateProgress(kitIndex);
+    document.getElementById(`kit-add-btn-${kitIndex}`).style.display = '';
+  }
+}
+
+function kitUpdateProgress(kitIndex) {
+  const container = document.getElementById(`kit-flavors-${kitIndex}`);
+  const rows = container.querySelectorAll('.kit-flavor-row');
+  let total = 0;
+  rows.forEach(row => { total += parseInt(row.querySelector('input').value) || 0; });
+  const pct = Math.min(100, (total / 100) * 100);
+  document.getElementById(`kit-count-${kitIndex}`).textContent = `${total} de 100 unidades`;
+  document.getElementById(`kit-remaining-${kitIndex}`).textContent = total > 100 ? 'Excedeu!' : `Restam ${100 - total}`;
+  document.getElementById(`kit-bar-${kitIndex}`).style.width = pct + '%';
+  document.getElementById(`kit-bar-${kitIndex}`).style.background = total > 100 ? '#e74c3c' : 'var(--rosa)';
+  document.getElementById(`kit-remaining-${kitIndex}`).style.color = total > 100 ? '#e74c3c' : 'var(--grafite)';
+}
+
+function getKitSaboresData(kitIndex) {
+  const container = document.getElementById(`kit-flavors-${kitIndex}`);
+  const rows = container.querySelectorAll('.kit-flavor-row');
+  const sabores = [];
+  let total = 0;
+  rows.forEach(row => {
+    const sabor = row.querySelector('select').value;
+    const qtd = parseInt(row.querySelector('input').value) || 0;
+    if (sabor && qtd > 0) { sabores.push({ sabor, qtd }); total += qtd; }
+  });
+  return { sabores, total };
 }
 
 function pedirKitAgora(kitIndex) {
   const kit = DADOS.kits[kitIndex];
-  const sabores = getKitSabores(kitIndex);
-  if (sabores.length < 4) { alert('Por favor, selecione os 4 sabores do kit.'); return; }
-  const msg = `Ola! Gostaria de encomendar o ${kit.nome} (${kit.preco}). Sabores: ${sabores.join(', ')}. \uD83C\uDF81`;
+  const { sabores, total } = getKitSaboresData(kitIndex);
+  if (sabores.length === 0) { alert('Adicione pelo menos um sabor com quantidade.'); return; }
+  if (total > 100) { alert('O total nao pode passar de 100 unidades.'); return; }
+  const saboresStr = sabores.map(s => `${s.sabor} (${s.qtd})`).join(', ');
+  const msg = `Ola! Gostaria de encomendar o ${kit.nome} (${kit.preco}). Sabores: ${saboresStr}. Total: ${total} unidades. \uD83C\uDF81`;
   window.open(`https://wa.me/${DADOS.empresa.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 function adicionarKit(kitIndex) {
   const kit = DADOS.kits[kitIndex];
-  const sabores = getKitSabores(kitIndex);
-  if (sabores.length < 4) { alert('Por favor, selecione os 4 sabores do kit.'); return; }
+  const { sabores, total } = getKitSaboresData(kitIndex);
+  if (sabores.length === 0) { alert('Adicione pelo menos um sabor com quantidade.'); return; }
+  if (total > 100) { alert('O total nao pode passar de 100 unidades.'); return; }
+  const saboresStr = sabores.map(s => `${s.sabor} (${s.qtd})`);
   adicionarAoCarrinho({
     id: Date.now(),
     tipo: 'kit',
     nome: kit.nome,
-    detalhes: { sabores: sabores },
+    detalhes: { sabores: saboresStr, total: total },
     preco: kit.preco,
     precoNum: parsePreco(kit.preco)
   });
